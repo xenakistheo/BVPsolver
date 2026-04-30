@@ -174,6 +174,28 @@ plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
 # )
 
 
+# Loss curve — every cost_fn evaluation (many per outer AL iter).
+plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
+     title="AL + Adam on BVP-NN", legend=false)
+
+
+
+# Solve using trained parameters. 
+prediction_prob = ODEProblem(F!, [2.0, 0.0], tspan, NN_sol_al.prob.p)
+prediction = solve(prediction_prob, Tsit5(), saveat=tsteps)
+
+# Compare with intial parameters
+pretrained_pred_prob = ODEProblem(F!, [2.0, 0.0], tspan, p0)
+pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
+
+
+
+plot(data, labels=["u₁ (data)" "u₂ (data)"])
+plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)"])
+plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"])
+
+
+
 using SciMLBase
 using BoundaryValueDiffEq
 using Optimization
