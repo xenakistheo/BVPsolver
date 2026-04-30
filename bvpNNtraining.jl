@@ -38,7 +38,6 @@ end
 
 model = Chain(
     Dense(2, 4, tanh),
-    Dense(4, 4, tanh),
     Dense(4, 2)
 )
 
@@ -49,7 +48,7 @@ V = Dense(2, 4, tanh)
 S = StiffLayer2(sigma_affine_sigmoid; P=4, init=ones(4))
 U = Chain(Dense(4, 2, tanh), Dense(2,2))
 
-model = Chain(V, S, U)
+model2 = Chain(V, S, U)
 
 ps, st = Lux.setup(rng, model)
 ps = Lux.f64(ps)
@@ -70,11 +69,12 @@ function F!(du, u, p, t)
     du[1:2] .= NN(@view(u[1:2]), p)
 end
 
+# Change so that it does not allocate every time when building the ComponentVector
 function F2!(du, u, p, t)
     du[1:2] .= model(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
 end
 
-N_params = 32 #18
+N_params = 22 #32 #18
 p0 = randn(N_params) #Initialise parameters
 u0_guess = Y[:, 1]   # IC comes from the data
 
@@ -131,7 +131,7 @@ empty!(losses)
 # init with ρmax. ϵ_dual huge since r_dual isn't meaningful here.
 # Outer iters are mathematically redundant (same subproblem, warm-started Adam),
 # so use few outer × many inner.
-NN_sol_al = solve(bvp_train,
+@profview NN_sol_al = solve(bvp_train,
     MIRK4(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(0.01),
         inner_maxiters = 5000,
