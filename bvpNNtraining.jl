@@ -1,7 +1,11 @@
 using BoundaryValueDiffEqFIRK, BoundaryValueDiffEqMIRK
 using OrdinaryDiffEqTsit5
 using Plots
+using Lux
+using Random, ComponentArrays
+include("src/layers/StiffLayer.jl")
 
+rng = Xoshiro()
 
 # True ODE
 function spiralODE(du, u, p, t)
@@ -32,6 +36,29 @@ function NN(u, p)
     return W3 * z2 + b3
 end
 
+model = Chain(
+    Dense(2, 4, tanh),
+    Dense(4, 4, tanh),
+    Dense(4, 2)
+)
+
+sigma_affine_sigmoid(ps, j) = 1 / (1 + exp(-(ps[1] * j + ps[2])))
+sigma_exp(ps, j) = exp(-(ps[1] * j))
+
+V = Dense(2, 4, tanh)
+S = StiffLayer2(sigma_affine_sigmoid; P=4, init=ones(4))
+U = Chain(Dense(4, 2, tanh), Dense(2,2))
+
+model = Chain(V, S, U)
+
+ps, st = Lux.setup(rng, model)
+ps = Lux.f64(ps)
+
+ps_ca = ComponentVector(ps)
+length(ps_ca)
+ps_vec = collect(ps_ca)
+ps_axes = getaxes(ps_ca)
+
 # Define "Differential Equation".
 # With `tune_parameters=true`, the BVP solver augments the state to
 # `[state(2); params(18)]` and wraps `F!` (see mirk.jl:181-195 /
@@ -43,7 +70,11 @@ function F!(du, u, p, t)
     du[1:2] .= NN(@view(u[1:2]), p)
 end
 
-N_params = 18
+function F2!(du, u, p, t)
+    du[1:2] .= model(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
+end
+
+N_params = 32 #18
 p0 = randn(N_params) #Initialise parameters
 u0_guess = Y[:, 1]   # IC comes from the data
 
@@ -78,7 +109,7 @@ ic_bc!(res, sol, _p, _t) = begin
     res[2] = sol(X[1])[2] - Y[2, 1]
 end
 
-bvp_fun_train = BVPFunction(F!, ic_bc!;
+bvp_fun_train = BVPFunction(F2!, ic_bc!;
     bcresid_prototype = zeros(2),
     cost = cost_fn,
 )
@@ -124,6 +155,24 @@ plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
 # TODO: try with RadauIIa5/7 (L-stable FIRK) for stiff variants of this problem.
 # The pure-penalty AugLag config carries over unchanged; change MIRK4(...) to
 # RadauIIa5(...).
+
+# NN_sol_al_radau = solve(bvp_train,
+#     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
+#         inner = Adam(0.01),
+#         inner_maxiters = 5000,
+#         γ = 1.0,
+#         λmin = 0.0, λmax = 0.0,
+#         μmin = 0.0, μmax = 0.0,
+#         ρ_init = 10.0,
+#         ϵ_primal = 1e-3,
+#         ϵ_dual = 1e6,
+#     ));
+#     dt = 0.05,
+#     adaptive = false,
+#     verbose = BVPVerbosity(Detailed()),
+#     optimize_kwargs = (; maxiters = 5, callback = al_callback),
+# )
+
 
 using SciMLBase
 using BoundaryValueDiffEq
