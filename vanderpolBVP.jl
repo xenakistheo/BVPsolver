@@ -4,6 +4,7 @@ using OrdinaryDiffEqRosenbrock
 using Plots
 using Lux
 using Random, ComponentArrays
+using BenchmarkTools
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
@@ -23,20 +24,20 @@ function vanderpol(du, u, p, t)
     du[3] = k2 * y2^2
 end 
 
-tspan = (1e-6, 1e5)
-tlen = 100
+const tspan = (1e-6, 1e5)
+const tlen = 100
 
-tsteps = collect(10.0 .^ range(log10(tspan[1]), log10(tspan[2]); length=tlen))
+const tsteps = collect(10.0 .^ range(log10(tspan[1]), log10(tspan[2]); length=tlen))
 
 # Create training data
 data_prob = ODEProblem(vanderpol, [1.0, 0.0, 0.0], tspan)
 data = solve(data_prob, Rodas5P(), saveat=tsteps)
 # plot(data)
-X, Y = data.t, reduce(hcat, data.u)
+const X, Y = data.t, reduce(hcat, data.u)
 
 
 # Define Neural Network
-model = Chain(
+const model = Chain(
     Dense(3, 4, tanh),
     Dense(4, 4, tanh),
     Dense(4, 3)
@@ -51,13 +52,14 @@ U = Chain(Dense(4, 2, tanh), Dense(2,2))
 
 model2 = Chain(V, S, U)
 
-ps, st = Lux.setup(rng, model)
+ps, _st = Lux.setup(rng, model)
 ps = Lux.f64(ps)
+const st = _st
 
 ps_ca = ComponentVector(ps)
 length(ps_ca)
 ps_vec = collect(ps_ca)
-ps_axes = getaxes(ps_ca)
+const ps_axes = getaxes(ps_ca)
 
 # Define "Differential Equation".
 # With `tune_parameters=true`, the BVP solver augments the state to
@@ -89,12 +91,14 @@ using OptimizationAuglag, OptimizationOptimisers
 # Data-fitting loss. IC is handled by the BC, so we start at i=2.
 # Side-channel: log each scalar eval for a fine-grained loss curve.
 losses = Float64[]
+
 cost_fn = (sol, p) -> begin
-    s = zero(eltype(sol(X[2])))
+    s = zero(eltype(sol.u[2][1]))
     for i in 2:tlen                      # skip i=1 — it's the BC
-        r1 = sol(X[i])[1] - Y[1, i]
-        r2 = sol(X[i])[2] - Y[2, i]
-        r3 = sol(X[i])[3] - Y[3, i]
+        ui = sol.u[i]
+        r1 = ui[1] - Y[1, i]
+        r2 = ui[2] - Y[2, i]
+        r3 = ui[3] - Y[3, i]
         s += r1*r1 + r2*r2 + r3*r3
     end
     s isa Float64 && push!(losses, s)    # skip AD duals
@@ -103,9 +107,10 @@ end
 
 # Hard BC on the known initial condition.
 ic_bc!(res, sol, _p, _t) = begin
-    res[1] = sol(X[1])[1] - Y[1, 1]
-    res[2] = sol(X[1])[2] - Y[2, 1]
-    res[3] = sol(X[1])[3] - Y[3, 1]
+    u1 = sol.u[1]
+    res[1] = u1[1] - Y[1, 1]
+    res[2] = u1[2] - Y[2, 1]
+    res[3] = u1[3] - Y[3, 1]
 end
 
 bvp_fun_train = BVPFunction(F!, ic_bc!;
@@ -131,10 +136,12 @@ empty!(losses)
 # Outer iters are mathematically redundant (same subproblem, warm-started Adam),
 # so use few outer × many inner.
 @info "Starting training"
-NN_sol_al = solve(bvp_train,
+#@profview_allocs
+
+ @time NN_sol_al = solve(bvp_train,
     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(0.01),
-        inner_maxiters = 10, #5000
+        inner_maxiters = 5, #5000
         γ = 1.0,
         λmin = 0.0, λmax = 0.0,
         μmin = 0.0, μmax = 0.0,
@@ -144,9 +151,9 @@ NN_sol_al = solve(bvp_train,
     ));
     dt = (tspan[2] - tspan[1])/tlen,
     saveat = tsteps,
-    adaptive = false,
+    adaptive = true, # before it was false
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 2, callback = al_callback), #maxiters = 5
+    optimize_kwargs = (; maxiters = 1, callback = al_callback), #maxiters = 5
 )
 
 # Loss curve — every cost_fn evaluation (many per outer AL iter).
@@ -168,3 +175,44 @@ pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
 plot(data, labels=["u₁ (data)" "u₂ (data)"])
 plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)"])
 plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"])
+
+########################################################################
+########################################################################
+######################################################################## 
+###### Benchmark 
+
+F!(similar(u0_guess), u0_guess, p0, 0.0)                                                                                                                                                                                
+@benchmark F!(du, $u0_guess, $p0, 0.0) setup=(du=similar(u0_guess))
+@allocated F!(similar(u0_guess), u0_guess, p0, 0.0) # MAAANY allocations 
+@allocated ComponentVector(p0, ps_axes)
+@allocated model(@view(u0_guess[1:3]), ComponentVector(p0, ps_axes), st)     
+
+
+                                                                                                                                                           
+
+@allocated model(u0_guess[1:3], ps, st)  
+@allocated u0_guess[1:3]
+@allocated @view(u0_guess[1:3])
+@allocated view(u0_guess, 1:3)
+u0_guess
+
+
+cost_fn(NN_sol_al, p0)
+@benchmark cost_fn($NN_sol_al, $p0)
+@allocated cost_fn(NN_sol_al, p0)
+#New, 38.84KiB, 1487 Allocs, Allocated, 25376
+
+ic_bc!(res, sol, _p, _t) = begin
+    u1 = sol.u[1]
+    res[1] = u1[1] - Y[1, 1]
+    res[2] = u1[2] - Y[2, 1]
+    res[3] = u1[3] - Y[3, 1]
+end
+
+res = zeros(3)       
+ic_bc!(res, NN_sol_al, p0, nothing)                                                                              
+@benchmark ic_bc!($res, $NN_sol_al, $p0, nothing)                                                   
+@allocated ic_bc!(res, NN_sol_al, p0, nothing)  
+
+
+@code_warntype F!(similar(u0_guess, 54), rand(54), p0, 0.0) 
