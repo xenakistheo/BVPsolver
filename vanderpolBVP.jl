@@ -5,6 +5,9 @@ using Plots
 using Lux
 using Random, ComponentArrays
 using BenchmarkTools
+using Ipopt
+using OptimizationMOI
+
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
@@ -68,14 +71,23 @@ const ps_axes = getaxes(ps_ca)
 #   - `p` arrives already sliced from `u[3:20]` (the current trained params)
 #   - `du[3:20]` is auto-zeroed after this returns
 # After solve, trained params are exposed via `sol.prob.p` (remade at mirk.jl:293).
-
-function F!(du, u, p, t)
-    du[1:3] .= model(@view(u[1:3]), ComponentVector(p, ps_axes), st)[1]
-end
-
 N_params = 51 #18
 p0 = randn(N_params) #Initialise parameters
 u0_guess = Y[:, 1]   # IC comes from the data
+
+
+
+function F!(du, u, p, t)
+    du[1:3] .= model(@view(u[1:3]), ComponentVector(p, ps_axes), st)[1]
+    return nothing
+end
+
+F!(similar(u0_guess), u0_guess, p0, 0.0)                                                                                                                                                                                
+@benchmark F!(du, $u0_guess, $p0, 0.0) setup=(du=similar(u0_guess))
+@allocated F!(similar(u0_guess), u0_guess, p0, 0.0) # MAAANY allocations 
+@allocated ComponentVector(p0, ps_axes)
+@allocated model(@view(u0_guess[1:3]), ComponentVector(p0, ps_axes), st) 
+
 
 # ============================================================
 # Training via MIRK4's `optimize` slot with pure-penalty AugLag (λ ≡ 0, fixed ρ).
@@ -138,7 +150,7 @@ empty!(losses)
 @info "Starting training"
 #@profview_allocs
 
- @time NN_sol_al = solve(bvp_train,
+@time NN_sol_al = solve(bvp_train,
     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(0.01),
         inner_maxiters = 5, #5000
@@ -149,6 +161,16 @@ empty!(losses)
         ϵ_primal = 1e-3,
         ϵ_dual = 1e6,
     ));
+    dt = (tspan[2] - tspan[1])/tlen,
+    saveat = tsteps,
+    adaptive = true, # before it was false
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 1, callback = al_callback), #maxiters = 5
+)
+
+
+@time NN_sol_al = solve(bvp_train,
+    RadauIIa5(; optimize = Ipopt.Optimizer());
     dt = (tspan[2] - tspan[1])/tlen,
     saveat = tsteps,
     adaptive = true, # before it was false
@@ -181,11 +203,7 @@ plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretrainin
 ######################################################################## 
 ###### Benchmark 
 
-F!(similar(u0_guess), u0_guess, p0, 0.0)                                                                                                                                                                                
-@benchmark F!(du, $u0_guess, $p0, 0.0) setup=(du=similar(u0_guess))
-@allocated F!(similar(u0_guess), u0_guess, p0, 0.0) # MAAANY allocations 
-@allocated ComponentVector(p0, ps_axes)
-@allocated model(@view(u0_guess[1:3]), ComponentVector(p0, ps_axes), st)     
+    
 
 
                                                                                                                                                            
@@ -216,3 +234,4 @@ ic_bc!(res, NN_sol_al, p0, nothing)
 
 
 @code_warntype F!(similar(u0_guess, 54), rand(54), p0, 0.0) 
+
