@@ -3,6 +3,10 @@ using OrdinaryDiffEqTsit5
 using Plots
 using Lux
 using Random, ComponentArrays
+using BoundaryValueDiffEqCore: BVPVerbosity
+# using SciMLLogging: Detailed
+using OptimizationAuglag, OptimizationOptimisers
+
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
@@ -85,9 +89,7 @@ u0_guess = Y[:, 1]   # IC comes from the data
 # (cons = collocation + BC residual, lcons = ucons = 0); AugLag with clamped
 # multipliers reduces it to `min data_loss + (ρ/2)‖c‖²`.
 # ============================================================
-using BoundaryValueDiffEqCore: BVPVerbosity
-# using SciMLLogging: Detailed
-using OptimizationAuglag, OptimizationOptimisers
+
 
 # Data-fitting loss. IC is handled by the BC, so we start at i=2.
 # Side-channel: log each scalar eval for a fine-grained loss curve.
@@ -131,10 +133,36 @@ empty!(losses)
 # init with ρmax. ϵ_dual huge since r_dual isn't meaningful here.
 # Outer iters are mathematically redundant (same subproblem, warm-started Adam),
 # so use few outer × many inner.
-@profview NN_sol_al = solve(bvp_train,
+@time NN_sol_al = solve(bvp_train,
     MIRK4(; optimize = OptimizationAuglag.AugLag(;
+        inner = Adam(1e-3),
+        inner_kwargs = (maxiters = 100,), #3
+        γ = 2.0,
+        λmin = 0.0, λmax = 0.0,
+        μmin = 0.0, μmax = 0.0,
+        ρ_init = 10.0,
+        ϵ_primal = 1e-2,
+        ϵ_dual = 1e6,
+    ));
+    dt = 0.02,
+    adaptive = false,
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 10, callback = al_callback),
+) #17.9 sec on second run. 
+
+# Loss curve — every cost_fn evaluation (many per outer AL iter).
+plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
+     title="AL + Adam on BVP-NN", legend=false)
+
+# TODO: try with RadauIIa5/7 (L-stable FIRK) for stiff variants of this problem.
+# The pure-penalty AugLag config carries over unchanged; change MIRK4(...) to
+# RadauIIa5(...).
+empty!(losses)
+
+@time NN_sol_al_radau = solve(bvp_train,
+    RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(0.01),
-        inner_maxiters = 5000,
+        inner_kwargs = (maxiters = 50,), #3
         γ = 1.0,
         λmin = 0.0, λmax = 0.0,
         μmin = 0.0, μmax = 0.0,
@@ -145,33 +173,8 @@ empty!(losses)
     dt = 0.05,
     adaptive = false,
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 5, callback = al_callback),
-)
-
-# Loss curve — every cost_fn evaluation (many per outer AL iter).
-plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
-     title="AL + Adam on BVP-NN", legend=false)
-
-# TODO: try with RadauIIa5/7 (L-stable FIRK) for stiff variants of this problem.
-# The pure-penalty AugLag config carries over unchanged; change MIRK4(...) to
-# RadauIIa5(...).
-
-# NN_sol_al_radau = solve(bvp_train,
-#     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
-#         inner = Adam(0.01),
-#         inner_maxiters = 5000,
-#         γ = 1.0,
-#         λmin = 0.0, λmax = 0.0,
-#         μmin = 0.0, μmax = 0.0,
-#         ρ_init = 10.0,
-#         ϵ_primal = 1e-3,
-#         ϵ_dual = 1e6,
-#     ));
-#     dt = 0.05,
-#     adaptive = false,
-#     verbose = BVPVerbosity(Detailed()),
-#     optimize_kwargs = (; maxiters = 5, callback = al_callback),
-# )
+    optimize_kwargs = (; maxiters = 2, callback = al_callback),
+);
 
 
 # Loss curve — every cost_fn evaluation (many per outer AL iter).
@@ -195,7 +198,6 @@ plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)"])
 plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"])
 
 
-
 using SciMLBase
 using BoundaryValueDiffEq
 using Optimization
@@ -207,3 +209,8 @@ using Optimization
 @show pathof(OptimizationAuglag)
 @show pathof(SciMLBase)
 @show pathof(BoundaryValueDiffEqCore)
+
+@show pathof(OptimizationBase)
+
+using SciMLLogging
+@show pathof(SciMLLogging)
