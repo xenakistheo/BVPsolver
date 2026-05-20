@@ -7,6 +7,7 @@ using BoundaryValueDiffEqCore: BVPVerbosity
 # using SciMLLogging: Detailed
 using OptimizationAuglag, OptimizationOptimisers
 using NonlinearSolve: NewtonRaphson
+using LinearSolve: KrylovJL_GMRES
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
@@ -54,7 +55,7 @@ U = Chain(Dense(4, 2, tanh), Dense(2,2))
 
 model2 = Chain(V, S, U)
 
-ps, st = Lux.setup(rng, model)
+ps, st = Lux.setup(rng, model2)#change to model
 ps = Lux.f64(ps)
 
 ps_ca = ComponentVector(ps)
@@ -75,10 +76,10 @@ end
 
 # Change so that it does not allocate every time when building the ComponentVector
 function F2!(du, u, p, t)
-    du[1:2] .= model(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
+    du[1:2] .= model2(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
 end
 
-N_params = 22 #32 #18
+N_params = length(ps_ca)
 p0 = randn(N_params) #Initialise parameters
 const p0_copy = deepcopy(p0)
 u0_guess = Y[:, 1]   # IC comes from the data
@@ -136,11 +137,11 @@ empty!(losses)
 # so use few outer × many inner.
 @time NN_sol_al_mirk = solve(bvp_train,
     MIRK4(; optimize = OptimizationAuglag.AugLag(;
-        inner = Adam(1e-3),
-        inner_kwargs = (maxiters = 100,), #3
+        inner = Adam(1e-2),
+        inner_kwargs = (maxiters = 100,), 
         γ = 2.0,
-        λmin = 0.0, λmax = 0.0,
-        μmin = 0.0, μmax = 0.0,
+        λmin = -1e6, λmax = 1e6,
+        μmin = 0.0, μmax = 1e6,
         ρ_init = 10.0,
         ϵ_primal = 1e-2,
         ϵ_dual = 1e6,
@@ -148,28 +149,28 @@ empty!(losses)
     dt = 0.02,
     adaptive = false,
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 10, callback = al_callback),
-); #17.9 sec on second run. 
+    optimize_kwargs = (; maxiters = 50, callback = al_callback),
+) #17.9 sec on second run. 
 
 # # Loss curve — every cost_fn evaluation (many per outer AL iter).
 # plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
 #      title="AL + Adam on BVP-NN", legend=false)
 
-
+# Doesn't work well 
 empty!(losses)
 
 @time NN_sol_al_radau = solve(bvp_train,
     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
-        inner = Adam(0.01),
-        inner_kwargs = (maxiters = 20,), #3
-        γ = 1.0,
-        λmin = 0.0, λmax = 0.0,
-        μmin = 0.0, μmax = 0.0,
+        inner = Adam(1e-2),
+        inner_kwargs = (maxiters = 100,), 
+        γ = 2.0,
+        λmin = -1e6, λmax = 1e6,
+        μmin = 0.0, μmax = 1e6,
         ρ_init = 10.0,
-        ϵ_primal = 1e-3,
+        ϵ_primal = 1e-2,
         ϵ_dual = 1e6,
     ));
-    dt = 0.05,
+    dt = 0.02,
     adaptive = false,
     verbose = BVPVerbosity(Detailed()),
     optimize_kwargs = (; maxiters = 10, callback = al_callback),
@@ -182,26 +183,26 @@ empty!(losses)
 
 
 #####
-empty!(losses)
+# empty!(losses)
 
-@time NN_sol_krylov_mirk = solve(bvp_train,
-    MIRK4(; nlsolve = NewtonRaphson());
-    dt = 0.05,
-    adaptive = false,
-    verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 100, callback = al_callback),
-);
+# @time NN_sol_krylov_mirk = solve(bvp_train,
+#     MIRK4(; nlsolve = NewtonRaphson());
+#     dt = 0.05,
+#     adaptive = false,
+#     verbose = BVPVerbosity(Detailed()),
+#     optimize_kwargs = (; maxiters = 100, callback = al_callback),
+# );
 
-### Replace optimization problem with nonlinear problem (Newton-Krylov)
-empty!(losses)
+# ### Replace optimization problem with nonlinear problem (Newton-Krylov)
+# empty!(losses)
 
-@time NN_sol_krylov_radau = solve(bvp_train,
-    RadauIIa5(; nlsolve = NewtonRaphson());
-    dt = 0.05,
-    adaptive = false,
-    verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 100, callback = al_callback),
-);
+# @time NN_sol_krylov_radau = solve(bvp_train,
+#     RadauIIa5(; nlsolve = NewtonRaphson(linsolve = KrylovJL_GMRES()));
+#     dt = 0.05,
+#     adaptive = false,
+#     verbose = BVPVerbosity(Detailed()),
+#     optimize_kwargs = (; maxiters = 100, callback = al_callback),
+# );
 
 
 # # Loss curve — every cost_fn evaluation (many per outer AL iter).
@@ -216,11 +217,11 @@ pred_al_mirk = solve(pred_prob_al_mirk, Tsit5(), saveat=tsteps)
 pred_prob_al_radau = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_al_radau.prob.p)
 pred_al_radau = solve(pred_prob_al_radau, Tsit5(), saveat=tsteps)
 
-pred_prob_krylov_mirk = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_mirk.prob.p)
-pred_krylov_mirk = solve(pred_prob_krylov_mirk, Tsit5(), saveat=tsteps) 
+# pred_prob_krylov_mirk = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_mirk.prob.p)
+# pred_krylov_mirk = solve(pred_prob_krylov_mirk, Tsit5(), saveat=tsteps) 
 
-pred_prob_krylov_radau = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_radau.prob.p)
-pred_krylov_radau = solve(pred_prob_krylov_radau, Tsit5(), saveat=tsteps)
+# pred_prob_krylov_radau = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_radau.prob.p)
+# pred_krylov_radau = solve(pred_prob_krylov_radau, Tsit5(), saveat=tsteps)
 
 
 # Compare with intial parameters
@@ -231,6 +232,8 @@ pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
 
 p1 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Data + Pretrained")
 plot!(p1, pretrained_pred, labels=["u₁ (Pretrained)" "u₂ (Pretrained)"], linestyle=:dash)
+# plot!(p1, pred_al_mirk, labels=["u₁" "u₂"], linestyle=:dash)
+
 
 p2 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="AL + MIRK4")
 plot!(p2, pred_al_mirk, labels=["u₁" "u₂"], linestyle=:dash)
@@ -238,22 +241,24 @@ plot!(p2, pred_al_mirk, labels=["u₁" "u₂"], linestyle=:dash)
 p3 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="AL + Radau")
 plot!(p3, pred_al_radau, labels=["u₁" "u₂"], linestyle=:dash)
 
-p4 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + MIRK4")
-plot!(p4, pred_krylov_mirk, labels=["u₁" "u₂"], linestyle=:dash)
+# p4 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + MIRK4")
+# plot!(p4, pred_krylov_mirk, labels=["u₁" "u₂"], linestyle=:dash)
 
-p5 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + Radau")
-plot!(p5, pred_krylov_radau, labels=["u₁" "u₂"], linestyle=:dash)
+# p5 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + Radau")
+# plot!(p5, pred_krylov_radau, labels=["u₁" "u₂"], linestyle=:dash)
 
 
 
-plot(p1, p2, p3, p4, p5; layout=(2, 3), size=(1200, 700))
+plot(p1, p2, p3; layout=(1, 3), size=(1200, 400))
 
-param_plot = plot(NN_sol_krylov_radau.prob.p, label="Radau + Krylov", title="Trained Parameters")
-plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
+
+param_plot = plot(p0, label="Initial", title="Trained Parameters")
 plot!(param_plot, NN_sol_al_mirk.prob.p, label="MIRK4 + AL")
+# plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
 plot!(param_plot, NN_sol_al_radau.prob.p, label="Radau + AL")
-plot!(param_plot, p0, label="Initial", linestyle=:dash)
+# plot!(param_plot, NN_sol_krylov_radau.prob.p, label="Radau + Krylov", linestyle=:dash)
 param_plot
+
 
 # using SciMLBase
 # using BoundaryValueDiffEq
