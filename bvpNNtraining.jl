@@ -6,7 +6,7 @@ using Random, ComponentArrays
 using BoundaryValueDiffEqCore: BVPVerbosity
 # using SciMLLogging: Detailed
 using OptimizationAuglag, OptimizationOptimisers
-
+using NonlinearSolve: NewtonRaphson
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
@@ -80,6 +80,7 @@ end
 
 N_params = 22 #32 #18
 p0 = randn(N_params) #Initialise parameters
+const p0_copy = deepcopy(p0)
 u0_guess = Y[:, 1]   # IC comes from the data
 
 # ============================================================
@@ -133,7 +134,7 @@ empty!(losses)
 # init with ρmax. ϵ_dual huge since r_dual isn't meaningful here.
 # Outer iters are mathematically redundant (same subproblem, warm-started Adam),
 # so use few outer × many inner.
-@time NN_sol_al = solve(bvp_train,
+@time NN_sol_al_mirk = solve(bvp_train,
     MIRK4(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(1e-3),
         inner_kwargs = (maxiters = 100,), #3
@@ -148,21 +149,19 @@ empty!(losses)
     adaptive = false,
     verbose = BVPVerbosity(Detailed()),
     optimize_kwargs = (; maxiters = 10, callback = al_callback),
-) #17.9 sec on second run. 
+); #17.9 sec on second run. 
 
-# Loss curve — every cost_fn evaluation (many per outer AL iter).
-plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
-     title="AL + Adam on BVP-NN", legend=false)
+# # Loss curve — every cost_fn evaluation (many per outer AL iter).
+# plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
+#      title="AL + Adam on BVP-NN", legend=false)
 
-# TODO: try with RadauIIa5/7 (L-stable FIRK) for stiff variants of this problem.
-# The pure-penalty AugLag config carries over unchanged; change MIRK4(...) to
-# RadauIIa5(...).
+
 empty!(losses)
 
 @time NN_sol_al_radau = solve(bvp_train,
     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(0.01),
-        inner_kwargs = (maxiters = 50,), #3
+        inner_kwargs = (maxiters = 20,), #3
         γ = 1.0,
         λmin = 0.0, λmax = 0.0,
         μmin = 0.0, μmax = 0.0,
@@ -173,44 +172,85 @@ empty!(losses)
     dt = 0.05,
     adaptive = false,
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 2, callback = al_callback),
+    optimize_kwargs = (; maxiters = 10, callback = al_callback),
 );
 
 
-# Loss curve — every cost_fn evaluation (many per outer AL iter).
-plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
-     title="AL + Adam on BVP-NN", legend=false)
+# # Loss curve — every cost_fn evaluation (many per outer AL iter).
+# plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
+#      title="AL + Adam on BVP-NN", legend=false)
 
+
+#####
+empty!(losses)
+
+@time NN_sol_krylov_mirk = solve(bvp_train,
+    MIRK4(; nlsolve = NewtonRaphson());
+    dt = 0.05,
+    adaptive = false,
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 100, callback = al_callback),
+);
+
+### Replace optimization problem with nonlinear problem (Newton-Krylov)
+empty!(losses)
+
+@time NN_sol_krylov_radau = solve(bvp_train,
+    RadauIIa5(; nlsolve = NewtonRaphson());
+    dt = 0.05,
+    adaptive = false,
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 100, callback = al_callback),
+);
+
+
+# # Loss curve — every cost_fn evaluation (many per outer AL iter).
+# plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
+#      title="AL + Adam on BVP-NN", legend=false)
 
 
 # Solve using trained parameters. 
-prediction_prob = ODEProblem(F!, [2.0, 0.0], tspan, NN_sol_al.prob.p)
-prediction = solve(prediction_prob, Tsit5(), saveat=tsteps)
+pred_prob_al_mirk = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_al_mirk.prob.p)
+pred_al_mirk = solve(pred_prob_al_mirk, Tsit5(), saveat=tsteps)
+
+pred_prob_al_radau = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_al_radau.prob.p)
+pred_al_radau = solve(pred_prob_al_radau, Tsit5(), saveat=tsteps)
+
+pred_prob_krylov_mirk = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_mirk.prob.p)
+pred_krylov_mirk = solve(pred_prob_krylov_mirk, Tsit5(), saveat=tsteps) 
+
+pred_prob_krylov_radau = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_krylov_radau.prob.p)
+pred_krylov_radau = solve(pred_prob_krylov_radau, Tsit5(), saveat=tsteps)
+
 
 # Compare with intial parameters
-pretrained_pred_prob = ODEProblem(F!, [2.0, 0.0], tspan, p0)
+pretrained_pred_prob = ODEProblem(F2!, [2.0, 0.0], tspan, p0)
 pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
 
 
 
 plot(data, labels=["u₁ (data)" "u₂ (data)"])
-plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)"])
-plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"])
+plot!(pred_al_mirk, labels=["u₁ (AL + MIRK)" "u₂ (AL + MIRK)"])
+plot!(pred_al_radau, labels=["u₁ (AL + Radau)" "u₂ (AL + Radau)"], linestyle=:dash)
+plot!(pred_krylov_mirk, labels=["u₁ (Krylov + MIRK)" "u₂ (Krylov + MIRK)"], linestyle=:dot)
+plot!(pred_krylov_radau, labels=["u₁ (Krylov + Radau)" "u₂ (Krylov + Radau)"], linestyle=:dash)
+plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"], linestyle=:dash)
 
 
-using SciMLBase
-using BoundaryValueDiffEq
-using Optimization
+# using SciMLBase
+# using BoundaryValueDiffEq
+# using Optimization
 
-@show pathof(BoundaryValueDiffEq)
-@show pathof(BoundaryValueDiffEqFIRK)
-@show pathof(BoundaryValueDiffEqMIRK)
-@show pathof(Optimization)
-@show pathof(OptimizationAuglag)
-@show pathof(SciMLBase)
-@show pathof(BoundaryValueDiffEqCore)
+# @show pathof(BoundaryValueDiffEq)
+# @show pathof(BoundaryValueDiffEqFIRK)
+# @show pathof(BoundaryValueDiffEqMIRK)
+# @show pathof(Optimization)
+# @show pathof(OptimizationAuglag)
+# @show pathof(SciMLBase)
+# @show pathof(BoundaryValueDiffEqCore)
 
-@show pathof(OptimizationBase)
+# @show pathof(OptimizationBase)
 
-using SciMLLogging
-@show pathof(SciMLLogging)
+# using SciMLLogging
+# @show pathof(SciMLLogging)
+
