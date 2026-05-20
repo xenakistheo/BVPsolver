@@ -5,18 +5,12 @@ using Plots
 using Lux
 using Random, ComponentArrays
 using BenchmarkTools
-using Ipopt
-using OptimizationMOI
+using BoundaryValueDiffEqCore: BVPVerbosity
+using OptimizationAuglag, OptimizationOptimisers
 
 include("src/layers/StiffLayer.jl")
 
 rng = Xoshiro()
-
-# True ODE
-function spiralODE(du, u, p, t)
-    a = [-0.1 2.0; -2.0 -0.1]
-    du .= ((u .^ 3)' * a)'
-end
 
 
 function vanderpol(du, u, p, t)
@@ -64,14 +58,8 @@ length(ps_ca)
 ps_vec = collect(ps_ca)
 const ps_axes = getaxes(ps_ca)
 
-# Define "Differential Equation".
-# With `tune_parameters=true`, the BVP solver augments the state to
-# `[state(2); params(18)]` and wraps `F!` (see mirk.jl:181-195 /
-# firk.jl:215-220) so that:
-#   - `p` arrives already sliced from `u[3:20]` (the current trained params)
-#   - `du[3:20]` is auto-zeroed after this returns
-# After solve, trained params are exposed via `sol.prob.p` (remade at mirk.jl:293).
-N_params = 51 #18
+
+N_params = length(ps_ca)
 p0 = randn(N_params) #Initialise parameters
 u0_guess = Y[:, 1]   # IC comes from the data
 
@@ -82,11 +70,11 @@ function F!(du, u, p, t)
     return nothing
 end
 
-F!(similar(u0_guess), u0_guess, p0, 0.0)                                                                                                                                                                                
-@benchmark F!(du, $u0_guess, $p0, 0.0) setup=(du=similar(u0_guess))
-@allocated F!(similar(u0_guess), u0_guess, p0, 0.0) # MAAANY allocations 
-@allocated ComponentVector(p0, ps_axes)
-@allocated model(@view(u0_guess[1:3]), ComponentVector(p0, ps_axes), st) 
+# F!(similar(u0_guess), u0_guess, p0, 0.0)                                                                                                                                                                                
+# @benchmark F!(du, $u0_guess, $p0, 0.0) setup=(du=similar(u0_guess))
+# @allocated F!(similar(u0_guess), u0_guess, p0, 0.0) # MAAANY allocations 
+# @allocated ComponentVector(p0, ps_axes)
+# @allocated model(@view(u0_guess[1:3]), ComponentVector(p0, ps_axes), st) 
 
 
 # ============================================================
@@ -96,14 +84,8 @@ F!(similar(u0_guess), u0_guess, p0, 0.0)
 # (cons = collocation + BC residual, lcons = ucons = 0); AugLag with clamped
 # multipliers reduces it to `min data_loss + (ρ/2)‖c‖²`.
 # ============================================================
-using BoundaryValueDiffEqCore: BVPVerbosity
-# using SciMLLogging: Detailed
-using OptimizationAuglag, OptimizationOptimisers
 
-# Data-fitting loss. IC is handled by the BC, so we start at i=2.
-# Side-channel: log each scalar eval for a fine-grained loss curve.
 losses = Float64[]
-
 cost_fn = (sol, p) -> begin
     s = zero(eltype(sol.u[2][1]))
     for i in 2:tlen                      # skip i=1 — it's the BC
@@ -141,7 +123,7 @@ al_callback = function (state, obj)
     return false
 end
 
-empty!(losses)
+
 # γ=1, λmin=λmax=0, μmin=μmax=0 → pure penalty (no multiplier, no ρ growth).
 # ρ_init pins the penalty weight directly — cleaner than capping the auto-scaled
 # init with ρmax. ϵ_dual huge since r_dual isn't meaningful here.
@@ -150,32 +132,41 @@ empty!(losses)
 @info "Starting training"
 #@profview_allocs
 
-@time NN_sol_al = solve(bvp_train,
-    RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
-        inner = Adam(0.01),
-        inner_maxiters = 5, #5000
-        γ = 1.0,
-        λmin = 0.0, λmax = 0.0,
-        μmin = 0.0, μmax = 0.0,
+@time NN_sol_al_mirk = solve(bvp_train,
+    MIRK4(; optimize = OptimizationAuglag.AugLag(;
+        inner = Adam(1e-2),
+        inner_kwargs = (maxiters = 10,), 
+        γ = 2.0,
+        λmin = -1e6, λmax = 1e6,
+        μmin = 0.0, μmax = 1e6,
         ρ_init = 10.0,
-        ϵ_primal = 1e-3,
+        ϵ_primal = 1e-2,
         ϵ_dual = 1e6,
     ));
     dt = (tspan[2] - tspan[1])/tlen,
     saveat = tsteps,
     adaptive = true, # before it was false
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 1, callback = al_callback), #maxiters = 5
+    optimize_kwargs = (; maxiters = 2, callback = al_callback), #maxiters = 5
 )
 
 
-@time NN_sol_al = solve(bvp_train,
-    RadauIIa5(; optimize = Ipopt.Optimizer());
+@time NN_sol_al_radau = solve(bvp_train,
+    RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
+        inner = Adam(1e-2),
+        inner_kwargs = (maxiters = 10,), 
+        γ = 2.0,
+        λmin = -1e6, λmax = 1e6,
+        μmin = 0.0, μmax = 1e6,
+        ρ_init = 10.0,
+        ϵ_primal = 1e-2,
+        ϵ_dual = 1e6,
+    ));
     dt = (tspan[2] - tspan[1])/tlen,
     saveat = tsteps,
     adaptive = true, # before it was false
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 1, callback = al_callback), #maxiters = 5
+    optimize_kwargs = (; maxiters = 2, callback = al_callback), #maxiters = 5
 )
 
 # Loss curve — every cost_fn evaluation (many per outer AL iter).
@@ -186,18 +177,48 @@ plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
 
 # Solve using trained parameters. 
 prediction_prob = ODEProblem(F!, [2.0, 0.0, 0.0], tspan, NN_sol_al.prob.p)
-prediction = solve(prediction_prob, Tsit5(), saveat=tsteps)
+prediction = solve(prediction_prob, Rodas5P()(), saveat=tsteps)
+
+pred_prob_al_mirk = ODEProblem(F2!, [2.0, 0.0, 0.0], tspan, NN_sol_al_mirk.prob.p)
+pred_al_mirk = solve(pred_prob_al_mirk, Rodas5P(), saveat=tsteps)
+
+pred_prob_al_radau = ODEProblem(F2!, [2.0, 0.0, 0.0], tspan, NN_sol_al_radau.prob.p)
+pred_al_radau = solve(pred_prob_al_radau, Rodas5P(), saveat=tsteps)
 
 # Compare with intial parameters
 pretrained_pred_prob = ODEProblem(F!, [2.0, 0.0, 0.0], tspan, p0)
-pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
+pretrained_pred = solve(pretrained_pred_prob, Rodas5P()(), saveat=tsteps)
 
 
 
-plot(data, labels=["u₁ (data)" "u₂ (data)"])
-plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)"])
-plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"])
+plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="Data + AL-trained NN")
+plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)" "u₃ (StiffNet)"])
+plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)" "u₃ (Pretraining - StiffNet)"])
 
+
+p1 = plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="Data + Pretrained")
+plot!(p1, pretrained_pred, labels=["u₁ (Pretrained)" "u₂ (Pretrained)" "u₃ (Pretrained)"], linestyle=:dash)
+
+
+p2 = plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="AL + MIRK4")
+plot!(p2, pred_al_mirk, labels=["u₁" "u₂" "u₃"], linestyle=:dash)
+
+p3 = plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="AL + Radau")
+plot!(p3, pred_al_radau, labels=["u₁" "u₂" "u₃"], linestyle=:dash)
+
+
+plot(p1, p2, p3; layout=(1, 3), size=(1200, 400))
+
+
+
+
+
+param_plot = plot(p0, label="Initial", title="Trained Parameters")
+plot!(param_plot, NN_sol_al_mirk.prob.p, label="MIRK4 + AL")
+# plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
+plot!(param_plot, NN_sol_al_radau.prob.p, label="Radau + AL")
+# plot!(param_plot, NN_sol_krylov_radau.prob.p, label="Radau + Krylov", linestyle=:dash)
+param_plot
 ########################################################################
 ########################################################################
 ######################################################################## 
@@ -208,30 +229,30 @@ plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretrainin
 
                                                                                                                                                            
 
-@allocated model(u0_guess[1:3], ps, st)  
-@allocated u0_guess[1:3]
-@allocated @view(u0_guess[1:3])
-@allocated view(u0_guess, 1:3)
-u0_guess
+# @allocated model(u0_guess[1:3], ps, st)  
+# @allocated u0_guess[1:3]
+# @allocated @view(u0_guess[1:3])
+# @allocated view(u0_guess, 1:3)
+# u0_guess
 
 
-cost_fn(NN_sol_al, p0)
-@benchmark cost_fn($NN_sol_al, $p0)
-@allocated cost_fn(NN_sol_al, p0)
-#New, 38.84KiB, 1487 Allocs, Allocated, 25376
+# cost_fn(NN_sol_al, p0)
+# @benchmark cost_fn($NN_sol_al, $p0)
+# @allocated cost_fn(NN_sol_al, p0)
+# #New, 38.84KiB, 1487 Allocs, Allocated, 25376
 
-ic_bc!(res, sol, _p, _t) = begin
-    u1 = sol.u[1]
-    res[1] = u1[1] - Y[1, 1]
-    res[2] = u1[2] - Y[2, 1]
-    res[3] = u1[3] - Y[3, 1]
-end
+# ic_bc!(res, sol, _p, _t) = begin
+#     u1 = sol.u[1]
+#     res[1] = u1[1] - Y[1, 1]
+#     res[2] = u1[2] - Y[2, 1]
+#     res[3] = u1[3] - Y[3, 1]
+# end
 
-res = zeros(3)       
-ic_bc!(res, NN_sol_al, p0, nothing)                                                                              
-@benchmark ic_bc!($res, $NN_sol_al, $p0, nothing)                                                   
-@allocated ic_bc!(res, NN_sol_al, p0, nothing)  
+# res = zeros(3)       
+# ic_bc!(res, NN_sol_al, p0, nothing)                                                                              
+# @benchmark ic_bc!($res, $NN_sol_al, $p0, nothing)                                                   
+# @allocated ic_bc!(res, NN_sol_al, p0, nothing)  
 
 
-@code_warntype F!(similar(u0_guess, 54), rand(54), p0, 0.0) 
+# @code_warntype F!(similar(u0_guess, 54), rand(54), p0, 0.0) 
 
