@@ -229,13 +229,31 @@ pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
 
 
 
-plot(data, labels=["u₁ (data)" "u₂ (data)"])
-plot!(pred_al_mirk, labels=["u₁ (AL + MIRK)" "u₂ (AL + MIRK)"])
-plot!(pred_al_radau, labels=["u₁ (AL + Radau)" "u₂ (AL + Radau)"], linestyle=:dash)
-plot!(pred_krylov_mirk, labels=["u₁ (Krylov + MIRK)" "u₂ (Krylov + MIRK)"], linestyle=:dot)
-plot!(pred_krylov_radau, labels=["u₁ (Krylov + Radau)" "u₂ (Krylov + Radau)"], linestyle=:dash)
-plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)"], linestyle=:dash)
+p1 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Data + Pretrained")
+plot!(p1, pretrained_pred, labels=["u₁ (Pretrained)" "u₂ (Pretrained)"], linestyle=:dash)
 
+p2 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="AL + MIRK4")
+plot!(p2, pred_al_mirk, labels=["u₁" "u₂"], linestyle=:dash)
+
+p3 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="AL + Radau")
+plot!(p3, pred_al_radau, labels=["u₁" "u₂"], linestyle=:dash)
+
+p4 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + MIRK4")
+plot!(p4, pred_krylov_mirk, labels=["u₁" "u₂"], linestyle=:dash)
+
+p5 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + Radau")
+plot!(p5, pred_krylov_radau, labels=["u₁" "u₂"], linestyle=:dash)
+
+
+
+plot(p1, p2, p3, p4, p5; layout=(2, 3), size=(1200, 700))
+
+param_plot = plot(NN_sol_krylov_radau.prob.p, label="Radau + Krylov", title="Trained Parameters")
+plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
+plot!(param_plot, NN_sol_al_mirk.prob.p, label="MIRK4 + AL")
+plot!(param_plot, NN_sol_al_radau.prob.p, label="Radau + AL")
+plot!(param_plot, p0, label="Initial", linestyle=:dash)
+param_plot
 
 # using SciMLBase
 # using BoundaryValueDiffEq
