@@ -9,6 +9,8 @@ using BoundaryValueDiffEqCore: BVPVerbosity
 using OptimizationAuglag, OptimizationOptimisers
 
 include("src/layers/StiffLayer.jl")
+include("src/derivativeMatching.jl")
+
 
 rng = Xoshiro()
 
@@ -34,7 +36,7 @@ const X, Y = data.t, reduce(hcat, data.u)
 
 
 # Define Neural Network
-const model = Chain(
+const NN = Chain(
     Dense(3, 4, tanh),
     Dense(4, 4, tanh),
     Dense(4, 3)
@@ -43,12 +45,14 @@ const model = Chain(
 sigma_affine_sigmoid(ps, j) = 1 / (1 + exp(-(ps[1] * j + ps[2])))
 sigma_exp(ps, j) = exp(-(ps[1] * j))
 
-V = Dense(2, 4, tanh)
+V = Dense(3, 4, tanh)
 S = StiffLayer2(sigma_affine_sigmoid; P=4, init=ones(4))
-U = Chain(Dense(4, 2, tanh), Dense(2,2))
+U = Chain(Dense(4, 3, tanh), Dense(3,3))
 
-model2 = Chain(V, S, U)
+const model2 = Chain(V, S, U)
 
+
+model = model2
 ps, _st = Lux.setup(rng, model)
 ps = Lux.f64(ps)
 const st = _st
@@ -63,6 +67,24 @@ N_params = length(ps_ca)
 p0 = randn(N_params) #Initialise parameters
 u0_guess = Y[:, 1]   # IC comes from the data
 
+
+
+#### Collocate
+ode_data = Array(data)
+node = NeuralODE(model, tspan, Rodas5P(); saveat=tsteps)
+
+# Collocation loss
+param_collocate, st_collocate, losses, lrs = train!(
+    node, model, ps_ca, st, u0_guess, Array(data), tsteps;
+    nepochs = 200,
+    learning_rate = 0.04f0,
+    min_learning_rate = 1f-4,
+    lr_schedule = :cosine,
+    loss_mode = :collocation
+)
+
+ps_collocate_vec = collect(param_collocate)
+##################################################################
 
 
 function F!(du, u, p, t)
@@ -111,7 +133,7 @@ bvp_fun_train = BVPFunction(F!, ic_bc!;
     bcresid_prototype = zeros(3),
     cost = cost_fn,
 )
-bvp_train = BVProblem(bvp_fun_train, u0_guess, tspan, p0; tune_parameters = true)
+bvp_train = BVProblem(bvp_fun_train, u0_guess, tspan, ps_collocate_vec; tune_parameters = true)
 
 # Callback, one fire per outer iteration. In pure-penalty mode ρ is fixed and
 # λ ≡ 0, so the only meaningful signals are raw_loss and r_primal.
@@ -135,7 +157,7 @@ end
 @time NN_sol_al_mirk = solve(bvp_train,
     MIRK4(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(1e-2),
-        inner_kwargs = (maxiters = 10,), 
+        inner_kwargs = (maxiters = 100,), 
         γ = 2.0,
         λmin = -1e6, λmax = 1e6,
         μmin = 0.0, μmax = 1e6,
@@ -147,14 +169,14 @@ end
     saveat = tsteps,
     adaptive = true, # before it was false
     verbose = BVPVerbosity(Detailed()),
-    optimize_kwargs = (; maxiters = 2, callback = al_callback), #maxiters = 5
+    optimize_kwargs = (; maxiters = 5, callback = al_callback), #maxiters = 5
 )
 
 
 @time NN_sol_al_radau = solve(bvp_train,
     RadauIIa5(; optimize = OptimizationAuglag.AugLag(;
         inner = Adam(1e-2),
-        inner_kwargs = (maxiters = 10,), 
+        inner_kwargs = (maxiters = 5,), 
         γ = 2.0,
         λmin = -1e6, λmax = 1e6,
         μmin = 0.0, μmax = 1e6,
@@ -176,24 +198,31 @@ plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
 
 
 # Solve using trained parameters. 
-prediction_prob = ODEProblem(F!, [2.0, 0.0, 0.0], tspan, NN_sol_al.prob.p)
+prediction_prob = ODEProblem(F!, [1.0, 0.0, 0.0], tspan, NN_sol_al.prob.p)
 prediction = solve(prediction_prob, Rodas5P()(), saveat=tsteps)
 
-pred_prob_al_mirk = ODEProblem(F2!, [2.0, 0.0, 0.0], tspan, NN_sol_al_mirk.prob.p)
+pred_prob_al_mirk = ODEProblem(F2!, [1.0, 0.0, 0.0], tspan, NN_sol_al_mirk.prob.p)
 pred_al_mirk = solve(pred_prob_al_mirk, Rodas5P(), saveat=tsteps)
 
-pred_prob_al_radau = ODEProblem(F2!, [2.0, 0.0, 0.0], tspan, NN_sol_al_radau.prob.p)
+pred_prob_al_radau = ODEProblem(F2!, [1.0, 0.0, 0.0], tspan, NN_sol_al_radau.prob.p)
 pred_al_radau = solve(pred_prob_al_radau, Rodas5P(), saveat=tsteps)
 
 # Compare with intial parameters
-pretrained_pred_prob = ODEProblem(F!, [2.0, 0.0, 0.0], tspan, p0)
-pretrained_pred = solve(pretrained_pred_prob, Rodas5P()(), saveat=tsteps)
+pretrained_pred_prob = ODEProblem(F!, [1.0, 0.0, 0.0], tspan, p0)
+pretrained_pred = solve(pretrained_pred_prob, Rodas5P(), saveat=tsteps)
+
+# Compare with collocation parameters
+collocate_pred_prob = ODEProblem(F!, [1.0, 0.0, 0.0], tspan, ps_collocate_vec)
+collocate_pred = solve(collocate_pred_prob, Rodas5P(), saveat=tsteps)
+
 
 
 
 plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="Data + AL-trained NN")
-plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)" "u₃ (StiffNet)"])
+plot!(collocate_pred, labels=["u₁ (Collocation)" "u₂ (Collocation)" "u₃ (Collocation)"])
 plot!(pretrained_pred, labels=["u₁ (Pretraining - StiffNet)" "u₂ (Pretraining - StiffNet)" "u₃ (Pretraining - StiffNet)"])
+plot!(prediction, labels=["u₁ (StiffNet)" "u₂ (StiffNet)" "u₃ (StiffNet)"])
+
 
 
 p1 = plot(data, labels=["u₁ (data)" "u₂ (data)" "u₃ (data)"], title="Data + Pretrained")
@@ -214,6 +243,7 @@ plot(p1, p2, p3; layout=(1, 3), size=(1200, 400))
 
 
 param_plot = plot(p0, label="Initial", title="Trained Parameters")
+plot!(param_plot, ps_collocate_vec, label="Collocation")
 plot!(param_plot, NN_sol_al_mirk.prob.p, label="MIRK4 + AL")
 # plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
 plot!(param_plot, NN_sol_al_radau.prob.p, label="Radau + AL")
@@ -224,9 +254,8 @@ param_plot
 ######################################################################## 
 ###### Benchmark 
 
-    
-
-
+using LinearAlgebra
+norm(p0 .- param_collocate)
                                                                                                                                                            
 
 # @allocated model(u0_guess[1:3], ps, st)  
