@@ -15,7 +15,7 @@ include("src/derivativeMatching.jl")
 rng = Xoshiro()
 
 
-function vanderpol(du, u, p, t)
+function rober(du, u, p, t)
     k1, k2, k3 = 0.04, 3e7, 1e4
     y1, y2, y3 = u
     du[1] = -k1 * y1 + k3 * y2 * y3
@@ -29,7 +29,7 @@ const tlen = 100
 const tsteps = collect(10.0 .^ range(log10(tspan[1]), log10(tspan[2]); length=tlen))
 
 # Create training data
-data_prob = ODEProblem(vanderpol, [1.0, 0.0, 0.0], tspan)
+data_prob = ODEProblem(rober, [1.0, 0.0, 0.0], tspan)
 data = solve(data_prob, Rodas5P(), saveat=tsteps)
 # plot(data)
 const X, Y = data.t, reduce(hcat, data.u)
@@ -52,15 +52,18 @@ U = Chain(Dense(4, 3, tanh), Dense(3,3))
 const model2 = Chain(V, S, U)
 
 
+# Choose model 
 model = model2
 ps, _st = Lux.setup(rng, model)
 ps = Lux.f64(ps)
-const st = _st
+# const st = _st
+st = _st
 
 ps_ca = ComponentVector(ps)
 length(ps_ca)
 ps_vec = collect(ps_ca)
 const ps_axes = getaxes(ps_ca)
+ps_axes = getaxes(ps_ca)
 
 
 N_params = length(ps_ca)
@@ -145,6 +148,21 @@ al_callback = function (state, obj)
     return false
 end
 
+"""
+Add infostatement inside the BVP solver to verify what the actual dt is. 
+Dev package BVP solve to do this. 
+
+
+mesh refinement loop works after optimization solve. 
+
+
+add more terms in the callback to track the parameters, and see why the outer loop of AugLag fails. 
+should also track inner AugLag iterations. 
+
+
+need to check if BVP solver uses sparse AD or not. 
+
+"""
 
 # γ=1, λmin=λmax=0, μmin=μmax=0 → pure penalty (no multiplier, no ρ growth).
 # ρ_init pins the penalty weight directly — cleaner than capping the auto-scaled
@@ -167,7 +185,7 @@ end
     ));
     dt = (tspan[2] - tspan[1])/tlen,
     saveat = tsteps,
-    adaptive = true, # before it was false
+    adaptive = true, # before it was false. dt is fixed across tspan for one optimization run. Then it (potentially) changes dt. This is not what we want. 
     verbose = BVPVerbosity(Detailed()),
     optimize_kwargs = (; maxiters = 5, callback = al_callback), #maxiters = 5
 )
