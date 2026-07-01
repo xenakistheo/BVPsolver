@@ -4,11 +4,12 @@ using Plots
 using Lux
 using Random, ComponentArrays
 using BoundaryValueDiffEqCore: BVPVerbosity
-# using SciMLLogging: Detailed
 using OptimizationAuglag, OptimizationOptimisers
 using NonlinearSolve: NewtonRaphson
 using LinearSolve: KrylovJL_GMRES
+
 include("src/layers/StiffLayer.jl")
+include("src/derivativeMatching.jl")
 
 rng = Xoshiro()
 
@@ -41,7 +42,7 @@ function NN(u, p)
     return W3 * z2 + b3
 end
 
-model = Chain(
+basicNN = Chain(
     Dense(2, 4, tanh),
     Dense(4, 2)
 )
@@ -55,7 +56,10 @@ U = Chain(Dense(4, 2, tanh), Dense(2,2))
 
 model2 = Chain(V, S, U)
 
-ps, st = Lux.setup(rng, model2)#change to model
+
+model = basicNN
+
+ps, st = Lux.setup(rng, model)
 ps = Lux.f64(ps)
 
 ps_ca = ComponentVector(ps)
@@ -76,7 +80,7 @@ end
 
 # Change so that it does not allocate every time when building the ComponentVector
 function F2!(du, u, p, t)
-    du[1:2] .= model2(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
+    du[1:2] .= model(@view(u[1:2]), ComponentVector(p, ps_axes), st)[1]
 end
 
 N_params = length(ps_ca)
@@ -84,6 +88,21 @@ p0 = randn(N_params) #Initialise parameters
 const p0_copy = deepcopy(p0)
 u0_guess = Y[:, 1]   # IC comes from the data
 
+
+#### Collocate
+node = NeuralODE(model, tspan, Tsit5(); saveat=tsteps)
+
+# Collocation loss
+param_collocate, st_collocate, losses, lrs = train!(
+    node, model, ps_ca, st, u0_guess, Array(data), tsteps;
+    nepochs = 200,
+    learning_rate = 0.04f0,
+    min_learning_rate = 1f-4,
+    lr_schedule = :cosine,
+    loss_mode = :collocation
+)
+
+ps_collocate_vec = collect(param_collocate)
 # ============================================================
 # Training via MIRK4's `optimize` slot with pure-penalty AugLag (λ ≡ 0, fixed ρ).
 # BC is the known IC; interior data points go into the cost.
@@ -119,6 +138,14 @@ bvp_fun_train = BVPFunction(F2!, ic_bc!;
 )
 bvp_train = BVProblem(bvp_fun_train, u0_guess, tspan, p0; tune_parameters = true)
 
+#Collocation first
+bvp_fun_train_collocate = BVPFunction(F2!, ic_bc!;
+    bcresid_prototype = zeros(2),
+    cost = cost_fn,
+)
+bvp_train_collocate = BVProblem(bvp_fun_train_collocate, u0_guess, tspan, ps_collocate_vec; tune_parameters = true)
+
+
 # Callback, one fire per outer iteration. In pure-penalty mode ρ is fixed and
 # λ ≡ 0, so the only meaningful signals are raw_loss and r_primal.
 # r_dual scales with ρ × inner Adam stationarity error; informational only.
@@ -151,6 +178,23 @@ empty!(losses)
     verbose = BVPVerbosity(Detailed()),
     optimize_kwargs = (; maxiters = 50, callback = al_callback),
 ) #17.9 sec on second run. 
+
+@time NN_sol_al_mirk_collocate = solve(bvp_train_collocate,
+    MIRK4(; optimize = OptimizationAuglag.AugLag(;
+        inner = Adam(1e-2),
+        inner_kwargs = (maxiters = 100,), 
+        γ = 2.0,
+        λmin = -1e6, λmax = 1e6,
+        μmin = 0.0, μmax = 1e6,
+        ρ_init = 10.0,
+        ϵ_primal = 1e-2,
+        ϵ_dual = 1e6,
+    ));
+    dt = 0.02,
+    adaptive = false,
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 50, callback = al_callback),
+)
 
 # # Loss curve — every cost_fn evaluation (many per outer AL iter).
 # plot(losses; xlabel="cost evaluation", ylabel="data loss", yscale=:log10,
@@ -196,13 +240,13 @@ empty!(losses)
 # ### Replace optimization problem with nonlinear problem (Newton-Krylov)
 # empty!(losses)
 
-# @time NN_sol_krylov_radau = solve(bvp_train,
-#     RadauIIa5(; nlsolve = NewtonRaphson(linsolve = KrylovJL_GMRES()));
-#     dt = 0.05,
-#     adaptive = false,
-#     verbose = BVPVerbosity(Detailed()),
-#     optimize_kwargs = (; maxiters = 100, callback = al_callback),
-# );
+@time NN_sol_krylov_radau = solve(bvp_train,
+    RadauIIa5(; nlsolve = NewtonRaphson(linsolve = KrylovJL_GMRES()));
+    dt = 0.05,
+    adaptive = false,
+    verbose = BVPVerbosity(Detailed()),
+    optimize_kwargs = (; maxiters = 100, callback = al_callback),
+);
 
 
 # # Loss curve — every cost_fn evaluation (many per outer AL iter).
@@ -228,6 +272,13 @@ pred_al_radau = solve(pred_prob_al_radau, Tsit5(), saveat=tsteps)
 pretrained_pred_prob = ODEProblem(F2!, [2.0, 0.0], tspan, p0)
 pretrained_pred = solve(pretrained_pred_prob, Tsit5(), saveat=tsteps)
 
+collocate_pred_prob = ODEProblem(F2!, [2.0, 0.0], tspan, ps_collocate_vec)
+collocate_pred = solve(collocate_pred_prob, Tsit5(), saveat=tsteps)
+
+pred_collocate_mirk_prob = ODEProblem(F2!, [2.0, 0.0], tspan, NN_sol_al_mirk_collocate.prob.p)
+pred_collocate_mirk = solve(pred_collocate_mirk_prob, Tsit5(), saveat=tsteps)
+
+
 
 
 p1 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Data + Pretrained")
@@ -241,6 +292,12 @@ plot!(p2, pred_al_mirk, labels=["u₁" "u₂"], linestyle=:dash)
 p3 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="AL + Radau")
 plot!(p3, pred_al_radau, labels=["u₁" "u₂"], linestyle=:dash)
 
+p4 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Collocation + AL + MIRK4")
+plot!(p4, pred_collocate_mirk, labels=["u₁" "u₂"], linestyle=:dash)
+
+
+p5 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Data + Collocation")
+plot!(p5, collocate_pred, labels=["u₁ (Collocation)" "u₂ (Collocation)"], linestyle=:dash)
 # p4 = plot(data, labels=["u₁ (data)" "u₂ (data)"], title="Krylov + MIRK4")
 # plot!(p4, pred_krylov_mirk, labels=["u₁" "u₂"], linestyle=:dash)
 
@@ -249,11 +306,13 @@ plot!(p3, pred_al_radau, labels=["u₁" "u₂"], linestyle=:dash)
 
 
 
-plot(p1, p2, p3; layout=(1, 3), size=(1200, 400))
+plot(p1, p2, p4; layout=(1, 3), size=(1200, 400))
 
 
 param_plot = plot(p0, label="Initial", title="Trained Parameters")
+plot!(param_plot, ps_collocate_vec, label="Collocation")
 plot!(param_plot, NN_sol_al_mirk.prob.p, label="MIRK4 + AL")
+plot!(param_plot, NN_sol_al_mirk_collocate.prob.p, label="Collocate + MIRK4 + AL")
 # plot!(param_plot, NN_sol_krylov_mirk.prob.p, label="MIRK4 + Krylov")
 plot!(param_plot, NN_sol_al_radau.prob.p, label="Radau + AL")
 # plot!(param_plot, NN_sol_krylov_radau.prob.p, label="Radau + Krylov", linestyle=:dash)
@@ -277,3 +336,15 @@ param_plot
 # using SciMLLogging
 # @show pathof(SciMLLogging)
 
+
+using LinearAlgebra
+norm(data .- pred_al_mirk) 
+norm(data .- pred_collocate_mirk)
+# Without collocation first, AL-Mirk: 
+# Norm 3.228
+# Qualitatively, the fit is quite good. u_1 misses by quite a lot after t=1.1 but u_2 is very close throughout. 
+
+# With collocation first, AL-Mirk:
+# Norm 7.46
+# Qualitatively, the fit is much worse than without collocation first. Seems like BVP
+#   solver is not really changing the parameters much from the initial guess. 
