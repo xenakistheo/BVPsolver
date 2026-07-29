@@ -8,7 +8,7 @@ using NonlinearSolve
 using Lux, Random, ComponentArrays
 using SciMLBase: successful_retcode
 using ADTypes, SparseConnectivityTracer, SparseMatrixColorings
-using LinearAlgebra, Statistics
+using LinearAlgebra, Statistics, DelimitedFiles
 import SciMLLogging as SL
 using Plots
 
@@ -66,7 +66,8 @@ const YMAX   = vec(maximum(Ydata, dims = 2))
 const YSCALE = max.(YMAX .- YMIN, eps())
 const YMID   = (YMAX .+ YMIN) ./ 2
 const DSCALE = let dY = diff(Ydata, dims = 2) ./ diff(tsteps)'
-    max.(vec(sqrt.(sum(abs2, dY, dims = 2) ./ size(dY, 2))), eps())
+    raw = vec(sqrt.(sum(abs2, dY, dims = 2) ./ size(dY, 2)))
+    max.(raw, 1e-6 * maximum(raw))
 end
 
 # i added input scaling as well (suggestion from Stiff NODEs 2021)
@@ -101,39 +102,54 @@ function train_supervised(θ0)
     end
 end
 
-# new Collocation + nonlinear least squares solve. We make our unkown residual vector z = (Y, K, θ)
-const RADAU_A = [5/12 -1/12; 3/4 1/4] 
+const RADAU_A = [5/12 -1/12; 3/4 1/4]
 const RADAU_B = [3/4, 1/4]
 const SSTAGE  = 2
 
-const REFINE = PROBLEM == "spiral" ? 4 : 2
-mesh = Float64[]; node_of_obs = Int[]
-for j in 1:tlen-1
-    t0, t1 = tsteps[j], tsteps[j+1]
-    push!(node_of_obs, length(mesh) + 1)
-    for kk in 0:REFINE-1; push!(mesh, t0 + (t1 - t0) * kk / REFINE); end
-end
-push!(mesh, tsteps[end]); push!(node_of_obs, length(mesh))
-M = length(mesh)
-@assert all(j -> mesh[node_of_obs[j]] ≈ tsteps[j], 1:tlen)
+const REF_INIT   = 16   
+const NSUB_CAP   = 48  
+const AMR_ROUNDS = 5   
+const AMR_FRAC   = 0.4 
 
-n_res = (M - 1) * SSTAGE * d + (M - 1) * d + tlen * d
+function build_mesh(nsub)
+    mesh = Float64[]; nob = Int[]
+    for j in 1:tlen-1
+        t0, t1 = tsteps[j], tsteps[j+1]
+        push!(nob, length(mesh) + 1)
+        for kk in 0:nsub[j]-1; push!(mesh, t0 + (t1 - t0) * kk / nsub[j]); end
+    end
+    push!(mesh, tsteps[end]); push!(nob, length(mesh))
+    return mesh, nob
+end
+
+function interp_data_onto(mesh)
+    out = similar(Ydata, d, length(mesh))
+    for (q, t) in enumerate(mesh)
+        if t <= tsteps[1];        out[:, q] = Ydata[:, 1]
+        elseif t >= tsteps[end];  out[:, q] = Ydata[:, end]
+        else
+            kk = searchsortedlast(tsteps, t)
+            α = (t - tsteps[kk]) / (tsteps[kk+1] - tsteps[kk])
+            out[:, q] = (1 - α) .* Ydata[:, kk] .+ α .* Ydata[:, kk+1]
+        end
+    end
+    return out
+end
+
 function R!(res, z, p)
     Y = z.Y; K = z.K; θ = z.theta
-    msh = p.mesh; A = p.A; b = p.b; s = p.s; dd = p.d; Yob = p.Y_obs; nob = p.nob
+    msh = p.mesh; A = p.A; b = p.b; s = p.s; dd = p.d; Yob = p.Y_obs; nob = p.nob; M = p.M
     k = 0
     @inbounds for i in 1:M-1
         h = msh[i+1] - msh[i]
-        for j in 1:s                            
+        for j in 1:s
             stage = copy(view(Y, :, i))
-            for l in 1:s
-                stage = stage .+ (h * A[j, l]) .* view(K, :, i, l)
-            end
+            for l in 1:s; stage = stage .+ (h * A[j, l]) .* view(K, :, i, l); end
             fj = f_theta(stage, θ)
             for c in 1:dd; res[k+c] = (K[c, i, j] - fj[c]) / DSCALE[c]; end
             k += dd
         end
-        for c in 1:dd                              
+        for c in 1:dd
             acc = Y[c, i+1] - Y[c, i]
             for j in 1:s; acc -= h * b[j] * K[c, i, j]; end
             res[k+c] = acc / YSCALE[c]
@@ -148,44 +164,61 @@ function R!(res, z, p)
     return nothing
 end
 
-function interp_data_onto(mesh)
-    tt = tsteps; YY = Ydata
-    out = similar(YY, d, length(mesh))
-    for (q, t) in enumerate(mesh)
-        if t <= tt[1]
-            out[:, q] = YY[:, 1]
-        elseif t >= tt[end]
-            out[:, q] = YY[:, end]
-        else
-            kk = searchsortedlast(tt, t)
-            α = (t - tt[kk]) / (tt[kk+1] - tt[kk])
-            out[:, q] = (1 - α) .* YY[:, kk] .+ α .* YY[:, kk+1]
-        end
+function solve_collocation(nsub, θ0)
+    mesh, nob = build_mesh(nsub); M = length(mesh)
+    nres = (M - 1) * SSTAGE * d + (M - 1) * d + tlen * d
+    Y0 = interp_data_onto(mesh)
+    K0 = zeros(d, M - 1, SSTAGE)
+    for i in 1:M-1
+        slope = (Y0[:, i+1] .- Y0[:, i]) ./ (mesh[i+1] - mesh[i])
+        for j in 1:SSTAGE; K0[:, i, j] = slope; end
     end
-    return out
+    z0 = ComponentVector(Y = Y0, K = K0, theta = copy(θ0))
+    dp = (mesh = mesh, A = RADAU_A, b = RADAU_B, s = SSTAGE, d = d, Y_obs = Ydata, nob = nob, M = M)
+    nf = NonlinearFunction(R!; resid_prototype = zeros(nres), sparsity = TracerSparsityDetector())
+    sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp), LevenbergMarquardt(); maxiters = 500)
+    return sol.u, dp
 end
-Y0 = interp_data_onto(mesh)
-K0 = zeros(d, M - 1, SSTAGE)
-for i in 1:M-1
-    slope = (Y0[:, i+1] .- Y0[:, i]) ./ (mesh[i+1] - mesh[i])
-    for j in 1:SSTAGE; K0[:, i, j] = slope; end
+
+function interval_errors(z, dp)
+    M = dp.M; nob = dp.nob
+    res = zeros((M - 1) * SSTAGE * d + (M - 1) * d + tlen * d); R!(res, z, dp)
+    rowsper = SSTAGE * d + d
+    err = zeros(tlen - 1)
+    for j in 1:tlen-1, i in nob[j]:nob[j+1]-1, r in 1:rowsper
+        err[j] += res[(i - 1) * rowsper + r]^2
+    end
+    return err
 end
-data_p = (mesh = mesh, A = RADAU_A, b = RADAU_B, s = SSTAGE, d = d,
-          Y_obs = Ydata, nob = node_of_obs)
-nlfun = NonlinearFunction(R!; resid_prototype = zeros(n_res), sparsity = TracerSparsityDetector())
-println("NLS sizes: M=$M  d=$d  N_params=$N_params  n_unknowns=$(M*d + (M-1)*SSTAGE*d + N_params)  n_res=$n_res")
 
 function train_collocation(θ0)
-    z0 = ComponentVector(Y = Y0, K = K0, theta = copy(θ0))
+    speed = vec(sqrt.(sum(abs2, diff(Ydata, dims = 2), dims = 1))) ./ diff(tsteps)
+    nsub  = clamp.(round.(Int, 2 .+ (REF_INIT - 2) .* speed ./ maximum(speed)), 2, REF_INIT)  # speed-based start
+    θ = copy(θ0)
     try
-        sol = solve(NonlinearLeastSquaresProblem(nlfun, z0, data_p), LevenbergMarquardt(); maxiters = 500)
-        return collect(sol.u.theta)
+        for rnd in 1:AMR_ROUNDS
+            z, dp = solve_collocation(nsub, θ)
+            θ = collect(z.theta)
+            err = interval_errors(z, dp); me = maximum(err)
+            refined = 0
+            if rnd < AMR_ROUNDS
+                thr = AMR_FRAC * me
+                for j in 1:tlen-1
+                    if err[j] > thr && nsub[j] < NSUB_CAP
+                        nsub[j] = min(nsub[j] * 2, NSUB_CAP); refined += 1
+                    end
+                end
+            end
+            println("  AMR round $rnd: M=$(dp.M)  max-interval-err=$(round(me; sigdigits = 3))  refined=$refined"); flush(stdout)
+            refined == 0 && break
+        end
+        return θ
     catch e
-        @warn "NLS failed" exception=(e,); return nothing
+        @warn "AMR collocation failed" exception=(e,); return nothing
     end
 end
 
-# shooting 
+# shooting
 function shooting_loss(θ, _)
     prob = ODEProblem(f_theta!, u0, tspan, θ)
     sol = solve(prob, spec.solver; saveat = tsteps, verbose = SL.None(), spec.solve_kwargs...)
@@ -209,7 +242,7 @@ al_inner = PROBLEM == "spiral" ? 100 : 25
 al_outer = PROBLEM == "spiral" ? 50 : 12
 function train_al(θ0)
     try
-        cost = (sol, p) -> begin          
+        cost = (sol, p) -> begin
             acc = zero(eltype(sol(tsteps[2])[1]))
             for j in 1:tlen
                 j == 1 && continue
@@ -240,42 +273,17 @@ function traj_l2(θ)
     return sqrt(sum(abs2, Array(sol) .- Ydata))
 end
 
-# velcoity field metric: f_θ vs true f squared relative error
-let
-    logt = all(>(0), tsteps) && (tspan[2] / max(tspan[1], eps()) > 100)
-    dense_t = logt ? exp.(range(log(tsteps[1]), log(tsteps[end]); length = 3000)) :
-                     collect(range(tspan[1], tspan[2]; length = 3000))
-    global VF_STATES = Array(solve(ODEProblem(spec.true_ode!, u0, tspan), spec.solver;
-                                   saveat = dense_t, spec.solve_kwargs...))
-    global VF_DERIVS = true_field(VF_STATES)
-end
+# velocity field error: per-species relative RMS of f_θ vs the true derivatives, averaged
 function vf_error(θ)
     θ === nothing && return nothing
-    sse = zeros(d); ref = zeros(d)
-    for j in axes(VF_STATES, 2)
-        fp = f_theta(VF_STATES[:, j], θ)
-        sse .+= (fp .- VF_DERIVS[:, j]) .^ 2
-        ref .+= VF_DERIVS[:, j] .^ 2
-    end
-    rel = sqrt.(sse ./ max.(ref, eps()))
-    return sqrt(sum(abs2, rel) / d)
+    pred = reduce(hcat, (f_theta(Ydata[:, j], θ) for j in 1:tlen))
+    rel  = sqrt.(sum(abs2, pred .- sup_derivs, dims = 2) ./ max.(sum(abs2, sup_derivs, dims = 2), eps()))
+    return mean(rel)
 end
 
-rd(x) = x === nothing ? "  --  " : (isfinite(x) ? rpad(round(x; sigdigits = 4), 7) : "Inf    ")
-
-trained = Dict{String,Any}()   # trained params per method, for the fit plot
-for seed in SEEDS
-    θ0s = 0.1 .* randn(Xoshiro(seed), N_params)
-    do_method = function (name, trainer)
-        t = @elapsed (θ = trainer(θ0s))
-        trained[name] = θ
-        println("seed $seed  $(rpad(name, 11)) vf=$(rd(vf_error(θ)))  traj=$(rd(traj_l2(θ)))   [$(round(Int, t))s]"); flush(stdout)
-    end
-    do_method("supervised", train_supervised)
-    SWEEP_SHOOT && do_method("shooting", train_shooting)
-    SWEEP_AL && do_method("AL-BVP", train_al)
-    do_method("collocation", train_collocation)
-end
+trained = Dict{String,Any}()   
+t = @elapsed (trained["collocation"] = train_collocation(0.1 .* randn(Xoshiro(SEED), N_params)))
+println("collocation trained [$(round(Int, t))s]"); flush(stdout)
 
 # plot
 let
