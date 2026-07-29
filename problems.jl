@@ -1,4 +1,7 @@
 using OrdinaryDiffEq
+using OrdinaryDiffEqTsit5: Tsit5
+using OrdinaryDiffEqRosenbrock: Rodas5
+using OrdinaryDiffEqSDIRK: Kvaerno5
 
 struct ProblemSpec{T,S,F}
     name::String
@@ -106,7 +109,7 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
             dy[19] = -r21 - r22 - r24 + r23 + r25
             dy[20] = -r25 + r24
         end
-        kwargs = (; abstol=T(1e-9), reltol=T(1e-12))
+        kwargs = (; abstol=T(1e-25), reltol=T(1e-10))
         tgrid = vcat(T(0), T(10) .^ range(log10(T(1e-5)), log10(tspan[2]); length = tlen - 1))
         tsteps = sort(unique(tgrid))
         return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
