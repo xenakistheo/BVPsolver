@@ -12,12 +12,13 @@ using LinearAlgebra, Statistics
 import SciMLLogging as SL
 using Plots
 
+include("src/layers/StiffLayer.jl")
 include("problems.jl")
 
 const PROBLEM     = "vanderpol"
 const PROFILE     = :fast
-const HIDDEN      = 12
-const DEPTH       = 2
+const HIDDEN      = 8
+const DEPTH       = 4
 const SHOOT_ITERS = 500
 const SEED        = 123
 const SEEDS       = 1:1
@@ -37,7 +38,24 @@ rng = Xoshiro(SEED)
 _layers = Any[Dense(d, HIDDEN, gelu)]
 for _ in 2:DEPTH; push!(_layers, Dense(HIDDEN, HIDDEN, gelu)); end
 push!(_layers, Dense(HIDDEN, d))
-model = Chain(_layers...)
+stdModel = Chain(_layers...)
+
+#########
+
+V = Any[Dense(d, HIDDEN, gelu)]
+for _ in 2:Int(DEPTH/2); push!(V, Dense(HIDDEN, HIDDEN, gelu)); end
+
+sigma_affine_sigmoid(ps, j) = 1 / (1 + exp(-(ps[1] * j + ps[2])))
+S = StiffLayer2(sigma_affine_sigmoid; P=HIDDEN, init=ones(HIDDEN))
+
+U = Any[Dense(HIDDEN, HIDDEN, gelu)]
+for _ in 2:Int(DEPTH/2); push!(U, Dense(HIDDEN, HIDDEN, gelu)); end
+push!(U, Dense(HIDDEN, d))
+
+stiffModel = Chain(V..., S, U...)
+#######
+
+model = stiffModel
 ps, st   = Lux.setup(rng, model); ps = Lux.f64(ps)
 ps_axes  = getaxes(ComponentVector(ps))
 N_params = length(ComponentVector(ps))

@@ -8,16 +8,45 @@ using Plots
 include("src/layers/StiffLayer.jl")
 include("src/derivativeMatching.jl")
 
-
 # ============================================================
 # Robertson + simultaneous collocation training in log-time
+# -- multi-domain (spectral-element) version --
 # ============================================================
-# The neural network Fθ(y) represents the physical-time RHS dy/dt.
-# Since we collocate in τ = log10(t), the constraint is
 #
-#     dY/dτ = log(10) * t(τ) * Fθ(Y).
+# This file is a variant of `robertson_collocation.jl`. The only thing it
+# changes is HOW the collocation grid in τ = log10(t) is built; the neural
+# RHS, the training objective, and the diagnostics/plots are unchanged.
 #
-# This is the important scaling for log-spaced Robertson data.
+# Motivation: `robertson_collocation.jl` uses a single global Chebyshev-
+# Lobatto grid across the *entire* 11-decade span τ ∈ [-6, 5]. Chebyshev
+# nodes cluster near the two ends of whatever interval they're mapped onto
+# and are sparsest in the middle. For an 11-decade domain that means the
+# sparsest sampling lands in the middle of the domain in log-time (t ~ 0.3),
+# which is exactly where Robertson's fast initial transient hands off to the
+# long slow-manifold decay. Measured directly: with Ncol=100 the single
+# widest gap between nodes (0.17 in log10-time) sits at τ≈-0.59 -- and that
+# is where the trained model's forward predictions started to visibly
+# diverge from the true trajectory in `results/robertson_collocation_logtime_StiffNNDeep.png`.
+#
+# Fix: replace the one global degree-(N-1) Chebyshev polynomial with several
+# independent Chebyshev segments ("spectral elements"), each with its own
+# local nodes and its own local differentiation matrix. Node count per
+# segment is chosen by hand to put more resolution where the dynamics
+# actually change quickly (the transient/hand-off region) and less where the
+# solution is nearly flat (the very early "nothing has happened yet" region).
+#
+# Segments share a single DOF at each interface (segment k's last node IS
+# segment k+1's first node -- same optimization variable, not a duplicate
+# tied by an extra equality constraint). Each interface point gets exactly
+# one ODE/collocation equation, supplied by whichever segment claims it.
+# (An earlier version of this file gave each interface point two separate
+# copies plus a tie constraint, so it also got two independent local-stencil
+# approximations of the derivative that were both forced to equal the same
+# RHS value -- over-constraining the NLP and visibly hurting convergence.
+# Sharing one DOF with one equation per node avoids that.)
+#
+# Everything downstream (forward re-simulation with Rodas5P, plotting) is
+# unchanged from v1, so the two files' output plots are directly comparable.
 
 rng = Xoshiro(1)
 
@@ -51,7 +80,7 @@ Y_obs_raw = Matrix(reduce(hcat, data.u)')
 
 
 # -------------------------------
-# Collocation utilities
+# Collocation utilities (unchanged from v1)
 # -------------------------------
 function chebyshev_nodes_interval(a, b, N)
     # Ascending Chebyshev-Lobatto nodes mapped from [-1, 1] to [a, b].
@@ -102,15 +131,67 @@ function interpolate_rows(x, Y, xq)
     return Yq
 end
 
-# Number of collocation points. Start with 40--60; increase to 100 after it works.
-const Ncol = 100
+# -------------------------------
+# Multi-domain (spectral-element) collocation grid
+# -------------------------------
+# Each segment owns its own contiguous block of rows in the global Y matrix
+# and its own local Chebyshev nodes/differentiation matrix. Consecutive
+# segments each keep a separate copy of the shared interface point; the two
+# copies are tied together with an explicit equality constraint below.
+struct ChebSegment
+    rows::UnitRange{Int}     # rows in the global Y matrix spanned by this segment
+    eqn_rows::UnitRange{Int} # local indices (into rows/τ/D) that get an ODE equation
+    τ::Vector{Float64}       # local τ nodes, ascending
+    t::Vector{Float64}       # physical times, t = 10 .^ τ
+    D::Matrix{Float64}       # local differentiation matrix in τ
+end
 
-τ_col = chebyshev_nodes_interval(log10(tmin_train), log10(tmax_train), Ncol)
+function build_multidomain_grid(τ_breaks::Vector{Float64}, Nseg::Vector{Int})
+    @assert length(Nseg) == length(τ_breaks) - 1 "need one node count per segment"
+    segments = ChebSegment[]
+    τ_col = Float64[]
+    row_end_prev = 0
+    for k in eachindex(Nseg)
+        a, b = τ_breaks[k], τ_breaks[k+1]
+        τ_local = chebyshev_nodes_interval(a, b, Nseg[k])
+        D_local = differentiation_matrix_from_nodes(τ_local)
+        if k == 1
+            rows = 1:Nseg[k]
+            eqn_rows = 1:Nseg[k]
+            append!(τ_col, τ_local)
+        else
+            # Local index 1 of this segment IS the same global DOF as the
+            # last local index of the previous segment (shared interface
+            # point, not a duplicate) -- so this segment only owns Nseg[k]-1
+            # *new* rows, and only supplies the ODE equation for its own
+            # interior + right-boundary nodes (2:Nseg[k]); the interface
+            # node's equation was already supplied by the previous segment.
+            rows = row_end_prev:(row_end_prev + Nseg[k] - 1)
+            eqn_rows = 2:Nseg[k]
+            append!(τ_col, τ_local[2:end])
+        end
+        push!(segments, ChebSegment(rows, eqn_rows, τ_local, 10.0 .^ τ_local, D_local))
+        row_end_prev = rows[end]
+    end
+    return segments, τ_col
+end
+
+# Segment boundaries in τ = log10(t) and node count per segment.
+# - [-6, -3]: pre-transient, y1≈1/y2≈y3≈0, nearly flat -> few nodes needed.
+# - [-3, -1]: fast rise of y2 -> moderate resolution.
+# - [-1,  1]: peak / hand-off from fast transient to slow manifold -> this is
+#             the region that was starved of resolution in the v1 single
+#             global grid (measured widest gap at τ≈-0.59), so it gets the
+#             most nodes here.
+# - [ 1,  3], [3, 5]: slow-manifold decay tail, split in two so a single
+#             Chebyshev block doesn't have to cover 4 decades at once.
+const τ_breaks = [-6.0, -3.0, -1.0, 1.0, 3.0, 5.0]
+const Nseg     = [15, 20, 25, 20, 20]   # 100 rows total, 96 unique τ points
+
+segments, τ_col = build_multidomain_grid(τ_breaks, Nseg)
 t_col = 10.0 .^ τ_col
-Dτ = differentiation_matrix_from_nodes(τ_col)
-scale_logtime = log(10.0) .* t_col
 
-# Interpolate observed data onto the collocation grid, in log-time.
+# Interpolate observed data onto the (multi-domain) collocation grid.
 Y_obs = interpolate_rows(τ_obs, Y_obs_raw, τ_col)
 
 # -------------------------------
@@ -207,14 +288,14 @@ S2 = StiffLayer2(sigma_affine_sigmoid; P=8, init=ones(8))
 S2_exp = StiffLayer2(sigma_exp; P=8, init=ones(8))
 U2 = Chain(Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 2))
 
-StiffNN_Deep = Chain(V2, S2, U2) # 346 params 
+StiffNN_Deep = Chain(V2, S2, U2) # 346 params
 StiffNN_Deep_exp = Chain(V2, S2_exp, U2) # 346 params
 
 V3 = Chain(Dense(3, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh))
 S3 = StiffLayer2(sigma_affine_sigmoid; P=8, init=ones(8))
 U3 = Chain(Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh), Dense(8, 8, tanh),Dense(8, 2))
 
-StiffNN_SuperDeep = Chain(V3, S3, U3) # 778 params 
+StiffNN_SuperDeep = Chain(V3, S3, U3) # 778 params
 
 baseNN_Deep = Chain(
     Dense(3, 8, tanh),
@@ -246,9 +327,9 @@ function F!(du, u, p, t)
 end
 
 # -------------------------------
-# Simultaneous collocation training
+# Simultaneous multi-domain collocation training
 # -------------------------------
-function collocation_train_logtime(rhsfun, τnodes, tnodes, Dτ, Y_obs, p0;
+function collocation_train_logtime_multidomain(rhsfun, segments, Y_obs, p0;
         λ = 1e-8,
         parameter_bound = 50.0,
         use_state_bounds = true,
@@ -260,7 +341,6 @@ function collocation_train_logtime(rhsfun, τnodes, tnodes, Dτ, Y_obs, p0;
 
     N, d = size(Y_obs)
     n_ps = length(p0)
-    scale = log(10.0) .* tnodes
 
     # Robertson's y2 is tiny, so an unweighted MSE mostly ignores it.
     if use_weighted_state_loss
@@ -275,11 +355,10 @@ function collocation_train_logtime(rhsfun, τnodes, tnodes, Dτ, Y_obs, p0;
     set_optimizer_attribute(m, "max_iter", max_iter)
     set_optimizer_attribute(m, "tol", 1e-7)
     set_optimizer_attribute(m, "constr_viol_tol", 1e-7)
-    set_optimizer_attribute(m, "hessian_approximation", "limited-memory") # New
 
     @variable(m, -parameter_bound <= psvar[1:n_ps] <= parameter_bound)
 
-    if use_state_bounds #Perhaps change this. 
+    if use_state_bounds #Perhaps change this.
         @variable(m, 0 <= Y[1:N, 1:d] <= 1)
     else
         @variable(m, Y[1:N, 1:d])
@@ -298,8 +377,7 @@ function collocation_train_logtime(rhsfun, τnodes, tnodes, Dτ, Y_obs, p0;
         m[op_name] = add_nonlinear_operator(m, d + n_ps, f_k; name=op_name)
     end
 
-    # Anchor the first collocation state. Since t_col[1] = tmin_train,
-    # this is the IVP initial condition for the training interval.
+    # Anchor the very first collocation state (global IVP anchor).
     @constraint(m, [k = 1:d], Y[1, k] == Y_obs[1, k])
 
     # Robertson mass conservation.
@@ -307,16 +385,29 @@ function collocation_train_logtime(rhsfun, τnodes, tnodes, Dτ, Y_obs, p0;
         @constraint(m, [i = 1:N], sum(Y[i, k] for k in 1:d) == 1.0)
     end
 
-    # Collocation constraints in τ = log10(t):
-    #     Dτ Y = log(10) * t * Fθ(Y).
-    for i in 1:N
-        for k in 1:d
-            op = m[Symbol("nn_F$k")]
-            @constraint(m,
-                sum(Dτ[i, j] * Y[j, k] for j in 1:N)
-                ==
-                scale[i] * op(Y[i, 1:d]..., psvar...)
-            )
+    # Per-segment spectral collocation in τ = log10(t):
+    #     Dτ_seg Y_seg = log(10) * t_seg * Fθ(Y_seg).
+    # Each segment only "sees" its own nodes through its own local
+    # differentiation matrix, so raising resolution in one segment doesn't
+    # require growing a single global (N x N) operator. Interface points are
+    # a single shared DOF (segments[k].rows[end] == segments[k+1].rows[1]),
+    # so each gets exactly one ODE equation -- supplied by whichever segment
+    # claims it via `eqn_rows` -- instead of two independent (and generally
+    # inconsistent, for finite N) approximations of the same derivative.
+    for seg in segments
+        rows = seg.rows
+        Nloc = length(rows)
+        scale_seg = log(10.0) .* seg.t
+        for i in seg.eqn_rows
+            gi = rows[i]
+            for k in 1:d
+                op = m[Symbol("nn_F$k")]
+                @constraint(m,
+                    sum(seg.D[i, j] * Y[rows[j], k] for j in 1:Nloc)
+                    ==
+                    scale_seg[i] * op(Y[gi, 1:d]..., psvar...)
+                )
+            end
         end
     end
 
@@ -350,15 +441,22 @@ let n_ps = length(ps_vec), d = 3
 end
 # --------------------------------
 
-@time ps_opt, Y_opt, obj, status = collocation_train_logtime(
-    F, τ_col, t_col, Dτ, Y_obs, ps_vec;
+# Sanity check: report per-segment node counts/gaps so it's obvious at a
+# glance where resolution went relative to the single-grid v1 approach.
+for (k, seg) in enumerate(segments)
+    println("segment $k: τ ∈ [$(round(seg.τ[1], digits=2)), $(round(seg.τ[end], digits=2))], ",
+            "N=$(length(seg.τ)), max local gap=$(round(maximum(diff(seg.τ)), digits=4))")
+end
+
+@time ps_opt, Y_opt, obj, status = collocation_train_logtime_multidomain(
+    F, segments, Y_obs, ps_vec;
     λ = 1e-8,
     parameter_bound = 50.0,
     use_state_bounds = true,
     use_mass_constraint = true,
     use_weighted_state_loss = true,
     ipopt_print_level = 5,
-    max_iter = 4000,
+    max_iter = 1000,
 )
 
 println("Ipopt status: ", status)
@@ -376,38 +474,10 @@ true_prob = ODEProblem(rober!, vec(Y_obs[1, :]), (t_col[1], t_col[end]))
 true_col = solve(true_prob, Rodas5P(); saveat=t_col, reltol=1e-10, abstol=1e-12)
 Y_true_col = Matrix(reduce(hcat, true_col.u)')
 
-# -------------------------------
-# Plots
-# -------------------------------
-
-# p1 = plot(X_obs, Y_obs_raw[:, 1]; xscale=:log10, label="true y1", lw=2)
-# plot!(p1, t_col, Y_obs[:, 1]; label="obs/interp y1", lw=2, ls=:dash)
-# plot!(p1, t_col, Y_opt[:, 1]; label="Y_opt y1", lw=2, ls=:dot)
-# plot!(p1, t_col, Y_pred[:, 1]; label="pred y1", lw=2, ls=:dashdot)
-# ylabel!(p1, "y1")
-
-# p2 = plot(X_obs, Y_obs_raw[:, 2]; xscale=:log10, label="true y2", lw=2)
-# plot!(p2, t_col, Y_obs[:, 2]; label="obs/interp y2", lw=2, ls=:dash)
-# plot!(p2, t_col, Y_opt[:, 2]; label="Y_opt y2", lw=2, ls=:dot)
-# plot!(p2, t_col, Y_pred[:, 2]; label="pred y2", lw=2, ls=:dashdot)
-# ylabel!(p2, "y2")
-
-# p3 = plot(X_obs, Y_obs_raw[:, 3]; xscale=:log10, label="true y3", lw=2)
-# plot!(p3, t_col, Y_obs[:, 3]; label="obs/interp y3", lw=2, ls=:dash)
-# plot!(p3, t_col, Y_opt[:, 3]; label="Y_opt y3", lw=2, ls=:dot)
-# plot!(p3, t_col, Y_pred[:, 3]; label="pred y3", lw=2, ls=:dashdot)
-# xlabel!(p3, "t")
-# ylabel!(p3, "y3")
-
-# plt = plot(p1, p2, p3; layout=(3, 1), size=(900, 850), title="Robertson collocation training in log-time")
-# display(plt)
-
 # Basic diagnostics
 println("Max abs error, Y_opt vs obs: ", maximum(abs.(Y_opt .- Y_obs)))
 println("Max abs error, pred  vs true: ", maximum(abs.(Y_pred .- Y_true_col)))
 println("Mass drift in prediction: ", maximum(abs.(sum(Y_pred; dims=2) .- 1.0)))
-
-
 
 # -------------------------------
 # Plots: only observed vs predicted
@@ -429,21 +499,8 @@ plt = plot(
     p1, p2, p3;
     layout=(3, 1),
     size=(900, 850),
-    title="Robertson Neural ODE: Stiffnet Deep"
+    title="Robertson Neural ODE: StiffNN Deep (multi-domain collocation)"
 )
 
 display(plt)
-savefig(plt, "robertson_collocation_logtime_stiffNetDeep.png")
-
-
-
-#651s (10 min) for 1000 epochs of baseNN_deep. 
-#696 s (11 min) for 1000 epochs of stiffNN_deep. 
-# 99s (1.5min) for 1000 epochs of stiffNN_exp.
-# 418 (7 min) for 1000 epochs of stiffNN_deep_exp.
-#2091.546689 (34min) for 1000 epochs of stiffNN_superdeep.
-
-#StiffNet Deep and StiffNet are the best. 
-
-
-#Play with line 106 const Ncol = 100. Original was 50. 
+savefig(plt, "results/robertson_collocation_logtime_StiffNNDeep_v2.png")
