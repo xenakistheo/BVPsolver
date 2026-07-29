@@ -117,5 +117,24 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         )
     end
 
+    if lname == "david-skodje"
+        
+        u0 = T[0.0, 0.0]
+        tspan = (T(0.0), T(6.0))
+        tlen = 600
+        tsteps = collect(range(tspan[1], tspan[2]; length=tlen))
+
+        ϵ = T(0.0001) #Eigenvalues are -1 and -1/ϵ, so the system is stiff for small ϵ
+
+        true_ode! = function (dy, y, p, t)
+            dy[1] = -y[1]
+            dy[2] = -(y[2] - (y[1]/(1 + y[1])))/ϵ
+        end 
+        return ProblemSpec{T,typeof(Tsit5()),typeof(true_ode!)}(
+            "david-skodje", u0, tspan, tsteps, Tsit5(), (;), true_ode!
+        )
+    end 
+
+
     error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu")
 end
