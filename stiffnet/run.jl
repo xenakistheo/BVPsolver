@@ -15,14 +15,16 @@ const CONFIGS = (
                  ref_init =  4, amr_rounds = 3, lm_iters = 150),
     vanderpol = (hidden = 12, depth = 2, signed_loss = true,  dm_iters = 10_000,
                  ref_init = 16, amr_rounds = 3, lm_iters = 150),
+    david_skodje = (hidden = 12, depth = 2, signed_loss = true,  dm_iters = 10_000,
+                ref_init = 16, amr_rounds = 3, lm_iters = 150),
 )
 
-const PROBLEM         = "vanderpol"
+const PROBLEM         = "rober"  # "pollu", "rober", "vanderpol", "david-skodje"
 const PROFILE         = :fast
 const SEED            = 123
 const USE_DERIVMATCH  = true
 # set false for pollu
-const USE_COLLOCATION = false   
+const USE_COLLOCATION = true
 
 function main(problem = PROBLEM)
     cfg     = CONFIGS[Symbol(problem)]
@@ -59,7 +61,10 @@ function main(problem = PROBLEM)
     end
 
     plot_fit(ctx, θ)
+    plot_spectral_fit(ctx, θ)
     return (; ctx, cfg, θ)
 end
 
-main(isempty(ARGS) ? PROBLEM : ARGS[1])
+if abspath(PROGRAM_FILE) == @__FILE__
+    main(isempty(ARGS) ? PROBLEM : ARGS[1])
+end
