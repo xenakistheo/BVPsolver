@@ -1,11 +1,20 @@
-using NonlinearSolve, ComponentArrays
-using SparseConnectivityTracer, SparseMatrixColorings  
+using NonlinearSolve, ComponentArrays, LinearSolve
+using SparseConnectivityTracer, SparseMatrixColorings
 
-const RADAU_A  = [5/12 -1/12; 3/4 1/4]   
+const RADAU_A  = [5/12 -1/12; 3/4 1/4]
 const RADAU_B  = [3/4, 1/4]
 const SSTAGE   = 2
 const NSUB_CAP = 48
 const AMR_FRAC = 0.4
+const INIT_MAX_NORM_JUMP = 0.10
+const INIT_NSUB_CAP      = 8
+const INIT_NSUB_FLOOR    = 1
+
+function initial_nsub(ctx)
+    Δ = abs.(diff(ctx.Ydata, dims = 2)) ./ reshape(ctx.yscale, :, 1)
+    jump = vec(maximum(Δ, dims = 1))
+    return clamp.(ceil.(Int, jump ./ INIT_MAX_NORM_JUMP), INIT_NSUB_FLOOR, INIT_NSUB_CAP)
+end
 
 n_residuals(d, tlen, M) = (M - 1) * (SSTAGE + 1) * d + tlen * d
 
@@ -50,7 +59,8 @@ function R!(res, z, p)
         h = msh[i+1] - msh[i]
         for j in 1:s
             for c in 1:d
-                res[k+c] = (K̂[c, i, j] - (h / ysc[c]) * F[c, (i-1)*s + j]) / k̂[c]
+                g = (h / ysc[c]) * F[c, (i-1)*s + j]
+                res[k+c] = (K̂[c, i, j] - g) / k̂[c]
             end
             k += d
         end
@@ -69,11 +79,11 @@ function R!(res, z, p)
     return nothing
 end
 
-function solve_collocation(ctx, nsub, θ, lm_iters)
+function solve_collocation(ctx, nsub, θ, lm_iters, linsolve)
     mesh, nob = build_mesh(ctx, nsub); M = length(mesh)
     Y0 = interp_onto(ctx.Ydata, ctx.tsteps, mesh)
     K0 = zeros(ctx.d, M - 1, SSTAGE)
-    for i in 1:M-1, j in 1:SSTAGE         
+    for i in 1:M-1, j in 1:SSTAGE
         K0[:, i, j] = (Y0[:, i+1] .- Y0[:, i]) ./ ctx.yscale
     end
     khat = [max(1e-2 * maximum(abs, @view K0[c, :, :]), 1e-12) for c in 1:ctx.d]
@@ -81,8 +91,9 @@ function solve_collocation(ctx, nsub, θ, lm_iters)
     dp = (; ctx, mesh, nob, yob = ctx.Ydata ./ ctx.yscale, khat)
     nf = NonlinearFunction(R!; resid_prototype = zeros(n_residuals(ctx.d, ctx.tlen, M)),
                            sparsity = TracerSparsityDetector())
-    sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp),
-                LevenbergMarquardt(; b_uphill = 0.0); maxiters = lm_iters)
+    ls = linsolve === :qr ? QRFactorization() : KLUFactorization()
+    lm = LevenbergMarquardt(; b_uphill = 0.0, linsolve = ls)
+    sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp), lm; maxiters = lm_iters)
     return sol.u, dp
 end
 
@@ -91,23 +102,38 @@ function interval_errors(z, dp)
     res  = zeros(n_residuals(ctx.d, ctx.tlen, length(dp.mesh))); R!(res, z, dp)
     rows = (SSTAGE + 1) * ctx.d
     err  = zeros(ctx.tlen - 1)
-    for j in 1:ctx.tlen-1, i in dp.nob[j]:dp.nob[j+1]-1, r in 1:rows
-        err[j] += res[(i - 1) * rows + r]^2
+    for j in 1:ctx.tlen-1
+        acc = 0.0
+        for i in dp.nob[j]:dp.nob[j+1]-1, r in 1:rows
+            acc += res[(i - 1) * rows + r]^2
+        end
+        err[j] = acc
     end
     return err
 end
 
+function obs_residual(z, dp)
+    ctx = dp.ctx
+    res = zeros(n_residuals(ctx.d, ctx.tlen, length(dp.mesh))); R!(res, z, dp)
+    k   = (length(dp.mesh) - 1) * (SSTAGE + 1) * ctx.d
+    O   = @view res[k+1:k+ctx.tlen*ctx.d]
+    return sqrt(sum(abs2, O) / length(O))
+end
+
 function train_collocation(ctx, θ0, cfg; score)
-    speed = vec(sqrt.(sum(abs2, diff(ctx.Ydata, dims = 2), dims = 1))) ./ diff(ctx.tsteps)
-    nsub  = clamp.(round.(Int, 2 .+ (cfg.ref_init - 2) .* speed ./ maximum(speed)), 2, cfg.ref_init)
+    nsub  = initial_nsub(ctx)
     best0 = score(θ0)
     θ, best_θ, best = copy(θ0), copy(θ0), best0
+    ok_rounds = 0
     for rnd in 1:cfg.amr_rounds
         try
-            z, dp = solve_collocation(ctx, nsub, θ, cfg.lm_iters)
-            θ  = collect(z.theta)
-            sc = score(θ)
-            sc < best && (best = sc; best_θ = copy(θ))
+            z, dp = solve_collocation(ctx, nsub, θ, cfg.lm_iters, get(cfg, :linsolve, :klu))
+            θ_candidate = collect(z.theta)
+            sc = score(θ_candidate)
+            if sc < best
+                best = sc
+                best_θ = copy(θ_candidate)
+            end
             err, refined = interval_errors(z, dp), 0
             me = maximum(err)
             if rnd < cfg.amr_rounds
@@ -118,14 +144,23 @@ function train_collocation(ctx, θ0, cfg; score)
                 end
             end
             println("  AMR $rnd/$(cfg.amr_rounds): M=$(length(dp.mesh))  " *
-                    "err=$(round(me; sigdigits=3))  nrmse=$(round(sc; sigdigits=3))  " *
+                    "err=$(round(me; sigdigits=3))  " *
+                    "obs=$(round(obs_residual(z, dp); sigdigits=3))  " *
+                    "nrmse=$(round(sc; sigdigits=3))  " *
                     "best=$(round(best; sigdigits=3))  refined=$refined"); flush(stdout)
+            ok_rounds += 1
+            θ = θ_candidate
             refined == 0 && break
         catch e
             @warn "AMR round $rnd failed — keeping the best result so far" exception=(e,)
             break
         end
     end
-    best == best0 && println(" derivative matching was best")
+    if ok_rounds == 0
+        println(" !! NO COLLOCATION ROUND COMPLETED — every round threw. " *
+                "The reported result is DERIVATIVE MATCHING ONLY, not collocation.")
+    elseif best == best0
+        println(" derivative matching was best ($ok_rounds/$(cfg.amr_rounds) rounds ran)")
+    end
     return best_θ
 end

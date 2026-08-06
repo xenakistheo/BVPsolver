@@ -1,6 +1,6 @@
 using OrdinaryDiffEq
 using OrdinaryDiffEqTsit5: Tsit5
-using OrdinaryDiffEqRosenbrock: Rodas5
+using OrdinaryDiffEqRosenbrock: Rodas5, Rodas5P
 using OrdinaryDiffEqSDIRK: Kvaerno5
 
 struct ProblemSpec{T,S,F}
@@ -18,7 +18,8 @@ function generate_training_data(spec::ProblemSpec)
     return Array(solve(prob, spec.solver; saveat=spec.tsteps, spec.solve_kwargs...))
 end
 
-function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, profile::Symbol=:default)
+function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, profile::Symbol=:default,
+                      mu::Real=100.0, epsilon::Real=0.01)
     lname = lowercase(name)
     fast = profile == :fast
     profile ∈ (:default, :fast) || error("Unknown profile '$profile'. Valid: :default, :fast")
@@ -49,7 +50,7 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
             du[2] = k1 * y1 - k2 * y2^2 - k3 * y2 * y3
             du[3] = k2 * y2^2
         end
-        kwargs = fast ? (; abstol=T(1e-6), reltol=T(1e-6)) : (; abstol=T(1e-10), reltol=T(1e-10))
+        kwargs = fast ? (; abstol=T(1e-10), reltol=T(1e-10)) : (; abstol=T(1e-10), reltol=T(1e-10))
         return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
             "rober", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
         )
@@ -58,7 +59,7 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
     if lname == "vanderpol"
         u0 = T[2.0, 0.0]
         tspan = fast ? (T(0.0), T(200.0)) : (T(0.0), T(400.0))
-        μ = T(100.0)
+        μ = T(mu)
         true_ode! = function (du, u, p, t)
             du[1] = u[2]
             du[2] = μ * (1 - u[1]^2) * u[2] - u[1]
@@ -117,24 +118,66 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         )
     end
 
-    if lname == "david-skodje"
-        
-        u0 = T[0.0, 0.0]
-        tspan = (T(0.0), T(6.0))
-        tlen = 600
-        tsteps = collect(range(tspan[1], tspan[2]; length=tlen))
-
-        ϵ = T(0.0001) #Eigenvalues are -1 and -1/ϵ, so the system is stiff for small ϵ
-
-        true_ode! = function (dy, y, p, t)
-            dy[1] = -y[1]
-            dy[2] = -(y[2] - (y[1]/(1 + y[1])))/ϵ
-        end 
-        return ProblemSpec{T,typeof(Tsit5()),typeof(true_ode!)}(
-            "david-skodje", u0, tspan, tsteps, Tsit5(), (;), true_ode!
+    if lname == "hires"
+        u0 = zeros(T, 8)
+        u0[1], u0[8] = T(1.0), T(0.0057)
+        tspan = (T(0.0), T(321.8122))
+        tlen = fast ? 50 : 100
+        true_ode! = function (du, u, p, t)
+            y1, y2, y3, y4, y5, y6, y7, y8 = u
+            du[1] = -T(1.71) * y1 + T(0.43) * y2 + T(8.32) * y3 + T(0.0007)
+            du[2] = T(1.71) * y1 - T(8.75) * y2
+            du[3] = -T(10.03) * y3 + T(0.43) * y4 + T(0.035) * y5
+            du[4] = T(8.32) * y2 + T(1.71) * y3 - T(1.12) * y4
+            du[5] = -T(1.745) * y5 + T(0.43) * y6 + T(0.43) * y7
+            du[6] = -T(280.0) * y6 * y8 + T(0.69) * y4 + T(1.71) * y5 - T(0.43) * y6 + T(0.69) * y7
+            du[7] = T(280.0) * y6 * y8 - T(1.81) * y7
+            du[8] = -T(280.0) * y6 * y8 + T(1.81) * y7
+        end
+        kwargs = fast ? (; abstol=T(1e-10), reltol=T(1e-8)) : (; abstol=T(1e-14), reltol=T(1e-10))
+        tgrid = vcat(T(0), min.(T(10) .^ range(log10(T(1e-3)), log10(tspan[2]); length=tlen - 1), tspan[2]))
+        tsteps = sort(unique(tgrid))
+        return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
+            "hires", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
         )
-    end 
+    end
+
+    if lname == "orego"
+        u0 = T[1.0, 2.0, 3.0]
+        tspan = fast ? (T(0.0), T(180.0)) : (T(0.0), T(360.0))
+        s, q, w = T(77.27), T(8.375e-6), T(0.161)
+        true_ode! = function (du, u, p, t)
+            x, y, z = u
+            du[1] = s * (y + x * (1 - q * x - y))
+            du[2] = (z - (1 + x) * y) / s
+            du[3] = w * (x - z)
+        end
+        kwargs = fast ? (; abstol=T(1e-10), reltol=T(1e-8)) : (; abstol=T(1e-14), reltol=T(1e-10))
+        place = (; abstol=T(1e-3), reltol=T(1e-3))
+        tsteps = solve(ODEProblem(true_ode!, u0, tspan), Rodas5(); place...).t
+        return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
+            "orego", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
+        )
+    end
+
+    if lname == "davis-skodje"
+        u0 = T[1.0, 2.0]
+        tspan = (T(0.0), T(15.0))
+        tlen = fast ? 300 : 600
+        γ = T(1 / epsilon)
+        true_ode! = function (du, u, p, t)
+            x, y = u
+            du[1] = -x
+            du[2] = -γ * y + ((γ - 1) * x + γ * x^2) / (1 + x)^2
+        end
+        kwargs = (; abstol=T(1e-10), reltol=T(1e-8))
+        tgrid = vcat(T(0), min.(T(10) .^ range(log10(T(1e-4)), log10(tspan[2]); length=tlen - 1), tspan[2]))
+        tsteps = sort(unique(tgrid))
+        return ProblemSpec{T,typeof(Rodas5P()),typeof(true_ode!)}(
+            "davis-skodje", u0, tspan, tsteps, Rodas5P(), kwargs, true_ode!
+        )
+    end
 
 
-    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu")
+    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu, hires, orego, davis-skodje")
 end
