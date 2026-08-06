@@ -2,6 +2,7 @@ using OrdinaryDiffEq, Statistics, Plots
 using SciMLBase: successful_retcode
 import SciMLLogging as SL
 using ForwardDiff, LinearAlgebra
+using ForwardDiff, LinearAlgebra
 
 function rollout(ctx, θ; dense = false)
     rhs!(du, u, p, t) = (du .= f_theta(ctx, u, p); nothing)

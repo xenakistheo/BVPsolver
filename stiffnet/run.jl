@@ -75,6 +75,7 @@ function main(problem = PROBLEM, param = nothing)
 
     plot_fit(ctx, θ)
     plot_spectral_fit(ctx, θ)
+    plot_spectral_fit(ctx, θ)
     return (; ctx, cfg, θ)
 end
 
