@@ -117,9 +117,9 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         )
     end
 
-    if lname == "david-skodje"
+    if lname == "david_skodje"
         
-        u0 = T[0.0, 0.0]
+        u0 = T[1.0, 2.0]
         tspan = (T(0.0), T(6.0))
         tlen = 600
         tsteps = collect(range(tspan[1], tspan[2]; length=tlen))
@@ -130,8 +130,8 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
             dy[1] = -y[1]
             dy[2] = -(y[2] - (y[1]/(1 + y[1])))/ϵ
         end 
-        return ProblemSpec{T,typeof(Tsit5()),typeof(true_ode!)}(
-            "david-skodje", u0, tspan, tsteps, Tsit5(), (;), true_ode!
+        return ProblemSpec{T,typeof(Kvaerno5()),typeof(true_ode!)}(
+            "david-skodje", u0, tspan, tsteps, Kvaerno5(), (;), true_ode!
         )
     end 
 
