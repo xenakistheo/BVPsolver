@@ -1,10 +1,8 @@
-#   f = κ⊙sinh(α) + λ⊙sinh(γ)⊙u    signed
-#   f = κ⊙sinh(α) − λ⊙exp(β)⊙u     guaranteed 
 using Lux, ComponentArrays
 
-const KAPPA_FRAC    = 1e-3                
-const PROD_HEADROOM = 3e5               
-const CHI_FRAC      = 1e-3                
+const KAPPA_FRAC    = 1e-3
+const PROD_HEADROOM = 3e5
+const CHI_FRAC      = 1e-3
 const ZNORM         = asinh(1 / CHI_FRAC)
 
 struct StiffProductionLossField{TR,P,L} <: Lux.AbstractLuxContainerLayer{(:trunk, :prod, :logloss)}
@@ -40,7 +38,7 @@ function build_stiff_field(d, Ydata, tsteps, ymid, yscale; width, depth, signed_
     slope = max.(vec(maximum(abs.(diff(Ydata, dims = 2) ./ diff(tsteps)'), dims = 2)), 1e-30)
     umax  = max.(vec(maximum(abs.(Ydata), dims = 2)), 1e-30)
     lam   = slope ./ max.(collect(Float64, yscale), 1e-12 .* umax, floatmin())
-    rmax  = 10 / minimum(diff(tsteps))   
+    rmax  = 10 / minimum(diff(tsteps))
     trunk = Chain(Dense(2d, width, tanh), (Dense(width, width, tanh) for _ in 2:depth)...)
     return StiffProductionLossField(
         trunk, Dense(width, d), Dense(width, d),

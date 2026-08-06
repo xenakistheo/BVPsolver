@@ -2,6 +2,7 @@ using OrdinaryDiffEq, Statistics, Plots
 using SciMLBase: successful_retcode
 import SciMLLogging as SL
 using ForwardDiff, LinearAlgebra
+using ForwardDiff, LinearAlgebra
 
 function rollout(ctx, θ; dense = false)
     rhs!(du, u, p, t) = (du .= f_theta(ctx, u, p); nothing)
@@ -65,15 +66,15 @@ function eigenvalues(ctx, θ; absolute=false)
         eigenvalues_true[:, i] = sort(eigvals(J_true), by = abs, rev = true)
         J_learned = ForwardDiff.jacobian(F_learned, y)
         eigenvalues_learned[:, i] = sort(eigvals(J_learned), by = abs, rev = true)
-    end 
-    
+    end
+
     if absolute
         eigenvalues_true = abs.(eigenvalues_true)
         eigenvalues_learned = abs.(eigenvalues_learned)
     end
 
     return eigenvalues_true, eigenvalues_learned
-end 
+end
 
 
 function plot_spectral_fit(ctx, θ)

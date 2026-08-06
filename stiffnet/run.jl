@@ -1,5 +1,5 @@
-#   julia --project=. stiffnet/run.jl [problem]
-ENV["GKSwstype"] = "100" 
+# julia --project=. stiffnet/run.jl [problem] [parameter]
+ENV["GKSwstype"] = "100"
 using Lux, Random, ComponentArrays
 
 include("../problems.jl")
@@ -10,25 +10,38 @@ include("eval.jl")
 
 const CONFIGS = (
     pollu     = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
-                 ref_init =  4, amr_rounds = 1, lm_iters = 150),
+                 amr_rounds = 1, lm_iters = 150),
     rober     = (hidden = 12, depth = 2, signed_loss = false, dm_iters = 10_000,
-                 ref_init =  4, amr_rounds = 3, lm_iters = 150),
+                 amr_rounds = 1, lm_iters = 150),
     vanderpol = (hidden = 12, depth = 2, signed_loss = true,  dm_iters = 10_000,
-                 ref_init = 16, amr_rounds = 3, lm_iters = 150),
-    david_skodje = (hidden = 12, depth = 2, signed_loss = true,  dm_iters = 10_000,
-                ref_init = 16, amr_rounds = 3, lm_iters = 150),
+                 amr_rounds = 1, lm_iters = 150),
+    hires     = (hidden = 16, depth = 2, signed_loss = false, dm_iters = 10_000,
+                 amr_rounds = 1, lm_iters = 150, linsolve = :qr),
+    orego     = (hidden = 16, depth = 2, signed_loss = false, dm_iters = 10_000,
+                 amr_rounds = 1, lm_iters = 150),
+    davisskodje = (hidden = 12, depth = 2, signed_loss = false, dm_iters = 10_000,
+                 amr_rounds = 3, lm_iters = 150),
 )
 
-const PROBLEM         = "rober"  # "pollu", "rober", "vanderpol", "david-skodje"
+config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
+
+const PROBLEM         = "vanderpol"
 const PROFILE         = :fast
 const SEED            = 123
 const USE_DERIVMATCH  = true
-# set false for pollu
 const USE_COLLOCATION = true
 
-function main(problem = PROBLEM)
-    cfg     = CONFIGS[Symbol(problem)]
-    spec    = make_problem(problem; T = Float64, profile = PROFILE)
+function problem_kwargs(problem, param)
+    param === nothing && return (;)
+    key = config_key(problem)
+    key === :vanderpol   && return (; mu = param)
+    key === :davisskodje && return (; epsilon = param)
+end
+
+function main(problem = PROBLEM, param = nothing)
+    cfg     = CONFIGS[config_key(problem)]
+    spec    = make_problem(problem; T = Float64, profile = PROFILE,
+                           problem_kwargs(problem, param)...)
     Ydata   = generate_training_data(spec)
     d, tlen = length(spec.u0), length(spec.tsteps)
 
@@ -62,9 +75,11 @@ function main(problem = PROBLEM)
 
     plot_fit(ctx, θ)
     plot_spectral_fit(ctx, θ)
+    plot_spectral_fit(ctx, θ)
     return (; ctx, cfg, θ)
 end
 
 if abspath(PROGRAM_FILE) == @__FILE__
-    main(isempty(ARGS) ? PROBLEM : ARGS[1])
+    main(isempty(ARGS) ? PROBLEM : ARGS[1],
+         length(ARGS) > 1 ? parse(Float64, ARGS[2]) : nothing)
 end
