@@ -1,4 +1,3 @@
-using Lux, ComponentArrays
 
 const KAPPA_FRAC    = 1e-3
 const PROD_HEADROOM = 3e5

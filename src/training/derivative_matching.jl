@@ -1,5 +1,3 @@
-using Optimization, OptimizationOptimisers
-using Zygote  
 
 function fd_derivatives(Y, t)
     D = similar(Y)

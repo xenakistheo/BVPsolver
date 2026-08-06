@@ -1,5 +1,4 @@
-using NonlinearSolve, ComponentArrays, LinearSolve
-using SparseConnectivityTracer, SparseMatrixColorings
+
 
 const RADAU_A  = [5/12 -1/12; 3/4 1/4]
 const RADAU_B  = [3/4, 1/4]

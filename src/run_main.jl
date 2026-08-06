@@ -2,11 +2,7 @@
 ENV["GKSwstype"] = "100"
 using Lux, Random, ComponentArrays
 
-include("../problems.jl")
-include("stiff_field.jl")
-include("derivative_matching.jl")
-include("collocation.jl")
-include("eval.jl")
+
 
 const CONFIGS = (
     pollu     = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
