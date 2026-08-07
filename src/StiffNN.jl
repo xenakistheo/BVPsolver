@@ -33,7 +33,7 @@ include("utils/eval.jl")
 export generate_training_data, make_problem
 
 # stiff_field.jl
-export build_stiff_field
+export build_stiff_field, init_stiff!
 
 # collocation.jl
 export initial_nsub, build_mesh, interp_onto, R!, solve_collocation

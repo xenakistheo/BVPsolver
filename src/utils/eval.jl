@@ -25,11 +25,11 @@ function report(ctx, label, θ)
     return m
 end
 
-function plot_fit(ctx, θ)
+function plot_fit(ctx, θ; dir = ".")
     logt  = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
     tgrid = logt ? exp.(range(log(ctx.tsteps[1]), log(ctx.tsteps[end]); length = 400)) :
                    collect(range(ctx.tspan[1], ctx.tspan[2]; length = 400))
-    sol  = rollout(ctx, θ; dense = true) 
+    sol  = rollout(ctx, θ; dense = true)
     ok   = successful_retcode(sol)
     ts   = ok ? sort(unique(vcat(tgrid, sol.t))) : Float64[]
     pred = ok ? reduce(hcat, (sol(t) for t in ts)) : zeros(ctx.d, 0)
@@ -41,9 +41,9 @@ function plot_fit(ctx, θ)
                     color = :orangered, lw = 2)
         p
     end
-    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)),
-            "$(ctx.spec.name)_fit.png")
-    println("saved $(ctx.spec.name)_fit.png")
+    path = joinpath(dir, "$(ctx.spec.name)_fit.png")
+    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)), path)
+    println("saved $path")
 end
 
 
@@ -72,7 +72,7 @@ function eigenvalues(ctx, θ; absolute=false)
 end
 
 
-function plot_spectral_fit(ctx, θ)
+function plot_spectral_fit(ctx, θ; dir = ".")
     logt = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
     eigenvalues_true, eigenvalues_learned = eigenvalues(ctx, θ; absolute = true)
     panels = map(1:ctx.d) do c
@@ -83,7 +83,7 @@ function plot_spectral_fit(ctx, θ)
               color = :orangered, lw = 2)
         p
     end
-    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)),
-            "$(ctx.spec.name)_spectral_fit.png")
-    println("saved $(ctx.spec.name)_spectral_fit.png")
+    path = joinpath(dir, "$(ctx.spec.name)_spectral_fit.png")
+    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)), path)
+    println("saved $path")
 end
