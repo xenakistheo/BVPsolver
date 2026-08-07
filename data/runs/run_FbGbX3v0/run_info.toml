@@ -1,0 +1,18 @@
+collocation_time = 0.0
+derivmatch_time = 12.9327995
+n_params = 268
+param = 100.0
+problem = "vanderpol"
+profile = "fast"
+seed = 123
+training_time = 12.9327995
+use_collocation = false
+use_derivmatch = true
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = true

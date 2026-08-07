@@ -2,7 +2,7 @@
 #                                    [--seed N] [--no-derivmatch] [--no-collocation]
 ENV["GKSwstype"] = "100"
 using Lux, Random, ComponentArrays
-using ArgParse, JLD2, TOML
+using ArgParse, JLD2, TOML, Dates
 using StiffNN
 
 const CONFIGS = (
@@ -127,6 +127,7 @@ function main(args = parse_cli())
     run_info["collocation_time"] = collocation_time
     run_info["training_time"]    = derivmatch_time + collocation_time
     run_info["n_params"]         = n_params
+    run_info["timestamp"]        = string(now())
     open(joinpath(run_dir, "run_info.toml"), "w") do io
         TOML.print(io, run_info; sorted = true)
     end
