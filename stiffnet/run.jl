@@ -21,6 +21,8 @@ const CONFIGS = (
                  amr_rounds = 1, lm_iters = 150),
     davisskodje = (hidden = 12, depth = 2, signed_loss = false, dm_iters = 10_000,
                  amr_rounds = 3, lm_iters = 150),
+    brusselator = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
+                 amr_rounds = 1, lm_iters = 150, time_dependent = true),
 )
 
 config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
@@ -36,6 +38,9 @@ function problem_kwargs(problem, param)
     key = config_key(problem)
     key === :vanderpol   && return (; mu = param)
     key === :davisskodje && return (; epsilon = param)
+    key === :brusselator && return (; n = round(Int, param))
+    error("$problem takes no scalar parameter " *
+          "(vanderpol=mu, davis-skodje=epsilon, brusselator=n)")
 end
 
 function main(problem = PROBLEM, param = nothing)
@@ -50,7 +55,8 @@ function main(problem = PROBLEM, param = nothing)
 
     model  = build_stiff_field(d, Ydata, spec.tsteps, (ymax .+ ymin) ./ 2, yscale;
                                width = cfg.hidden, depth = cfg.depth,
-                               signed_loss = cfg.signed_loss)
+                               signed_loss = cfg.signed_loss,
+                               time_dependent = get(cfg, :time_dependent, false))
     ps, st = Lux.setup(Xoshiro(SEED), model); ps = Lux.f64(ps)
     init_stiff!(ps, model)
     ctx = (; spec, tsteps = spec.tsteps, tspan = spec.tspan, u0 = spec.u0,
@@ -74,7 +80,6 @@ function main(problem = PROBLEM, param = nothing)
     end
 
     plot_fit(ctx, θ)
-    plot_spectral_fit(ctx, θ)
     plot_spectral_fit(ctx, θ)
     return (; ctx, cfg, θ)
 end

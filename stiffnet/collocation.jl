@@ -3,6 +3,7 @@ using SparseConnectivityTracer, SparseMatrixColorings
 
 const RADAU_A  = [5/12 -1/12; 3/4 1/4]
 const RADAU_B  = [3/4, 1/4]
+const RADAU_C  = vec(sum(RADAU_A, dims = 2))
 const SSTAGE   = 2
 const NSUB_CAP = 48
 const AMR_FRAC = 0.4
@@ -48,12 +49,20 @@ function R!(res, z, p)
     ctx, msh, nob, k̂ = p.ctx, p.mesh, p.nob, p.khat
     d, ysc, s, M = ctx.d, ctx.yscale, SSTAGE, length(msh)
     S = similar(Ŷ, d, (M - 1) * s)
-    @inbounds for i in 1:M-1, j in 1:s, c in 1:d
-        acc = Ŷ[c, i]
-        for l in 1:s; acc += RADAU_A[j, l] * K̂[c, i, l]; end
-        S[c, (i-1)*s + j] = ysc[c] * acc
+    Tstage = Vector{eltype(msh)}(undef, (M - 1) * s)
+    @inbounds for i in 1:M-1
+        hi = msh[i+1] - msh[i]
+        for j in 1:s
+            q = (i - 1) * s + j
+            Tstage[q] = msh[i] + RADAU_C[j] * hi
+            for c in 1:d
+                acc = Ŷ[c, i]
+                for l in 1:s; acc += RADAU_A[j, l] * K̂[c, i, l]; end
+                S[c, q] = ysc[c] * acc
+            end
+        end
     end
-    F = f_theta(ctx, S, θ)
+    F = f_theta(ctx, S, Tstage, θ)
     k = 0
     @inbounds for i in 1:M-1
         h = msh[i+1] - msh[i]

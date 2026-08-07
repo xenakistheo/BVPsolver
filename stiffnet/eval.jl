@@ -5,7 +5,7 @@ using ForwardDiff, LinearAlgebra
 using ForwardDiff, LinearAlgebra
 
 function rollout(ctx, θ; dense = false)
-    rhs!(du, u, p, t) = (du .= f_theta(ctx, u, p); nothing)
+    rhs!(du, u, p, t) = (du .= f_theta(ctx, u, t, p); nothing)
     prob = ODEProblem(rhs!, ctx.u0, ctx.tspan, θ)
     kw   = (; verbose = SL.None(), ctx.spec.solve_kwargs...)
     return dense ? solve(prob, ctx.spec.solver; kw...) :
@@ -53,15 +53,14 @@ end
 
 
 function eigenvalues(ctx, θ; absolute=false)
-    F_true(x) = (du = similar(x); ctx.spec.true_ode!(du, x, nothing, zero(eltype(x))); du)
-    F_learned(x) = f_theta(ctx, x, θ)
-
-
     eigenvalues_true = zeros(ComplexF64, size(ctx.Ydata))
     eigenvalues_learned = zeros(ComplexF64, size(ctx.Ydata))
 
     for i in 1:size(ctx.Ydata)[2]
         y = ctx.Ydata[:, i]
+        t = ctx.tsteps[i]
+        F_true(x) = (du = similar(x); ctx.spec.true_ode!(du, x, nothing, t); du)
+        F_learned(x) = f_theta(ctx, x, t, θ)
         J_true = ForwardDiff.jacobian(F_true, y)
         eigenvalues_true[:, i] = sort(eigvals(J_true), by = abs, rev = true)
         J_learned = ForwardDiff.jacobian(F_learned, y)
