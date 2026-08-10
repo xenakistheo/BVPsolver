@@ -9,7 +9,9 @@
 
 source /etc/profile
 
-module load julia/1.11.3
+# Self-installed via juliaup (module system only offers julia/1.11.3, but this
+# project's Manifest.toml requires >=1.12 for LinearAlgebra compat).
+export PATH="$HOME/.juliaup/bin:$PATH"
 
 set -euo pipefail
 
