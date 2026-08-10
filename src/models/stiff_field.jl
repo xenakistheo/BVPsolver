@@ -23,7 +23,7 @@ end
 init_stiff!(ps, m::StiffProductionLossField) =
     (ps.logloss.bias .= m.signed_loss ? -1.0 : -6.0; ps)
 
-function time_feature(m::StiffProductionLossField, u, t)
+function time_feature(m, u, t)
     if u isa AbstractVector
         τ = t isa Number ? t : only(t)
         return [(τ - m.tmid) / m.tscale]
@@ -51,7 +51,7 @@ function (m::StiffProductionLossField)(u::AbstractVecOrMat, t, ps, st)
 end
 
 function build_stiff_field(d, Ydata, tsteps, ymid, yscale; width, depth, signed_loss,
-                           time_dependent = false)
+                           time_dependent = false, init = :default)
     slope = max.(vec(maximum(abs.(diff(Ydata, dims = 2) ./ diff(tsteps)'), dims = 2)), 1e-30)
     umax  = max.(vec(maximum(abs.(Ydata), dims = 2)), 1e-30)
     lam   = slope ./ max.(collect(Float64, yscale), 1e-12 .* umax, floatmin())
@@ -59,9 +59,11 @@ function build_stiff_field(d, Ydata, tsteps, ymid, yscale; width, depth, signed_
     tmid   = Float64((first(tsteps) + last(tsteps)) / 2)
     tscale = max(Float64((last(tsteps) - first(tsteps)) / 2), eps(Float64))
     nin = 2d + (time_dependent ? 1 : 0)
-    trunk = Chain(Dense(nin, width, tanh), (Dense(width, width, tanh) for _ in 2:depth)...)
+    kw = init_kwargs(init)
+    trunk = Chain(Dense(nin, width, tanh; kw...),
+                  (Dense(width, width, tanh; kw...) for _ in 2:depth)...)
     return StiffProductionLossField(
-        trunk, Dense(width, d), Dense(width, d),
+        trunk, Dense(width, d; kw...), Dense(width, d; kw...),
         collect(Float64, ymid), collect(Float64, yscale),
         tmid, tscale,
         CHI_FRAC .* umax, KAPPA_FRAC .* slope, lam,

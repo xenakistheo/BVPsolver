@@ -24,6 +24,9 @@ const CONFIGS = (
 
 config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
 
+gelu_arch(problem) = config_key(problem) === :pollu ? (hidden = 10, depth = 3) :
+                                                      (hidden = 5,  depth = 6)
+
 function problem_kwargs(problem, param)
     param === nothing && return (;)
     key = config_key(problem)
@@ -46,6 +49,11 @@ function parse_cli()
             help = "Problem parameter: mu (vanderpol), epsilon (davis-skodje), n grid (brusselator)"
             arg_type = Float64
             default = nothing
+        "--model"
+            help = "Field architecture (stiff, mlp, GELU-scaled)"
+            arg_type = String
+            default = "stiff"
+            range_tester = x -> x in ("stiff", "mlp", "GELU-scaled")
         "--profile"
             help = "Problem profile"
             arg_type = String
@@ -55,6 +63,29 @@ function parse_cli()
             help = "RNG seed for model initialization"
             arg_type = Int
             default = 123
+        "--init"
+            help = "Weight initialization (default = Lux kaiming+gain, glorot = Glorot uniform + zero bias)"
+            arg_type = String
+            default = "default"
+            range_tester = x -> x in ("default", "glorot")
+        "--sigma"
+            help = "Gaussian noise std as a fraction of each species' range (0.01 = 1%)"
+            arg_type = Float64
+            default = 0.0
+        "--shooting"
+            help = "Train by single shooting instead of derivative matching + collocation"
+            action = :store_true
+        "--shoot-iters"
+            help = "Adam iterations for single shooting"
+            arg_type = Int
+            default = 1000
+        "--shapovalova"
+            help = "Train by global Chebyshev collocation solved as one NLP in Ipopt"
+            action = :store_true
+        "--ncol"
+            help = "Chebyshev collocation nodes for --shapovalova (0 = one per observation)"
+            arg_type = Int
+            default = 0
         "--no-derivmatch"
             help = "Skip the derivative-matching pretraining stage"
             action = :store_false
@@ -73,37 +104,76 @@ toml_safe(value::Symbol) = String(value)
 function main(args = parse_cli())
     problem         = args["problem"]
     param           = args["param"]
+    arch            = args["model"]
     profile         = Symbol(args["profile"])
     seed            = args["seed"]
-    use_derivmatch  = args["use_derivmatch"]
-    use_collocation = args["use_collocation"]
+    sigma           = args["sigma"]
+    init            = Symbol(args["init"])
+    use_shooting    = args["shooting"]
+    shoot_iters     = args["shoot-iters"]
+    use_shap        = args["shapovalova"]
+    ncol            = args["ncol"]
+    use_derivmatch  = args["use_derivmatch"] && !use_shooting && !use_shap
+    use_collocation = args["use_collocation"] && !use_shooting && !use_shap
 
     cfg     = CONFIGS[config_key(problem)]
     spec    = make_problem(problem; T = Float64, profile = profile,
                            problem_kwargs(problem, param)...)
     Ydata   = generate_training_data(spec)
     d, tlen = length(spec.u0), length(spec.tsteps)
+    if sigma > 0
+        lo, hi = vec(minimum(Ydata, dims = 2)), vec(maximum(Ydata, dims = 2))
+        nscale = max.(hi .- lo, 1e-12 .* max.(abs.(hi), abs.(lo)), floatmin())
+        Ydata .+= (sigma .* nscale) .* randn(Xoshiro(hash((seed, :noise))), size(Ydata))
+    end
 
     ymin, ymax = vec(minimum(Ydata, dims = 2)), vec(maximum(Ydata, dims = 2))
     yscale = max.(ymax .- ymin, 1e-12 .* max.(abs.(ymax), abs.(ymin)), floatmin())
 
-    model  = build_stiff_field(d, Ydata, spec.tsteps, (ymax .+ ymin) ./ 2, yscale;
-                               width = cfg.hidden, depth = cfg.depth,
-                               signed_loss = cfg.signed_loss,
-                               time_dependent = get(cfg, :time_dependent, false))
+    ymid = (ymax .+ ymin) ./ 2
+    td   = get(cfg, :time_dependent, false)
+    model = if arch == "stiff"
+        build_stiff_field(d, Ydata, spec.tsteps, ymid, yscale;
+                          width = cfg.hidden, depth = cfg.depth,
+                          signed_loss = cfg.signed_loss, time_dependent = td, init = init)
+    elseif arch == "GELU-scaled"
+        a = gelu_arch(problem)
+        build_mlp_field(d, Ydata, spec.tsteps, yscale;
+                        width = a.hidden, depth = a.depth,
+                        scaling = :eq, activation = gelu, time_dependent = td, init = init)
+    else
+        build_mlp_field(d, Ydata, spec.tsteps, yscale;
+                        width = cfg.hidden, depth = cfg.depth, time_dependent = td, init = init)
+    end
     ps, st = Lux.setup(Xoshiro(seed), model); ps = Lux.f64(ps)
     init_stiff!(ps, model)
     ctx = (; spec, tsteps = spec.tsteps, tspan = spec.tspan, u0 = spec.u0,
              d, tlen, Ydata, yscale, model, st, ps_axes = getaxes(ComponentVector(ps)))
 
     n_params = length(ComponentVector(ps))
-    println("$(spec.name)  d=$d tlen=$tlen profile=$profile seed=$seed  " *
-            "solver=$(typeof(spec.solver).name.name)  N=$n_params")
+    println("$(spec.name)  model=$arch d=$d tlen=$tlen profile=$profile seed=$seed" *
+            (sigma > 0 ? " sigma=$sigma" : "") *
+            (init === :default ? "" : " init=$init") *
+            "  solver=$(typeof(spec.solver).name.name)  N=$n_params")
     flush(stdout)
 
     θ = collect(ComponentVector(ps))
     derivmatch_time  = 0.0
     collocation_time = 0.0
+    shooting_time    = 0.0
+    shapovalova_time = 0.0
+    if use_shap
+        shapovalova_time = @elapsed ((θ, shaploss) =
+            shapovalova(ctx, θ, ncol > 0 ? ncol : tlen))
+        println("shapovalova [$(round(Int, shapovalova_time))s]  loss=$(round(shaploss; sigdigits=3))")
+        report(ctx, "final", θ)
+    end
+    if use_shooting
+        shooting_time = @elapsed ((θ, shootloss) =
+            shooting(ctx, θ, shoot_iters; paper = arch == "GELU-scaled"))
+        println("shooting [$(round(Int, shooting_time))s]  loss=$(round(shootloss; sigdigits=3))")
+        report(ctx, "final", θ)
+    end
     if use_derivmatch
         derivmatch_time = @elapsed ((θ, fitloss) = derivative_matching(ctx, θ, fd_derivatives(Ydata, spec.tsteps),
                                                          cfg.dm_iters))
@@ -131,7 +201,10 @@ function main(args = parse_cli())
     run_info["cfg"] = Dict(String(k) => toml_safe(v) for (k, v) in pairs(cfg))
     run_info["derivmatch_time"]  = derivmatch_time
     run_info["collocation_time"] = collocation_time
-    run_info["training_time"]    = derivmatch_time + collocation_time
+    run_info["shooting_time"]    = shooting_time
+    run_info["shapovalova_time"] = shapovalova_time
+    run_info["training_time"]    = derivmatch_time + collocation_time +
+                                   shooting_time + shapovalova_time
     run_info["n_params"]         = n_params
     run_info["timestamp"]        = string(now())
     open(joinpath(run_dir, "run_info.toml"), "w") do io
