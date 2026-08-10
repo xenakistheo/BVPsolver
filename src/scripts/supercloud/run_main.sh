@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#SBATCH --partition=xeon-p8 #use debug-cpu for debugging xeon-p8 for main runs
+#SBATCH --partition=debug-cpu #use debug-cpu for debugging xeon-p8 for main runs
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
 #SBATCH --time=100:00:00
