@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-#SBATCH --partition=mit_normal use mit_quicktest for debugging. mit_normal for main runs
+#SBATCH --partition=xeon-p8 #use debug-cpu for debugging xeon-p8 for main runs
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
-#SBATCH --time=12:00:00
+#SBATCH --time=100:00:00
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
-#SBATCH --mail-user=theodoros.xenakis.03@gmail.com
-#SBATCH --mail-type=END,FAIL
+
+source /etc/profile
+
+module load julia/1.11.3
 
 set -euo pipefail
-
-module load julia/1.12.6
 
 # Resolve the repo root (three levels up from this script's directory).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -34,3 +34,10 @@ echo "Done: $(date)"
 # Run from the project root, e.g.:
 #   ./src/scripts/orcd/run_main.sh --problem vanderpol --param=100 --profile fast --seed 123 --no-collocation
 # See `julia --project=. src/run_main.jl --help` for all flags.
+
+
+
+
+
+
+
