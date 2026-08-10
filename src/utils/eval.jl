@@ -1,5 +1,6 @@
 function rollout(ctx, θ; dense = false)
     rhs!(du, u, p, t) = (du .= f_theta(ctx, u, t, p); nothing)
+    rhs!(du, u, p, t) = (du .= f_theta(ctx, u, t, p); nothing)
     prob = ODEProblem(rhs!, ctx.u0, ctx.tspan, θ)
     kw   = (; verbose = SL.None(), ctx.spec.solve_kwargs...)
     return dense ? solve(prob, ctx.spec.solver; kw...) :
