@@ -1,0 +1,28 @@
+collocation_time = 0.0
+derivmatch_time = 44.288029737
+init = "default"
+model = "stiff"
+n_params = 268
+ncol = 0
+param = 100.0
+problem = "vanderpol"
+profile = "fast"
+seed = 123
+shapovalova = false
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting = false
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-10T18:55:38.438"
+training_time = 44.288029737
+use_collocation = false
+use_derivmatch = true
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = true

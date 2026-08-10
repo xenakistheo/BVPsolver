@@ -1,0 +1,13 @@
+Precompiling packages...
+  34545.3 ms  ✓ StiffNN
+  1 dependency successfully precompiled in 150 seconds. 596 already precompiled.
+vanderpol  model=stiff d=2 tlen=151 profile=fast seed=123  solver=Kvaerno5  N=268
+derivative matching [44s]  fitloss=0.000521
+  [derivative matching]  nrmse=0.3448  l2=325.3
+saved /home/gridsan/txenakis/projects/BVPsolver/src/../data/runs/run_Uve46cZI/vanderpol_fit.png
+saved /home/gridsan/txenakis/projects/BVPsolver/src/../data/runs/run_Uve46cZI/vanderpol_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /home/gridsan/txenakis/projects/BVPsolver/src/../data/runs/run_Uve46cZI
