@@ -31,7 +31,7 @@ const PROBLEM         = "vanderpol"
 const PROFILE         = :fast
 const SEED            = 123
 const USE_DERIVMATCH  = true
-const USE_COLLOCATION = true
+const USE_COLLOCATION = false
 
 function problem_kwargs(problem, param)
     param === nothing && return (;)

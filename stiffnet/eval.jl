@@ -30,23 +30,45 @@ function report(ctx, label, θ)
     return m
 end
 
+function panel_grid(d)
+    d <= 8 && return (1, d, (760, 240 * d))
+    ncol = d <= 24 ? 4 : d <= 64 ? 6 : 8
+    nrow = cld(d, ncol)
+    return (ncol, nrow, (min(1800, 230 * ncol), min(14000, 175 * nrow)))
+end
+
+function panel_style(c, d, ncol, nrow)
+    big = ncol > 1
+    (; title = big ? "$c" : "", titlefontsize = big ? 7 : 11,
+       xlabel = (!big || c > d - ncol) ? "t" : "",
+       tickfontsize = big ? 5 : 8, legendfontsize = big ? 5 : 8,
+       grid = !big, ms = big ? 1.3 : 3, msw = big ? 0.3 : 1.0, lw = big ? 1 : 2,
+       left_margin = big ? 2Plots.mm : 0Plots.mm,
+       bottom_margin = big ? 1Plots.mm : 0Plots.mm)
+end
+
 function plot_fit(ctx, θ)
     logt  = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
     tgrid = logt ? exp.(range(log(ctx.tsteps[1]), log(ctx.tsteps[end]); length = 400)) :
                    collect(range(ctx.tspan[1], ctx.tspan[2]; length = 400))
-    sol  = rollout(ctx, θ; dense = true) 
+    sol  = rollout(ctx, θ; dense = true)
     ok   = successful_retcode(sol)
     ts   = ok ? sort(unique(vcat(tgrid, sol.t))) : Float64[]
     pred = ok ? reduce(hcat, (sol(t) for t in ts)) : zeros(ctx.d, 0)
+    ncol, nrow, sz = panel_grid(ctx.d)
     panels = map(1:ctx.d) do c
-        p = plot(; title = "y$c", xlabel = "t", xscale = logt ? :log10 : :identity, legend = c == 1)
+        s = panel_style(c, ctx.d, ncol, nrow)
+        p = plot(; title = ncol > 1 ? "y$c" : "y$c", titlefontsize = s.titlefontsize,
+                 xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
+                 tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
+                 grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
         scatter!(p, ctx.tsteps, ctx.Ydata[c, :]; label = c == 1 ? "data" : "",
-                 mc = :white, msc = :black, ms = 3)
+                 mc = :white, msc = :black, ms = s.ms, msw = s.msw)
         ok && plot!(p, ts, pred[c, :]; label = c == 1 ? "neural ODE" : "",
-                    color = :orangered, lw = 2)
+                    color = :orangered, lw = s.lw)
         p
     end
-    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)),
+    savefig(plot(panels...; layout = (nrow, ncol), size = sz),
             "$(ctx.spec.name)_fit.png")
     println("saved $(ctx.spec.name)_fit.png")
 end
@@ -79,15 +101,20 @@ end
 function plot_spectral_fit(ctx, θ)
     logt = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
     eigenvalues_true, eigenvalues_learned = eigenvalues(ctx, θ; absolute = true)
+    ncol, nrow, sz = panel_grid(ctx.d)
     panels = map(1:ctx.d) do c
-        p = plot(; title = "λ$c", xlabel = "t", xscale = logt ? :log10 : :identity, legend = c == 1)
+        s = panel_style(c, ctx.d, ncol, nrow)
+        p = plot(; title = "λ$c", titlefontsize = s.titlefontsize,
+                 xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
+                 tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
+                 grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
         scatter!(p, ctx.tsteps, eigenvalues_true[c, :]; label = c == 1 ? "true" : "",
-                 mc = :white, msc = :black, ms = 3)
+                 mc = :white, msc = :black, ms = s.ms, msw = s.msw)
         plot!(p, ctx.tsteps, eigenvalues_learned[c, :]; label = c == 1 ? "learned" : "",
-              color = :orangered, lw = 2)
+              color = :orangered, lw = s.lw)
         p
     end
-    savefig(plot(panels...; layout = (ctx.d, 1), size = (760, 240 * ctx.d)),
+    savefig(plot(panels...; layout = (nrow, ncol), size = sz),
             "$(ctx.spec.name)_spectral_fit.png")
     println("saved $(ctx.spec.name)_spectral_fit.png")
 end

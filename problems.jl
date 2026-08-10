@@ -192,8 +192,6 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         end
         u0 = vec(U0)
         tspan = (T(0.0), T(11.5))
-        tlen = fast ? 50 : 100
-        tsteps = collect(range(tspan[1], tspan[2]; length = tlen))
         lim(a) = a == Nb + 1 ? 1 : a == 0 ? Nb : a
         true_ode! = function (du, u, p, t)
             U  = reshape(u, Nb, Nb, 2)
@@ -214,6 +212,8 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         end
         kwargs = fast ? (; abstol=T(1e-10), reltol=T(1e-8), tstops=[T(1.1)]) :
                         (; abstol=T(1e-14), reltol=T(1e-10), tstops=[T(1.1)])
+        place = (; abstol=T(1e-6), reltol=T(1e-6), tstops=[T(1.1)])
+        tsteps = solve(ODEProblem(true_ode!, u0, tspan), Rodas5(); place...).t
         return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
             "brusselator", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
         )
