@@ -1,5 +1,6 @@
 function rollout(ctx, θ; dense = false)
     rhs!(du, u, p, t) = (du .= f_theta(ctx, u, t, p); nothing)
+    rhs!(du, u, p, t) = (du .= f_theta(ctx, u, t, p); nothing)
     prob = ODEProblem(rhs!, ctx.u0, ctx.tspan, θ)
     kw   = (; verbose = SL.None(), ctx.spec.solve_kwargs...)
     return dense ? solve(prob, ctx.spec.solver; kw...) :
@@ -46,9 +47,11 @@ function plot_fit(ctx, θ; dir = ".")
     tgrid = logt ? exp.(range(log(ctx.tsteps[1]), log(ctx.tsteps[end]); length = 400)) :
                    collect(range(ctx.tspan[1], ctx.tspan[2]; length = 400))
     sol  = rollout(ctx, θ; dense = true)
+    sol  = rollout(ctx, θ; dense = true)
     ok   = successful_retcode(sol)
     ts   = ok ? sort(unique(vcat(tgrid, sol.t))) : Float64[]
     pred = ok ? reduce(hcat, (sol(t) for t in ts)) : zeros(ctx.d, 0)
+    ncol, nrow, sz = panel_grid(ctx.d)
     ncol, nrow, sz = panel_grid(ctx.d)
     panels = map(1:ctx.d) do c
         s = panel_style(c, ctx.d, ncol, nrow)
@@ -56,9 +59,16 @@ function plot_fit(ctx, θ; dir = ".")
                  xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
                  tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
                  grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
+        s = panel_style(c, ctx.d, ncol, nrow)
+        p = plot(; title = ncol > 1 ? "y$c" : "y$c", titlefontsize = s.titlefontsize,
+                 xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
+                 tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
+                 grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
         scatter!(p, ctx.tsteps, ctx.Ydata[c, :]; label = c == 1 ? "data" : "",
                  mc = :white, msc = :black, ms = s.ms, msw = s.msw)
+                 mc = :white, msc = :black, ms = s.ms, msw = s.msw)
         ok && plot!(p, ts, pred[c, :]; label = c == 1 ? "neural ODE" : "",
+                    color = :orangered, lw = s.lw)
                     color = :orangered, lw = s.lw)
         p
     end
@@ -74,6 +84,9 @@ function eigenvalues(ctx, θ; absolute=false)
 
     for i in 1:size(ctx.Ydata)[2]
         y = ctx.Ydata[:, i]
+        t = ctx.tsteps[i]
+        F_true(x) = (du = similar(x); ctx.spec.true_ode!(du, x, nothing, t); du)
+        F_learned(x) = f_theta(ctx, x, t, θ)
         t = ctx.tsteps[i]
         F_true(x) = (du = similar(x); ctx.spec.true_ode!(du, x, nothing, t); du)
         F_learned(x) = f_theta(ctx, x, t, θ)
@@ -96,7 +109,13 @@ function plot_spectral_fit(ctx, θ; dir = ".")
     logt = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
     eigenvalues_true, eigenvalues_learned = eigenvalues(ctx, θ; absolute = true)
     ncol, nrow, sz = panel_grid(ctx.d)
+    ncol, nrow, sz = panel_grid(ctx.d)
     panels = map(1:ctx.d) do c
+        s = panel_style(c, ctx.d, ncol, nrow)
+        p = plot(; title = "λ$c", titlefontsize = s.titlefontsize,
+                 xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
+                 tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
+                 grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
         s = panel_style(c, ctx.d, ncol, nrow)
         p = plot(; title = "λ$c", titlefontsize = s.titlefontsize,
                  xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
@@ -104,7 +123,9 @@ function plot_spectral_fit(ctx, θ; dir = ".")
                  grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
         scatter!(p, ctx.tsteps, eigenvalues_true[c, :]; label = c == 1 ? "true" : "",
                  mc = :white, msc = :black, ms = s.ms, msw = s.msw)
+                 mc = :white, msc = :black, ms = s.ms, msw = s.msw)
         plot!(p, ctx.tsteps, eigenvalues_learned[c, :]; label = c == 1 ? "learned" : "",
+              color = :orangered, lw = s.lw)
               color = :orangered, lw = s.lw)
         p
     end
