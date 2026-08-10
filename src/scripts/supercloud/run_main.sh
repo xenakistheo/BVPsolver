@@ -34,7 +34,7 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # Run from the project root, e.g.:
-#   ./src/scripts/orcd/run_main.sh --problem vanderpol --param=100 --profile fast --seed 123 --no-collocation
+#   ./src/scripts/supercloud/run_main.sh --problem vanderpol --param=100 --profile fast --seed 123 --no-collocation
 # See `julia --project=. src/run_main.jl --help` for all flags.
 
 
