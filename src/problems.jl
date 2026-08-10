@@ -1,5 +1,3 @@
-
-
 struct ProblemSpec{T,S,F}
     name::String
     u0::Vector{T}
@@ -16,7 +14,7 @@ function generate_training_data(spec::ProblemSpec)
 end
 
 function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, profile::Symbol=:default,
-                      mu::Real=100.0, epsilon::Real=0.01)
+                      mu::Real=100.0, epsilon::Real=0.01, n::Integer=8)
     lname = lowercase(name)
     fast = profile == :fast
     profile ∈ (:default, :fast) || error("Unknown profile '$profile'. Valid: :default, :fast")
@@ -176,5 +174,45 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
     end
 
 
-    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu, hires, orego, davis-skodje")
+    if lname == "brusselator"
+        Nb = n
+        xyd = collect(range(T(0), stop = T(1), length = Nb))
+        dx = xyd[2] - xyd[1]
+        A, B, alpha = T(3.4), T(1.0), T(10.0)
+        adx2 = alpha / dx^2
+        U0 = zeros(T, Nb, Nb, 2)
+        for i in 1:Nb, j in 1:Nb
+            U0[i, j, 1] = T(22) * (xyd[j] * (1 - xyd[j]))^T(1.5)
+            U0[i, j, 2] = T(27) * (xyd[i] * (1 - xyd[i]))^T(1.5)
+        end
+        u0 = vec(U0)
+        tspan = (T(0.0), T(11.5))
+        lim(a) = a == Nb + 1 ? 1 : a == 0 ? Nb : a
+        true_ode! = function (du, u, p, t)
+            U  = reshape(u, Nb, Nb, 2)
+            dU = reshape(du, Nb, Nb, 2)
+            on = t >= T(1.1)
+            @inbounds for j in 1:Nb, i in 1:Nb
+                ip1, im1, jp1, jm1 = lim(i + 1), lim(i - 1), lim(j + 1), lim(j - 1)
+                x, y = xyd[i], xyd[j]
+                src = (on && ((x - T(0.3))^2 + (y - T(0.6))^2 <= T(0.1)^2)) ? T(5.0) : zero(T)
+                u1, u2 = U[i, j, 1], U[i, j, 2]
+                dU[i, j, 1] = adx2 * (U[im1, j, 1] + U[ip1, j, 1] + U[i, jp1, 1] +
+                                      U[i, jm1, 1] - 4u1) +
+                              B + u1^2 * u2 - (A + 1) * u1 + src
+                dU[i, j, 2] = adx2 * (U[im1, j, 2] + U[ip1, j, 2] + U[i, jp1, 2] +
+                                      U[i, jm1, 2] - 4u2) +
+                              A * u1 - u1^2 * u2
+            end
+        end
+        kwargs = fast ? (; abstol=T(1e-10), reltol=T(1e-8), tstops=[T(1.1)]) :
+                        (; abstol=T(1e-14), reltol=T(1e-10), tstops=[T(1.1)])
+        place = (; abstol=T(1e-6), reltol=T(1e-6), tstops=[T(1.1)])
+        tsteps = solve(ODEProblem(true_ode!, u0, tspan), Rodas5(); place...).t
+        return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
+            "brusselator", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
+        )
+    end
+
+    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator")
 end

@@ -18,6 +18,8 @@ const CONFIGS = (
                  amr_rounds = 1, lm_iters = 150),
     davisskodje = (hidden = 12, depth = 2, signed_loss = false, dm_iters = 10_000,
                  amr_rounds = 3, lm_iters = 150),
+    brusselator = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
+                 amr_rounds = 1, lm_iters = 150, time_dependent = true),
 )
 
 config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
@@ -27,6 +29,9 @@ function problem_kwargs(problem, param)
     key = config_key(problem)
     key === :vanderpol   && return (; mu = param)
     key === :davisskodje && return (; epsilon = param)
+    key === :brusselator && return (; n = round(Int, param))
+    error("$problem takes no scalar parameter " *
+          "(vanderpol=mu, davis-skodje=epsilon, brusselator=n)")
 end
 
 # ── CLI arguments ─────────────────────────────────────────────────────────
@@ -34,11 +39,11 @@ function parse_cli()
     s = ArgParseSettings()
     @add_arg_table s begin
         "--problem"
-            help = "Problem to solve (spiral, rober, vanderpol, hires, orego, davisskodje)"
+            help = "Problem (rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator)"
             arg_type = String
             default = "vanderpol"
         "--param"
-            help = "Override the problem's stiffness parameter (mu for vanderpol, epsilon for davisskodje)"
+            help = "Problem parameter: mu (vanderpol), epsilon (davis-skodje), n grid (brusselator)"
             arg_type = Float64
             default = nothing
         "--profile"
@@ -84,7 +89,8 @@ function main(args = parse_cli())
 
     model  = build_stiff_field(d, Ydata, spec.tsteps, (ymax .+ ymin) ./ 2, yscale;
                                width = cfg.hidden, depth = cfg.depth,
-                               signed_loss = cfg.signed_loss)
+                               signed_loss = cfg.signed_loss,
+                               time_dependent = get(cfg, :time_dependent, false))
     ps, st = Lux.setup(Xoshiro(seed), model); ps = Lux.f64(ps)
     init_stiff!(ps, model)
     ctx = (; spec, tsteps = spec.tsteps, tspan = spec.tspan, u0 = spec.u0,
