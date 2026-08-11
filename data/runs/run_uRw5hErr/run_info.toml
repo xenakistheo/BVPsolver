@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 24.952109171
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_191.err"
+init = "default"
+model = "GELU-scaled"
+n_params = 188
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_191.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "rober"
+profile = "fast"
+seed = 12
+shapovalova_time = 31.253509589
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-11T02:16:52.726"
+training = "shapovalova"
+training_time = 56.20561876
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = false

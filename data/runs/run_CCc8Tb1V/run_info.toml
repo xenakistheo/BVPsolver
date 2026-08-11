@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 32.707408248
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_226.err"
+init = "default"
+model = "stiff"
+n_params = 268
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_226.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "vanderpol"
+profile = "fast"
+seed = 12
+shapovalova_time = 5769.055011591
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-11T04:13:10.160"
+training = "shapovalova"
+training_time = 5801.762419839
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = true

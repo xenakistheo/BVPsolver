@@ -1,0 +1,30 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 0.0
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_353.err"
+init = "default"
+model = "mlp"
+n_params = 552
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_353.out"
+param = "none"
+pretraining = "none"
+problem = "hires"
+profile = "fast"
+seed = 14
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 4377.665867571
+sigma = 0.0
+timestamp = "2026-08-11T11:24:47.440"
+training = "shooting"
+training_time = 4377.665867571
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 16
+linsolve = "qr"
+lm_iters = 150
+signed_loss = false

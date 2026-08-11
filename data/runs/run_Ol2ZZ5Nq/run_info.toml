@@ -1,0 +1,30 @@
+collocation_time = 159.902830851
+computer = "orcd"
+derivmatch_time = 0.0
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_379.err"
+init = "default"
+model = "mlp"
+n_params = 552
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_379.out"
+param = "none"
+pretraining = "none"
+problem = "hires"
+profile = "fast"
+seed = 15
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-11T10:19:57.706"
+training = "collocation"
+training_time = 159.902830851
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 16
+linsolve = "qr"
+lm_iters = 150
+signed_loss = false

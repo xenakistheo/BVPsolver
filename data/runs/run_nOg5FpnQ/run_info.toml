@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 28.562067326
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_426.err"
+init = "default"
+model = "stiff"
+n_params = 486
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20198490_426.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "orego"
+profile = "fast"
+seed = 12
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 6662.152942336
+sigma = 0.0
+timestamp = "2026-08-11T13:21:57.779"
+training = "shooting"
+training_time = 6690.715009662
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 16
+lm_iters = 150
+signed_loss = false

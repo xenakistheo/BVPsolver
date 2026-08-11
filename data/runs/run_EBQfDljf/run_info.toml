@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 46.597442133
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_23.err"
+init = "default"
+model = "stiff"
+n_params = 4744
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_23.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "pollu"
+profile = "fast"
+seed = 14
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-10T22:44:38.150"
+training = "none"
+training_time = 46.597442133
+
+[cfg]
+amr_rounds = 1
+depth = 3
+dm_iters = 30000
+hidden = 32
+lm_iters = 150
+signed_loss = false

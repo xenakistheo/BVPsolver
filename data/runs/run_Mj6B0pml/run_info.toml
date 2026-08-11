@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 0.0
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_74.err"
+init = "default"
+model = "GELU-scaled"
+n_params = 650
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_74.out"
+param = "none"
+pretraining = "none"
+problem = "pollu"
+profile = "fast"
+seed = 15
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 3556.52339315
+sigma = 0.0
+timestamp = "2026-08-11T01:13:07.219"
+training = "shooting"
+training_time = 3556.52339315
+
+[cfg]
+amr_rounds = 1
+depth = 3
+dm_iters = 30000
+hidden = 32
+lm_iters = 150
+signed_loss = false

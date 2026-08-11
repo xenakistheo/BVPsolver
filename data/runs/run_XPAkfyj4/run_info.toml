@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 35.543721811
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_113.err"
+init = "default"
+model = "stiff"
+n_params = 318
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_113.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "rober"
+profile = "fast"
+seed = 14
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 655.19401535
+sigma = 0.0
+timestamp = "2026-08-11T01:54:08.902"
+training = "shooting"
+training_time = 690.7377371609999
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = false

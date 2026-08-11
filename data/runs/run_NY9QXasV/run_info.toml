@@ -1,0 +1,29 @@
+collocation_time = 19.391517815
+computer = "orcd"
+derivmatch_time = 26.256753184
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_310.err"
+init = "default"
+model = "GELU-scaled"
+n_params = 177
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_20140853_310.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "vanderpol"
+profile = "fast"
+seed = 11
+shapovalova_time = 0.0
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-11T03:26:39.223"
+training = "collocation"
+training_time = 45.648270999000005
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = true
