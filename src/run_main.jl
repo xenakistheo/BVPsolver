@@ -69,6 +69,14 @@ function parse_cli()
             arg_type = String
             default = "local"
             range_tester = x -> x in ("local", "orcd", "supercloud")
+        "--out-file"
+            help = "Path to this job's SLURM stdout log (for run_info.toml bookkeeping)"
+            arg_type = String
+            default = nothing
+        "--err-file"
+            help = "Path to this job's SLURM stderr log (for run_info.toml bookkeeping)"
+            arg_type = String
+            default = nothing
         "--init"
             help = "Weight initialization (default = Lux kaiming+gain, glorot = Glorot uniform + zero bias)"
             arg_type = String

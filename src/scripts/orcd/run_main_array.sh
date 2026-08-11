@@ -60,9 +60,15 @@ fi
 read -r -a ARGS <<< "${TASKS[$TASK_ID]}"
 
 LOG_FILE="$LOG_DIR/run_main_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.log"
+# Mirrors the %A_%a pattern in the #SBATCH --output/--error directives above,
+# since SLURM doesn't expose the resolved filenames via env var.
+OUT_FILE="$LOG_DIR/array_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.out"
+ERR_FILE="$LOG_DIR/array_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.err"
+
 echo "Task $TASK_ID/${#TASKS[@]}: ${TASKS[$TASK_ID]}"
 echo "Logging to $LOG_FILE"
-julia --project=. src/run_main.jl --computer orcd "${ARGS[@]}" 2>&1 | tee "$LOG_FILE"
+julia --project=. src/run_main.jl --computer orcd --out-file "$OUT_FILE" --err-file "$ERR_FILE" \
+    "${ARGS[@]}" 2>&1 | tee "$LOG_FILE"
 
 echo "--------------------------------------"
 echo "Done: $(date)"

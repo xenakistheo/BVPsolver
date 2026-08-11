@@ -24,10 +24,15 @@ mkdir -p "$LOG_DIR"
 
 # PID keeps the filename unique across concurrent runs launched in the same second.
 LOG_FILE="$LOG_DIR/run_main_$(date +%Y%m%d_%H%M%S)_$$.log"
+# Mirrors the %x_%j pattern in the #SBATCH --output/--error directives above,
+# since SLURM doesn't expose the resolved filenames via env var.
+OUT_FILE="$LOG_DIR/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.out"
+ERR_FILE="$LOG_DIR/${SLURM_JOB_NAME}_${SLURM_JOB_ID}.err"
 
 cd "$REPO_ROOT"
 echo "Logging to $LOG_FILE"
-julia --project=. src/run_main.jl --computer orcd "$@" 2>&1 | tee "$LOG_FILE"
+julia --project=. src/run_main.jl --computer orcd --out-file "$OUT_FILE" --err-file "$ERR_FILE" \
+    "$@" 2>&1 | tee "$LOG_FILE"
 
 
 echo "--------------------------------------"
