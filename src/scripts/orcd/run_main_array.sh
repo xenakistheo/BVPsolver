@@ -6,7 +6,7 @@
 #SBATCH --time=02:00:00
 #SBATCH --output=logs/array_%A_%a.out
 #SBATCH --error=logs/array_%A_%a.err
-#SBATCH --mail-user=theodoros.xenakis.03@gmail.com
+#SBATCH --mail-user=txenakis@mit.edu
 #SBATCH --mail-type=END,FAIL
 
 set -euo pipefail

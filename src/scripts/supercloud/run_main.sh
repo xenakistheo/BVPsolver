@@ -6,6 +6,8 @@
 #SBATCH --time=100:00:00
 #SBATCH --output=logs/%x_%j.out
 #SBATCH --error=logs/%x_%j.err
+#SBATCH --mail-user=txenakis@mit.edu
+#SBATCH --mail-type=END,FAIL
 
 source /etc/profile
 
