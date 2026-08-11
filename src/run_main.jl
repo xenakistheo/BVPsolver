@@ -64,6 +64,11 @@ function parse_cli()
             help = "RNG seed for model initialization"
             arg_type = Int
             default = 123
+        "--computer"
+            help = "Machine this run was launched from (for run_info.toml bookkeeping)"
+            arg_type = String
+            default = "local"
+            range_tester = x -> x in ("local", "orcd", "supercloud")
         "--init"
             help = "Weight initialization (default = Lux kaiming+gain, glorot = Glorot uniform + zero bias)"
             arg_type = String
