@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#SBATCH --partition=mit_quicktest
+#SBATCH --partition=mit_normal
 # use mit_quicktest for debugging, mit_normal for main runs
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=64G
