@@ -3,7 +3,7 @@
 #SBATCH --partition=mit_normal
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=20G
-#SBATCH --time=08:00:00
+#SBATCH --time=10:00:00
 #SBATCH --output=logs/array_heavy_%A_%a.out
 #SBATCH --error=logs/array_heavy_%A_%a.err
 #SBATCH --mail-user=txenakis@mit.edu

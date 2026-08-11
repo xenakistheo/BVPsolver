@@ -2,7 +2,7 @@
 
 #SBATCH --partition=xeon-p8
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=8G
+#SBATCH --mem=64G
 #SBATCH --time=100:00:00
 #SBATCH --output=logs/array_%A_%a.out
 #SBATCH --error=logs/array_%A_%a.err
