@@ -19,8 +19,17 @@ function shooting(ctx, θ0, iters; paper = false)
                     ((1e-2, 0.34), (3e-3, 0.25), (1e-3, 0.25), (3e-4, 0.16))
     θ = copy(θ0)
     for (lr, frac) in sched
+        cur_iters = max(1, round(Int, frac * iters))
+        every = max(1, cur_iters ÷ 20)
+        cb(state, l) = begin
+            if state.iter % every == 0
+                println("  shooting lr=$lr iter=$(state.iter)/$cur_iters loss=$(round(l; sigdigits=4))")
+                flush(stdout)
+            end
+            false
+        end
         θ = solve(OptimizationProblem(optf, θ), OptimizationOptimisers.Adam(lr);
-                  maxiters = max(1, round(Int, frac * iters))).u
+                  maxiters = cur_iters, callback = cb).u
     end
     return θ, loss(θ, nothing)
 end
