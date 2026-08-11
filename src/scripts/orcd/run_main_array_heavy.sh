@@ -2,10 +2,10 @@
 
 #SBATCH --partition=mit_normal
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=8G
-#SBATCH --time=03:00:00
-#SBATCH --output=logs/array_%A_%a.out
-#SBATCH --error=logs/array_%A_%a.err
+#SBATCH --mem=20G
+#SBATCH --time=08:00:00
+#SBATCH --output=logs/array_heavy_%A_%a.out
+#SBATCH --error=logs/array_heavy_%A_%a.err
 #SBATCH --mail-user=txenakis@mit.edu
 #SBATCH --mail-type=END,FAIL
 
@@ -23,28 +23,36 @@ LOG_DIR="$REPO_ROOT/logs"
 mkdir -p "$LOG_DIR"
 
 # ── Sweep definition ────────────────────────────────────────────────────────
-# 6 problems (brusselator excluded, run separately on another cluster) x
-# 3 models x 5 pretraining/training combinations x 5 seeds = 450 tasks.
-# `shapovalova` training is excluded entirely (moved to
-# run_main_array_heavy.sh: it consistently timed out or OOM'd at 8G/3h
-# across every problem and model in jobs 20140853/20198490). A handful of
-# individual `shooting` (problem, model, seed) combos that also timed out
-# are excluded below and rerun there too.
+# Reruns of the resource-bound failures from run_main_array.sh (jobs 20140853,
+# 20198490): `shapovalova` training consistently timed out or OOM'd at
+# 8G/3h across every problem and model, so every shapovalova combo is rerun
+# here with more memory and time. A handful of specific `shooting` (problem,
+# model, seed) combos also timed out and are added explicitly below, since
+# `shooting` otherwise finishes fine at the default 8G/3h.
 PROBLEMS=(pollu rober vanderpol hires orego davis-skodje)
 MODELS=(stiff mlp GELU-scaled)
 # "pretraining:training" pairs
 CONFIGS=(
-    "none:shooting"
-    "derivmatch:shooting"
-    "derivmatch:none"
-    "none:collocation"
-    "derivmatch:collocation"
+    "none:shapovalova"
+    "derivmatch:shapovalova"
 )
 SEEDS=(11 12 13 14 15)
 
-# Individually timed-out `shooting` tasks, already covered by
-# run_main_array_heavy.sh — skip them here.
-EXCLUDE=(
+TASKS=()
+for problem in "${PROBLEMS[@]}"; do
+    for model in "${MODELS[@]}"; do
+        for cfg in "${CONFIGS[@]}"; do
+            pretrain="${cfg%%:*}"
+            train="${cfg##*:}"
+            for seed in "${SEEDS[@]}"; do
+                TASKS+=("--problem $problem --model $model --profile fast --seed $seed --pretraining $pretrain --training $train")
+            done
+        done
+    done
+done
+
+# Individually timed-out `shooting` tasks (not a full problem/model combo).
+EXTRA_SHOOTING=(
     "--problem pollu --model stiff --profile fast --seed 11 --pretraining none --training shooting"
     "--problem pollu --model stiff --profile fast --seed 12 --pretraining none --training shooting"
     "--problem pollu --model stiff --profile fast --seed 13 --pretraining none --training shooting"
@@ -80,28 +88,7 @@ EXCLUDE=(
     "--problem orego --model mlp --profile fast --seed 15 --pretraining derivmatch --training shooting"
     "--problem orego --model GELU-scaled --profile fast --seed 12 --pretraining derivmatch --training shooting"
 )
-
-is_excluded() {
-    local task="$1"
-    for x in "${EXCLUDE[@]}"; do
-        [[ "$task" == "$x" ]] && return 0
-    done
-    return 1
-}
-
-TASKS=()
-for problem in "${PROBLEMS[@]}"; do
-    for model in "${MODELS[@]}"; do
-        for cfg in "${CONFIGS[@]}"; do
-            pretrain="${cfg%%:*}"
-            train="${cfg##*:}"
-            for seed in "${SEEDS[@]}"; do
-                task="--problem $problem --model $model --profile fast --seed $seed --pretraining $pretrain --training $train"
-                is_excluded "$task" || TASKS+=("$task")
-            done
-        done
-    done
-done
+TASKS+=("${EXTRA_SHOOTING[@]}")
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:?SLURM_ARRAY_TASK_ID is unset; submit this script with sbatch --array=...}"
 if (( TASK_ID < 0 || TASK_ID >= ${#TASKS[@]} )); then
@@ -113,8 +100,8 @@ read -r -a ARGS <<< "${TASKS[$TASK_ID]}"
 LOG_FILE="$LOG_DIR/run_main_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.log"
 # Mirrors the %A_%a pattern in the #SBATCH --output/--error directives above,
 # since SLURM doesn't expose the resolved filenames via env var.
-OUT_FILE="$LOG_DIR/array_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.out"
-ERR_FILE="$LOG_DIR/array_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.err"
+OUT_FILE="$LOG_DIR/array_heavy_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.out"
+ERR_FILE="$LOG_DIR/array_heavy_${SLURM_ARRAY_JOB_ID}_${TASK_ID}.err"
 
 echo "Task $TASK_ID/${#TASKS[@]}: ${TASKS[$TASK_ID]}"
 echo "Logging to $LOG_FILE"
@@ -125,10 +112,9 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # ── Usage ────────────────────────────────────────────────────────────────
-# Total tasks = 416 (450 combos - 34 excluded shooting reruns), which now
-# fits under this account's QOS MaxSubmitPU=448 in one batch. %48 throttles
-# concurrent running tasks to match the mem-bound QOS ceiling
-# (MaxTRESPU cpu=96,mem=386G -> 386G / 8G per task = 48).
+# Total tasks = 214 (180 shapovalova combos + 34 individual shooting reruns).
+# At --mem=20G, this account's QOS ceiling (MaxTRESPU mem=386G) caps
+# concurrent running tasks at 386G / 20G ≈ 19, so %19 throttles to that.
 #
 # Run from the project root:
-#   sbatch --array=0-415%48 src/scripts/orcd/run_main_array.sh
+#   sbatch --array=0-213%19 src/scripts/orcd/run_main_array_heavy.sh

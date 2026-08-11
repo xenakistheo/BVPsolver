@@ -203,7 +203,11 @@ function main(args = parse_cli())
     mkpath(run_dir)
 
     plot_fit(ctx, θ; dir = run_dir)
-    plot_spectral_fit(ctx, θ; dir = run_dir)
+    try
+        plot_spectral_fit(ctx, θ; dir = run_dir)
+    catch e
+        println("  spectral fit plot FAILED: $e")
+    end
 
     jldsave(joinpath(run_dir, "state.jld2"); ctx = ctx, cfg = cfg, θ = θ)
 
