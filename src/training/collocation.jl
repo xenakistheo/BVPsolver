@@ -99,7 +99,9 @@ function solve_collocation(ctx, nsub, θ, lm_iters, linsolve)
                            sparsity = TracerSparsityDetector())
     ls = linsolve === :qr ? QRFactorization() : KLUFactorization()
     lm = LevenbergMarquardt(; b_uphill = 0.0, linsolve = ls)
-    sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp), lm; maxiters = lm_iters)
+    freq = max(1, lm_iters ÷ 20)
+    sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp), lm; maxiters = lm_iters,
+                show_trace = Val(true), trace_level = TraceMinimal(; print_frequency = freq))
     return sol.u, dp
 end
 
