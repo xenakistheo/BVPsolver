@@ -21,7 +21,7 @@ mkdir -p "$LOG_DIR"
 # PID keeps the filename unique across concurrent runs launched in the same second.
 LOG_FILE="$LOG_DIR/run_main_$(date +%Y%m%d_%H%M%S)_$$.log"
 
-ARGS=(--problem "$PROBLEM" --profile "$PROFILE" --seed "$SEED")
+ARGS=(--problem "$PROBLEM" --profile "$PROFILE" --seed "$SEED" --computer local)
 [[ -n "$PARAM" ]] && ARGS+=(--param "$PARAM")
 [[ "$USE_DERIVMATCH" == false ]] && ARGS+=(--no-derivmatch)
 [[ "$USE_COLLOCATION" == false ]] && ARGS+=(--no-collocation)

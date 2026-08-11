@@ -27,7 +27,7 @@ LOG_FILE="$LOG_DIR/run_main_$(date +%Y%m%d_%H%M%S)_$$.log"
 
 cd "$REPO_ROOT"
 echo "Logging to $LOG_FILE"
-julia --project=. src/run_main.jl "$@" 2>&1 | tee "$LOG_FILE"
+julia --project=. src/run_main.jl --computer orcd "$@" 2>&1 | tee "$LOG_FILE"
 
 
 echo "--------------------------------------"
