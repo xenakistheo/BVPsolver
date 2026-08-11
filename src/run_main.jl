@@ -1,5 +1,6 @@
 # julia --project=. src/run_main.jl [--problem NAME] [--param VALUE] [--profile fast|default]
-#                                    [--seed N] [--no-derivmatch] [--no-collocation]
+#                                    [--seed N] [--pretraining none|derivmatch]
+#                                    [--training none|shooting|shapovalova|collocation]
 ENV["GKSwstype"] = "100"
 using Lux, Random, ComponentArrays
 using ArgParse, JLD2, TOML, Dates
@@ -72,28 +73,24 @@ function parse_cli()
             help = "Gaussian noise std as a fraction of each species' range (0.01 = 1%)"
             arg_type = Float64
             default = 0.0
-        "--shooting"
-            help = "Train by single shooting instead of derivative matching + collocation"
-            action = :store_true
+        "--pretraining"
+            help = "Pretraining stage run before --training"
+            arg_type = String
+            default = "derivmatch"
+            range_tester = x -> x in ("none", "derivmatch")
+        "--training"
+            help = "Main training method"
+            arg_type = String
+            default = "collocation"
+            range_tester = x -> x in ("none", "shooting", "shapovalova", "collocation")
         "--shoot-iters"
-            help = "Adam iterations for single shooting"
+            help = "Adam iterations for single shooting (--training shooting)"
             arg_type = Int
             default = 1000
-        "--shapovalova"
-            help = "Train by global Chebyshev collocation solved as one NLP in Ipopt"
-            action = :store_true
         "--ncol"
-            help = "Chebyshev collocation nodes for --shapovalova (0 = one per observation)"
+            help = "Chebyshev collocation nodes for --training shapovalova (0 = one per observation)"
             arg_type = Int
             default = 0
-        "--no-derivmatch"
-            help = "Skip the derivative-matching pretraining stage"
-            action = :store_false
-            dest_name = "use_derivmatch"
-        "--no-collocation"
-            help = "Skip the collocation training stage"
-            action = :store_false
-            dest_name = "use_collocation"
     end
     return parse_args(s)
 end
@@ -109,12 +106,12 @@ function main(args = parse_cli())
     seed            = args["seed"]
     sigma           = args["sigma"]
     init            = Symbol(args["init"])
-    use_shooting    = args["shooting"]
     shoot_iters     = args["shoot-iters"]
-    use_shap        = args["shapovalova"]
     ncol            = args["ncol"]
-    use_derivmatch  = args["use_derivmatch"] && !use_shooting && !use_shap
-    use_collocation = args["use_collocation"] && !use_shooting && !use_shap
+    use_derivmatch  = args["pretraining"] == "derivmatch"
+    use_shooting    = args["training"] == "shooting"
+    use_shap        = args["training"] == "shapovalova"
+    use_collocation = args["training"] == "collocation"
 
     cfg     = CONFIGS[config_key(problem)]
     spec    = make_problem(problem; T = Float64, profile = profile,
@@ -162,6 +159,12 @@ function main(args = parse_cli())
     collocation_time = 0.0
     shooting_time    = 0.0
     shapovalova_time = 0.0
+    if use_derivmatch
+        derivmatch_time = @elapsed ((θ, fitloss) = derivative_matching(ctx, θ, fd_derivatives(Ydata, spec.tsteps),
+                                                         cfg.dm_iters))
+        println("derivative matching [$(round(Int, derivmatch_time))s]  fitloss=$(round(fitloss; sigdigits=3))")
+        report(ctx, "derivative matching", θ)
+    end
     if use_shap
         shapovalova_time = @elapsed ((θ, shaploss) =
             shapovalova(ctx, θ, ncol > 0 ? ncol : tlen))
@@ -173,12 +176,6 @@ function main(args = parse_cli())
             shooting(ctx, θ, shoot_iters; paper = arch == "GELU-scaled"))
         println("shooting [$(round(Int, shooting_time))s]  loss=$(round(shootloss; sigdigits=3))")
         report(ctx, "final", θ)
-    end
-    if use_derivmatch
-        derivmatch_time = @elapsed ((θ, fitloss) = derivative_matching(ctx, θ, fd_derivatives(Ydata, spec.tsteps),
-                                                         cfg.dm_iters))
-        println("derivative matching [$(round(Int, derivmatch_time))s]  fitloss=$(round(fitloss; sigdigits=3))")
-        report(ctx, "derivative matching", θ)
     end
     if use_collocation
         collocation_time = @elapsed (θ = train_collocation(ctx, θ, cfg; score = p -> metrics(ctx, p).nrmse))
