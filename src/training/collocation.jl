@@ -100,6 +100,8 @@ function solve_collocation(ctx, nsub, θ, lm_iters, linsolve)
     ls = linsolve === :qr ? QRFactorization() : KLUFactorization()
     lm = LevenbergMarquardt(; b_uphill = 0.0, linsolve = ls)
     freq = max(1, lm_iters ÷ 20)
+    println("  collocation: M=$M residuals=$(n_residuals(ctx.d, ctx.tlen, M))  detecting sparsity + solving...")
+    flush(stdout)
     sol = solve(NonlinearLeastSquaresProblem(nf, z0, dp), lm; maxiters = lm_iters,
                 show_trace = Val(true), trace_level = TraceMinimal(; print_frequency = freq))
     return sol.u, dp
