@@ -14,9 +14,10 @@ set -euo pipefail
 
 module load julia/1.12.6
 
-# Resolve the repo root (three levels up from this script's directory).
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+# SLURM copies the submitted script to a spool directory before running it,
+# so $BASH_SOURCE doesn't point at the repo. Use the submission directory
+# instead (this script must be submitted via `sbatch` from the repo root).
+REPO_ROOT="$SLURM_SUBMIT_DIR"
 
 LOG_DIR="$REPO_ROOT/logs"
 mkdir -p "$LOG_DIR"
