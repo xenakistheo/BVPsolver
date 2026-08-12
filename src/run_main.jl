@@ -185,8 +185,7 @@ function main(args = parse_cli())
         report(ctx, "final", θ)
     end
     if use_shooting
-        shooting_time = @elapsed ((θ, shootloss) =
-            shooting(ctx, θ, shoot_iters; paper = arch == "GELU-scaled"))
+        shooting_time = @elapsed ((θ, shootloss) = shooting(ctx, θ, shoot_iters))
         println("shooting [$(round(Int, shooting_time))s]  loss=$(round(shootloss; sigdigits=3))")
         report(ctx, "final", θ)
     end
