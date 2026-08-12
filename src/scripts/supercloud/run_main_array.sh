@@ -15,6 +15,16 @@ source /etc/profile
 # project's Manifest.toml requires >=1.12 for LinearAlgebra compat).
 export PATH="$HOME/.juliaup/bin:$PATH"
 
+# Without this, Julia/OpenBLAS default to the *node's* full core count rather
+# than respecting the --cpus-per-task=1 cgroup limit, so every concurrently
+# running array task oversubscribes the shared node's cores. Confirmed this
+# was the cause of the brusselator collocation job appearing to hang/balloon
+# in memory (18+ hrs, 83GB+ on the cluster vs 30s/5GB for the identical
+# problem run standalone on a laptop with no contention).
+export JULIA_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export OMP_NUM_THREADS=1
+
 set -euo pipefail
 
 # SLURM copies the submitted script to a spool directory before running it,
