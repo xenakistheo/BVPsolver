@@ -24,12 +24,13 @@ function interp_rows(t, Y, tq)
     return Yq
 end
 
-function shapovalova(ctx, θ0, ncol; lambda = 1e-6)
+function shapovalova(ctx, θ0, ncol; lambda = 1e-6, hessian_approximation = "exact")
     d, nps   = ctx.d, length(θ0)
     tcol, Dt = cheb_diffmatrix(ctx.tspan, ncol)
     Yobs     = interp_rows(ctx.tsteps, permutedims(ctx.Ydata), tcol)
 
     m = JuMP.Model(Ipopt.Optimizer)
+    JuMP.set_attribute(m, "hessian_approximation", hessian_approximation)
     JuMP.@variable(m, ps[1:nps])
     JuMP.@variable(m, Y[1:ncol, 1:d])
     JuMP.set_start_value.(ps, θ0)

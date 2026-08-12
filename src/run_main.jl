@@ -104,6 +104,11 @@ function parse_cli()
             help = "Chebyshev collocation nodes for --training shapovalova (0 = one per observation)"
             arg_type = Int
             default = 0
+        "--shap-hessian"
+            help = "Ipopt hessian_approximation for --training shapovalova"
+            arg_type = String
+            default = "exact"
+            range_tester = x -> x in ("exact", "limited-memory")
     end
     return parse_args(s)
 end
@@ -121,6 +126,7 @@ function main(args = parse_cli())
     init            = Symbol(args["init"])
     shoot_iters     = args["shoot-iters"]
     ncol            = args["ncol"]
+    shap_hessian    = args["shap-hessian"]
     use_derivmatch  = args["pretraining"] == "derivmatch"
     use_shooting    = args["training"] == "shooting"
     use_shap        = args["training"] == "shapovalova"
@@ -180,7 +186,7 @@ function main(args = parse_cli())
     end
     if use_shap
         shapovalova_time = @elapsed ((θ, shaploss) =
-            shapovalova(ctx, θ, ncol > 0 ? ncol : tlen))
+            shapovalova(ctx, θ, ncol > 0 ? ncol : tlen; hessian_approximation = shap_hessian))
         println("shapovalova [$(round(Int, shapovalova_time))s]  loss=$(round(shaploss; sigdigits=3))")
         report(ctx, "final", θ)
     end
