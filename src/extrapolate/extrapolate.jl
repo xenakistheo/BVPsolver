@@ -8,7 +8,6 @@
 # boundary between them.
 ENV["GKSwstype"] = "100"
 using ArgParse, JLD2, TOML, Dates
-using OrdinaryDiffEq
 using SciMLBase: successful_retcode
 using Statistics, Plots
 using StiffNN
@@ -37,16 +36,6 @@ function parse_cli()
             default = nothing
     end
     return parse_args(s)
-end
-
-# Mirrors the log-vs-linear heuristic used for plotting in utils/eval.jl.
-is_log_spaced(tsteps) = all(>(0), tsteps) && tsteps[end] / max(tsteps[1], eps()) > 100
-
-function extend_tsteps(tsteps, T, T_test, n_extra)
-    logt = is_log_spaced(tsteps)
-    new  = logt ? exp.(range(log(T), log(T_test); length = n_extra + 1))[2:end] :
-                  collect(range(T, T_test; length = n_extra + 1))[2:end]
-    return sort(unique(vcat(tsteps, new)))
 end
 
 function region_metrics(P, Ydata, yscale, mask)
@@ -94,31 +83,10 @@ function main(args = parse_cli())
     spec    = ctx0.spec
 
     T       = spec.tspan[2]
-    n_train = length(ctx0.tsteps)
-    logt    = is_log_spaced(ctx0.tsteps)
+    n_extra = args["n-extra"]
 
-    # Doubling the extrapolation window means doubling the linear span on a linear
-    # axis, but doubling the number of decades covered on a log axis (e.g. rober),
-    # since a flat "2T" there would barely extend past the training range in log-space.
-    T_test = if args["t-test"] !== nothing
-        args["t-test"]
-    elseif logt
-        T^2 / ctx0.tsteps[1]
-    else
-        2T
-    end
-    T_test > T || error("--t-test ($T_test) must be greater than the training horizon T=$T")
-
-    n_extra = args["n-extra"] === nothing ? 2n_train : args["n-extra"]
-
-    tsteps_ext = extend_tsteps(ctx0.tsteps, T, T_test, n_extra)
-    tspan_ext  = (spec.tspan[1], T_test)
-
-    prob      = ODEProblem(spec.true_ode!, spec.u0, tspan_ext)
-    Ydata_ext = Array(solve(prob, spec.solver; saveat = tsteps_ext, spec.solve_kwargs...))
-
-    ctx = merge(ctx0, (; tsteps = tsteps_ext, tspan = tspan_ext,
-                          Ydata = Ydata_ext, tlen = length(tsteps_ext)))
+    ctx, train = extrapolation_ctx(ctx0; t_test = args["t-test"], n_extra = n_extra)
+    T_test = ctx.tspan[2]
 
     sol = rollout(ctx, θ)
     if !successful_retcode(sol)
@@ -126,7 +94,6 @@ function main(args = parse_cli())
     end
     P = Array(sol)
 
-    train = tsteps_ext .<= T
     m_train = region_metrics(P, ctx.Ydata, ctx0.yscale, train)
     m_test  = region_metrics(P, ctx.Ydata, ctx0.yscale, .!train)
     println("$(spec.name)  T=$T  T_test=$T_test  n_train=$(count(train))  n_test=$(count(.!train))")
@@ -142,7 +109,7 @@ function main(args = parse_cli())
         "run_dir"     => run_dir,
         "T"           => T,
         "t_test"      => T_test,
-        "n_extra"     => n_extra,
+        "n_extra"     => count(.!train),
         "train_nrmse" => m_train.nrmse,
         "train_l2"    => m_train.l2,
         "test_nrmse"  => m_test.nrmse,

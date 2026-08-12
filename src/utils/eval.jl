@@ -112,3 +112,78 @@ function plot_spectral_fit(ctx, θ; dir = ".")
     savefig(plot(panels...; layout = (nrow, ncol), size = sz), path)
     println("saved $path")
 end
+
+# ── Extrapolation window ─────────────────────────────────────────────────
+is_log_spaced(tsteps) = all(>(0), tsteps) && tsteps[end] / max(tsteps[1], eps()) > 100
+
+function extend_tsteps(tsteps, T, T_test, n_extra)
+    logt = is_log_spaced(tsteps)
+    new  = logt ? exp.(range(log(T), log(T_test); length = n_extra + 1))[2:end] :
+                  collect(range(T, T_test; length = n_extra + 1))[2:end]
+    return sort(unique(vcat(tsteps, new)))
+end
+
+# Extends ctx's training window [0, T] out to an extrapolation window [T, T_test],
+# regenerating ground truth on the extended grid. Doubling the window means doubling
+# the linear span on a linear time axis, but doubling the number of decades on a log
+# axis (e.g. rober), since a flat "2T" there would barely extend past training in
+# log-space. Returns the extended ctx plus a boolean mask selecting the training columns.
+function extrapolation_ctx(ctx; t_test = nothing, n_extra = nothing)
+    spec    = ctx.spec
+    T       = spec.tspan[2]
+    n_train = length(ctx.tsteps)
+    logt    = is_log_spaced(ctx.tsteps)
+    T_test  = t_test !== nothing ? t_test : (logt ? T^2 / ctx.tsteps[1] : 2T)
+    T_test > T || error("t_test ($T_test) must be greater than the training horizon T=$T")
+    n_extra = n_extra === nothing ? 2n_train : n_extra
+
+    tsteps_ext = extend_tsteps(ctx.tsteps, T, T_test, n_extra)
+    tspan_ext  = (spec.tspan[1], T_test)
+    prob       = ODEProblem(spec.true_ode!, spec.u0, tspan_ext)
+    Ydata_ext  = Array(solve(prob, spec.solver; saveat = tsteps_ext, spec.solve_kwargs...))
+
+    ext = merge(ctx, (; tsteps = tsteps_ext, tspan = tspan_ext,
+                        Ydata = Ydata_ext, tlen = length(tsteps_ext)))
+    return ext, tsteps_ext .<= T
+end
+
+# ── Relative error metrics (see metrics.md) ──────────────────────────────
+function relative_error(Yhat, Ytrue)
+    denom = max.(vec(sum(abs2, Ytrue; dims = 2)), floatmin())
+    per_species = vec(sum(abs2, Yhat .- Ytrue; dims = 2)) ./ denom
+    return per_species, mean(per_species)
+end
+
+function true_vector_field(spec, Ydata, tsteps)
+    d, n = size(Ydata)
+    V  = similar(Ydata)
+    du = zeros(eltype(Ydata), d)
+    for i in 1:n
+        spec.true_ode!(du, view(Ydata, :, i), nothing, tsteps[i])
+        V[:, i] .= du
+    end
+    return V
+end
+
+# Trajectory / velocity-field / spectral relative errors of the model on ctx's time
+# grid, each as (per-species values, aggregated mean) — see metrics.md. NaN-filled
+# if the rollout fails (e.g. an extrapolation window the model blows up on).
+function error_metrics(ctx, θ)
+    sol = rollout(ctx, θ)
+    if !successful_retcode(sol)
+        nanvec = fill(NaN, ctx.d)
+        return (traj_species = nanvec, traj = NaN, vf_species = nanvec, vf = NaN,
+                spec_species = nanvec, spec = NaN)
+    end
+    Yhat = Array(sol)
+    traj_species, traj = relative_error(Yhat, ctx.Ydata)
+
+    Vhat  = f_theta(ctx, ctx.Ydata, ctx.tsteps, θ)
+    Vtrue = true_vector_field(ctx.spec, ctx.Ydata, ctx.tsteps)
+    vf_species, vf = relative_error(Vhat, Vtrue)
+
+    eig_true, eig_learned = eigenvalues(ctx, θ; absolute = true)
+    spec_species, spec_err = relative_error(eig_learned, eig_true)
+
+    return (; traj_species, traj, vf_species, vf, spec_species, spec = spec_err)
+end
