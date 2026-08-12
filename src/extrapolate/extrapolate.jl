@@ -9,7 +9,7 @@
 ENV["GKSwstype"] = "100"
 using ArgParse, JLD2, TOML, Dates
 using SciMLBase: successful_retcode
-using Statistics, Plots
+using Statistics
 using StiffNN
 
 function parse_cli()
@@ -45,37 +45,6 @@ function region_metrics(P, Ydata, yscale, mask)
             l2    = sqrt(sum(abs2, Pm .- Ym)))
 end
 
-function plot_extrapolation(ctx, θ, T; dir = ".")
-    logt  = is_log_spaced(ctx.tsteps)
-    sol   = rollout(ctx, θ; dense = true)
-    ok    = successful_retcode(sol)
-    ts    = ok ? sort(unique(vcat(ctx.tsteps, sol.t))) : Float64[]
-    pred  = ok ? reduce(hcat, (sol(t) for t in ts)) : zeros(ctx.d, 0)
-    train = ctx.tsteps .<= T
-    ncol, nrow, sz = if ctx.d <= 8
-        (1, ctx.d, (760, 240 * ctx.d))
-    else
-        nc = ctx.d <= 24 ? 4 : 6
-        nr = cld(ctx.d, nc)
-        (nc, nr, (min(1800, 230 * nc), min(14000, 175 * nr)))
-    end
-    panels = map(1:ctx.d) do c
-        p = plot(; title = "y$c", xlabel = "t", xscale = logt ? :log10 : :identity,
-                 legend = c == 1)
-        scatter!(p, ctx.tsteps[train], ctx.Ydata[c, train]; label = c == 1 ? "train data" : "",
-                 mc = :white, msc = :black, ms = 3, msw = 1.0)
-        scatter!(p, ctx.tsteps[.!train], ctx.Ydata[c, .!train]; label = c == 1 ? "test data" : "",
-                 mc = :white, msc = :steelblue, ms = 3, msw = 1.0)
-        ok && plot!(p, ts, pred[c, :]; label = c == 1 ? "neural ODE" : "",
-                    color = :orangered, lw = 2)
-        vline!(p, [T]; label = c == 1 ? "train/test split" : "", color = :gray, ls = :dash)
-        p
-    end
-    path = joinpath(dir, "$(ctx.spec.name)_extrapolation_fit.png")
-    savefig(plot(panels...; layout = (nrow, ncol), size = sz), path)
-    println("saved $path")
-end
-
 function main(args = parse_cli())
     run_dir = args["run-dir"]
     state   = load(joinpath(run_dir, "state.jld2"))
@@ -103,7 +72,7 @@ function main(args = parse_cli())
 
     out_dir = args["out-dir"] === nothing ? joinpath(run_dir, "extrapolate") : args["out-dir"]
     mkpath(out_dir)
-    plot_extrapolation(ctx, θ, T; dir = out_dir)
+    plot_fit(ctx, θ; dir = out_dir, train_mask = train)
 
     info = Dict(
         "run_dir"     => run_dir,

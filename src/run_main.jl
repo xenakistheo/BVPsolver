@@ -218,10 +218,16 @@ function main(args = parse_cli())
     mkpath(run_dir)
 
     plot_fit(ctx, θ; dir = run_dir)
+    plot_fit(ext_ctx, θ; dir = run_dir, train_mask)
     try
-        plot_spectral_fit(ctx, θ; dir = run_dir)
+        plot_spectral_fit(ext_ctx, θ; dir = run_dir, train_mask)
     catch e
         println("  spectral fit plot FAILED: $e")
+    end
+    try
+        plot_vf_fit(ext_ctx, θ; dir = run_dir, train_mask)
+    catch e
+        println("  velocity field fit plot FAILED: $e")
     end
 
     jldsave(joinpath(run_dir, "state.jld2"); ctx = ctx, cfg = cfg, θ = θ)

@@ -41,8 +41,10 @@ function panel_style(c, d, ncol, nrow)
        bottom_margin = big ? 1Plots.mm : 0Plots.mm)
 end
 
-function plot_fit(ctx, θ; dir = ".")
-    logt  = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
+# train_mask, when given, splits the data scatter into train/test coloring with a
+# vertical boundary line at the end of the training window (see extrapolation_ctx).
+function plot_fit(ctx, θ; dir = ".", train_mask = nothing)
+    logt  = is_log_spaced(ctx.tsteps)
     tgrid = logt ? exp.(range(log(ctx.tsteps[1]), log(ctx.tsteps[end]); length = 400)) :
                    collect(range(ctx.tspan[1], ctx.tspan[2]; length = 400))
     sol  = rollout(ctx, θ; dense = true)
@@ -50,19 +52,28 @@ function plot_fit(ctx, θ; dir = ".")
     ts   = ok ? sort(unique(vcat(tgrid, sol.t))) : Float64[]
     pred = ok ? reduce(hcat, (sol(t) for t in ts)) : zeros(ctx.d, 0)
     ncol, nrow, sz = panel_grid(ctx.d)
+    train = train_mask === nothing ? trues(length(ctx.tsteps)) : train_mask
     panels = map(1:ctx.d) do c
         s = panel_style(c, ctx.d, ncol, nrow)
-        p = plot(; title = ncol > 1 ? "y$c" : "y$c", titlefontsize = s.titlefontsize,
+        p = plot(; title = "y$c", titlefontsize = s.titlefontsize,
                  xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
                  tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
                  grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
-        scatter!(p, ctx.tsteps, ctx.Ydata[c, :]; label = c == 1 ? "data" : "",
+        scatter!(p, ctx.tsteps[train], ctx.Ydata[c, train];
+                 label = c == 1 ? (train_mask === nothing ? "data" : "train data") : "",
                  mc = :white, msc = :black, ms = s.ms, msw = s.msw)
+        if train_mask !== nothing
+            scatter!(p, ctx.tsteps[.!train], ctx.Ydata[c, .!train]; label = c == 1 ? "test data" : "",
+                     mc = :white, msc = :steelblue, ms = s.ms, msw = s.msw)
+            vline!(p, [ctx.tsteps[train][end]]; label = c == 1 ? "train/test split" : "",
+                   color = :gray, ls = :dash)
+        end
         ok && plot!(p, ts, pred[c, :]; label = c == 1 ? "neural ODE" : "",
                     color = :orangered, lw = s.lw)
         p
     end
-    path = joinpath(dir, "$(ctx.spec.name)_fit.png")
+    suffix = train_mask === nothing ? "fit" : "fit_extrapolated"
+    path = joinpath(dir, "$(ctx.spec.name)_$suffix.png")
     savefig(plot(panels...; layout = (nrow, ncol), size = sz), path)
     println("saved $path")
 end
@@ -92,25 +103,49 @@ function eigenvalues(ctx, θ; absolute=false)
 end
 
 
-function plot_spectral_fit(ctx, θ; dir = ".")
-    logt = all(>(0), ctx.tsteps) && ctx.tspan[2] / max(ctx.tspan[1], eps()) > 100
-    eigenvalues_true, eigenvalues_learned = eigenvalues(ctx, θ; absolute = true)
+# Shared "true vs learned" panel plot for values sampled pointwise at ctx.tsteps
+# (used by the spectral and velocity-field fits, which have no continuous ODE
+# solution to draw the way plot_fit's dense rollout does). train_mask, when given,
+# splits the true-value scatter into train/test coloring with a boundary line.
+function plot_pointwise_fit(ctx, Ytrue, Yhat, ylabel, name_suffix; dir = ".", train_mask = nothing)
+    logt = is_log_spaced(ctx.tsteps)
     ncol, nrow, sz = panel_grid(ctx.d)
+    train = train_mask === nothing ? trues(length(ctx.tsteps)) : train_mask
     panels = map(1:ctx.d) do c
         s = panel_style(c, ctx.d, ncol, nrow)
-        p = plot(; title = "λ$c", titlefontsize = s.titlefontsize,
+        p = plot(; title = "$ylabel$c", titlefontsize = s.titlefontsize,
                  xlabel = s.xlabel, xscale = logt ? :log10 : :identity, legend = c == 1,
                  tickfontsize = s.tickfontsize, legendfontsize = s.legendfontsize,
                  grid = s.grid, left_margin = s.left_margin, bottom_margin = s.bottom_margin)
-        scatter!(p, ctx.tsteps, eigenvalues_true[c, :]; label = c == 1 ? "true" : "",
+        scatter!(p, ctx.tsteps[train], Ytrue[c, train];
+                 label = c == 1 ? (train_mask === nothing ? "true" : "true (train)") : "",
                  mc = :white, msc = :black, ms = s.ms, msw = s.msw)
-        plot!(p, ctx.tsteps, eigenvalues_learned[c, :]; label = c == 1 ? "learned" : "",
+        if train_mask !== nothing
+            scatter!(p, ctx.tsteps[.!train], Ytrue[c, .!train]; label = c == 1 ? "true (test)" : "",
+                     mc = :white, msc = :steelblue, ms = s.ms, msw = s.msw)
+            vline!(p, [ctx.tsteps[train][end]]; label = c == 1 ? "train/test split" : "",
+                   color = :gray, ls = :dash)
+        end
+        plot!(p, ctx.tsteps, Yhat[c, :]; label = c == 1 ? "learned" : "",
               color = :orangered, lw = s.lw)
         p
     end
-    path = joinpath(dir, "$(ctx.spec.name)_spectral_fit.png")
+    suffix = train_mask === nothing ? name_suffix : "$(name_suffix)_extrapolated"
+    path = joinpath(dir, "$(ctx.spec.name)_$suffix.png")
     savefig(plot(panels...; layout = (nrow, ncol), size = sz), path)
     println("saved $path")
+end
+
+function plot_spectral_fit(ctx, θ; dir = ".", train_mask = nothing)
+    eigenvalues_true, eigenvalues_learned = eigenvalues(ctx, θ; absolute = true)
+    plot_pointwise_fit(ctx, eigenvalues_true, eigenvalues_learned, "λ", "spectral_fit";
+                        dir, train_mask)
+end
+
+function plot_vf_fit(ctx, θ; dir = ".", train_mask = nothing)
+    Vtrue = true_vector_field(ctx.spec, ctx.Ydata, ctx.tsteps)
+    Vhat  = f_theta(ctx, ctx.Ydata, ctx.tsteps, θ)
+    plot_pointwise_fit(ctx, Vtrue, Vhat, "f", "vf_fit"; dir, train_mask)
 end
 
 # ── Extrapolation window ─────────────────────────────────────────────────
