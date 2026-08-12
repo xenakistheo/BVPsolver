@@ -15,6 +15,13 @@ source /etc/profile
 # project's Manifest.toml requires >=1.12 for LinearAlgebra compat).
 export PATH="$HOME/.juliaup/bin:$PATH"
 
+# Pin thread counts to --cpus-per-task above; otherwise Julia/OpenBLAS default
+# to the node's full core count instead of the cgroup limit, which is
+# especially bad when multiple jobs share a node (see run_main_array.sh).
+export JULIA_NUM_THREADS=4
+export OPENBLAS_NUM_THREADS=4
+export OMP_NUM_THREADS=4
+
 set -euo pipefail
 
 # Resolve the repo root (three levels up from this script's directory).

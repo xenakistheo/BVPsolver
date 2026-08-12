@@ -191,8 +191,7 @@ function main(args = parse_cli())
         report(ctx, "final", θ)
     end
     if use_shooting
-        shooting_time = @elapsed ((θ, shootloss) =
-            shooting(ctx, θ, shoot_iters; paper = arch == "GELU-scaled"))
+        shooting_time = @elapsed ((θ, shootloss) = shooting(ctx, θ, shoot_iters))
         println("shooting [$(round(Int, shooting_time))s]  loss=$(round(shootloss; sigdigits=3))")
         report(ctx, "final", θ)
     end
@@ -202,6 +201,21 @@ function main(args = parse_cli())
         report(ctx, "final", θ)
     end
 
+    # ── Extrapolation / error metrics (see metrics.md) ──────────────────────
+    train_err = error_metrics(ctx, θ)
+    ext_ctx, train_mask = extrapolation_ctx(ctx)
+    test_ctx  = merge(ext_ctx, (; tsteps = ext_ctx.tsteps[.!train_mask],
+                                   Ydata  = ext_ctx.Ydata[:, .!train_mask],
+                                   tlen   = count(.!train_mask)))
+    test_err  = error_metrics(test_ctx, θ)
+    println("extrapolation window: T=$(spec.tspan[2]) -> T_test=$(round(ext_ctx.tspan[2]; sigdigits=6))" *
+            "  n_test=$(count(.!train_mask))")
+    println("  [train]  E_traj=$(round(train_err.traj; sigdigits=4))  " *
+            "E_VF=$(round(train_err.vf; sigdigits=4))  E_spec=$(round(train_err.spec; sigdigits=4))")
+    println("  [test ]  E_traj=$(round(test_err.traj; sigdigits=4))  " *
+            "E_VF=$(round(test_err.vf; sigdigits=4))  E_spec=$(round(test_err.spec; sigdigits=4))")
+    flush(stdout)
+
     # ── Save run artifacts ──────────────────────────────────────────────────
     # Every run gets its own folder tagged with a random suffix, holding the
     # fit plots, the trained state, and a record of the parameters used.
@@ -209,10 +223,16 @@ function main(args = parse_cli())
     mkpath(run_dir)
 
     plot_fit(ctx, θ; dir = run_dir)
+    plot_fit(ext_ctx, θ; dir = run_dir, train_mask)
     try
-        plot_spectral_fit(ctx, θ; dir = run_dir)
+        plot_spectral_fit(ext_ctx, θ; dir = run_dir, train_mask)
     catch e
         println("  spectral fit plot FAILED: $e")
+    end
+    try
+        plot_vf_fit(ext_ctx, θ; dir = run_dir, train_mask)
+    catch e
+        println("  velocity field fit plot FAILED: $e")
     end
 
     jldsave(joinpath(run_dir, "state.jld2"); ctx = ctx, cfg = cfg, θ = θ)
@@ -227,6 +247,21 @@ function main(args = parse_cli())
                                    shooting_time + shapovalova_time
     run_info["n_params"]         = n_params
     run_info["timestamp"]        = string(now())
+
+    run_info["E_trajectory_species_train"] = train_err.traj_species
+    run_info["E_trajectory_train"]         = train_err.traj
+    run_info["E_trajectory_species_test"]  = test_err.traj_species
+    run_info["E_trajectory_test"]          = test_err.traj
+
+    run_info["E_VF_species_train"] = train_err.vf_species
+    run_info["E_VF_train"]         = train_err.vf
+    run_info["E_VF_species_test"]  = test_err.vf_species
+    run_info["E_VF_test"]          = test_err.vf
+
+    run_info["E_spec_species_train"] = train_err.spec_species
+    run_info["E_spec_train"]         = train_err.spec
+    run_info["E_spec_species_test"]  = test_err.spec_species
+    run_info["E_spec_test"]          = test_err.spec
     open(joinpath(run_dir, "run_info.toml"), "w") do io
         TOML.print(io, run_info; sorted = true)
     end

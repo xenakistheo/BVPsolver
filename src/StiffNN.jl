@@ -60,7 +60,9 @@ export shooting
 export shapovalova, cheb_diffmatrix, interp_rows
 
 # eval.jl
-export rollout, metrics, report, plot_fit, eigenvalues, plot_spectral_fit
+export rollout, metrics, report, plot_fit, eigenvalues, plot_spectral_fit, plot_vf_fit
+export is_log_spaced, extend_tsteps, extrapolation_ctx
+export relative_error, true_vector_field, error_metrics
 
 # Data
 export generate_diffusion_data
