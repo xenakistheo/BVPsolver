@@ -79,12 +79,17 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # ── Usage ────────────────────────────────────────────────────────────────
-# --cpus-per-task/--mem reuse the values measured on ORCD (~1 core, ~3.3GB
-# peak for the heaviest tested config, `pollu`). brusselator itself was never
-# profiled -- it's the largest config (hidden=32, depth=3, dm_iters=30000,
-# time_dependent=true), comparable in size to pollu but untested. Before
-# trusting these numbers, do a single dry-run task and check `jobstats`:
-#   sbatch --array=0-0 src/scripts/supercloud/run_main_array.sh
+# --mem=64G is sized from a real dry run of task 30 (derivmatch+collocation,
+# job 5368001_30): MaxRSS plateaued around ~24.9GB. The first attempt at
+# --mem=8G (reused from ORCD's much smaller `pollu` config) caused the job to
+# get memory-throttled into a D-state stall (MaxRSS grew past the cgroup
+# limit, AveCPU barely advanced over ~50 min) before we bumped it. Most of
+# that memory and a large chunk of wall-clock time goes into
+# TracerSparsityDetector tracing the dense hidden=32/depth=3 network's
+# ~18.8k-parameter Jacobian block, which has no actual sparsity to find --
+# a single collocation run can take on the order of ~1-3 days (confirmed by
+# an independent ~3-day laptop run for one config), which --time=100:00:00
+# (~4.2 days) is sized to cover.
 #
 # Total tasks = 105. Checked this account's xeon-p8 association: MaxJobs=240,
 # MaxSubmit=240 (per `sacctmgr show assoc ... format=Cluster,Partition,...`),
