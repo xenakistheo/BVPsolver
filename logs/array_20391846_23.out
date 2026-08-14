@@ -1,0 +1,89 @@
+Task 23/416: --problem pollu --model mlp --profile fast --seed 14 --pretraining none --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_23.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=mlp d=20 tlen=50 profile=fast seed=14  solver=Rodas5  N=3444
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	3.42451976e+21      	NaN                 
+1       	6.94372881e+19      	5.61974727e-01      
+8       	1.00791469e+18      	4.32628912e-02      
+15      	2.26573994e+18      	2.74917950e-01      
+22      	1.75880204e+18      	0.00000000e+00      
+29      	7.69331068e+18      	9.15202087e-01      
+36      	5.47401982e+18      	0.00000000e+00      
+43      	6.41579160e+17      	8.39050118e-01      
+50      	3.54948395e+18      	0.00000000e+00      
+57      	3.46101105e+18      	1.12480581e+00      
+64      	1.54745554e+19      	0.00000000e+00      
+71      	4.09527951e+18      	0.00000000e+00      
+78      	1.44924390e+18      	0.00000000e+00      
+85      	1.22858380e+16      	2.77366336e-01      
+92      	1.17519212e+18      	5.32513692e-01      
+99      	5.49288306e+16      	0.00000000e+00      
+106     	2.13568389e+17      	0.00000000e+00      
+113     	1.03796483e+17      	2.73315472e-01      
+120     	2.90966877e+16      	0.00000000e+00      
+127     	3.50925847e+17      	0.00000000e+00      
+134     	4.56415783e+16      	1.84815469e-01      
+141     	6.73454783e+17      	3.97241106e-01      
+148     	6.22495655e+16      	0.00000000e+00      
+Final   	1.22858380e+16      
+----------------------      
+  AMR 1/1: M=72  err=1.0700000000000001e32  obs=3.88e-9  nrmse=3.47e17  best=1.66e17  refined=0
+ derivative matching was best (1/1 rounds ran)
+collocation [5307s]
+  [final]  nrmse=1.662e17  l2=170.0
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=5.0779999999999995e34  E_VF=8.682e9  E_spec=Inf
+  [test ]  E_traj=1.3619999999999999e38  E_VF=1.507e39  E_spec=Inf
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_AIbRMRA4/pollu_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_AIbRMRA4/pollu_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_AIbRMRA4/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_AIbRMRA4/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_AIbRMRA4
+--------------------------------------
+Done: Thu Aug 13 23:38:40 EDT 2026

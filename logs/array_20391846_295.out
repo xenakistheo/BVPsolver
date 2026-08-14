@@ -1,0 +1,40 @@
+Task 295/416: --problem orego --model mlp --profile fast --seed 13 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_295.log
+orego  model=mlp d=3 tlen=112 profile=fast seed=13  solver=Rodas5  N=387
+  shooting iter=50/1000 loss=0.22
+  shooting iter=100/1000 loss=0.219
+  shooting iter=150/1000 loss=0.2197
+  shooting iter=200/1000 loss=0.2189
+  shooting iter=250/1000 loss=0.2189
+  shooting iter=300/1000 loss=0.219
+  shooting iter=350/1000 loss=0.2193
+  shooting iter=400/1000 loss=0.2183
+  shooting iter=450/1000 loss=0.2175
+  shooting iter=500/1000 loss=0.2168
+  shooting iter=550/1000 loss=0.221
+  shooting iter=600/1000 loss=0.2211
+  shooting iter=650/1000 loss=0.2209
+  shooting iter=700/1000 loss=0.2188
+  shooting iter=750/1000 loss=0.2188
+  shooting iter=800/1000 loss=0.2184
+  shooting iter=850/1000 loss=0.218
+  shooting iter=900/1000 loss=0.2176
+  shooting iter=950/1000 loss=0.2172
+  shooting iter=1000/1000 loss=0.2169
+  shooting iter=1000/1000 loss=0.2166
+shooting [1645s]  loss=0.217
+  [final]  nrmse=0.421  l2=486000.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=0.9429  E_VF=0.9987  E_spec=0.9999
+  [test ]  E_traj=0.9302  E_VF=0.9984  E_spec=1.027
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_sussrDKq/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_sussrDKq/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_sussrDKq/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_sussrDKq/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_sussrDKq
+--------------------------------------
+Done: Fri Aug 14 00:10:45 EDT 2026

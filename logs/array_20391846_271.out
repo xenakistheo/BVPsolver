@@ -1,0 +1,40 @@
+Task 271/416: --problem orego --model stiff --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_271.log
+orego  model=stiff d=3 tlen=112 profile=fast seed=11  solver=Rodas5  N=486
+  shooting iter=50/1000 loss=0.2181
+  shooting iter=100/1000 loss=0.2035
+  shooting iter=150/1000 loss=0.1683
+  shooting iter=200/1000 loss=0.142
+  shooting iter=250/1000 loss=0.1325
+  shooting iter=300/1000 loss=0.1789
+  shooting iter=350/1000 loss=0.1256
+  shooting iter=400/1000 loss=0.1212
+  shooting iter=450/1000 loss=0.09317
+  shooting iter=500/1000 loss=0.09113
+  shooting iter=550/1000 loss=0.08236
+  shooting iter=600/1000 loss=0.08571
+  shooting iter=650/1000 loss=0.2003
+  shooting iter=700/1000 loss=0.0845
+  shooting iter=750/1000 loss=0.0745
+  shooting iter=800/1000 loss=0.07213
+  shooting iter=850/1000 loss=0.1205
+  shooting iter=900/1000 loss=0.07443
+  shooting iter=950/1000 loss=0.07048
+  shooting iter=1000/1000 loss=0.06892
+  shooting iter=1000/1000 loss=0.06828
+shooting [3888s]  loss=0.0683
+  [final]  nrmse=0.2086  l2=445300.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=0.3369  E_VF=0.7181  E_spec=0.9382
+  [test ]  E_traj=4.795  E_VF=118.0  E_spec=1.119
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yqgj4kou/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yqgj4kou/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yqgj4kou/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yqgj4kou/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yqgj4kou
+--------------------------------------
+Done: Fri Aug 14 00:43:07 EDT 2026

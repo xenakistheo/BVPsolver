@@ -1,0 +1,36 @@
+vanderpol  model=GELU-scaled d=2 tlen=151 profile=fast seed=15  solver=Kvaerno5  N=177
+  shooting iter=50/1000 loss=0.1679
+  shooting iter=100/1000 loss=0.1679
+  shooting iter=150/1000 loss=0.1678
+  shooting iter=200/1000 loss=0.1676
+  shooting iter=250/1000 loss=0.1637
+  shooting iter=300/1000 loss=0.2079
+  shooting iter=350/1000 loss=0.1919
+  shooting iter=400/1000 loss=0.1831
+  shooting iter=450/1000 loss=0.1771
+  shooting iter=500/1000 loss=0.1734
+  shooting iter=550/1000 loss=0.1713
+  shooting iter=600/1000 loss=0.1701
+  shooting iter=650/1000 loss=0.1693
+  shooting iter=700/1000 loss=0.1687
+  shooting iter=750/1000 loss=0.1682
+  shooting iter=800/1000 loss=0.1678
+  shooting iter=850/1000 loss=0.1675
+  shooting iter=900/1000 loss=0.1672
+  shooting iter=950/1000 loss=0.1669
+  shooting iter=1000/1000 loss=0.1667
+  shooting iter=1000/1000 loss=0.1495
+shooting [253s]  loss=0.15
+  [final]  nrmse=0.2652  l2=319.7
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.8914  E_VF=0.9849  E_spec=0.9992
+  [test ]  E_traj=191.1  E_VF=2.73  E_spec=0.9948
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2R1nDXhU/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2R1nDXhU/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2R1nDXhU/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2R1nDXhU/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2R1nDXhU

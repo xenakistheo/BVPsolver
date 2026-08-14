@@ -1,0 +1,40 @@
+Task 106/416: --problem rober --model GELU-scaled --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_106.log
+rober  model=GELU-scaled d=3 tlen=50 profile=fast seed=14  solver=Rodas5  N=188
+  shooting iter=50/1000 loss=0.2192
+  shooting iter=100/1000 loss=0.1825
+  shooting iter=150/1000 loss=0.1595
+  shooting iter=200/1000 loss=0.1503
+  shooting iter=250/1000 loss=0.1464
+  shooting iter=300/1000 loss=0.143
+  shooting iter=350/1000 loss=0.1394
+  shooting iter=400/1000 loss=0.1373
+  shooting iter=450/1000 loss=0.1352
+  shooting iter=500/1000 loss=0.1325
+  shooting iter=550/1000 loss=0.1307
+  shooting iter=600/1000 loss=0.1289
+  shooting iter=650/1000 loss=0.1274
+  shooting iter=700/1000 loss=0.1267
+  shooting iter=750/1000 loss=0.1253
+  shooting iter=800/1000 loss=0.1236
+  shooting iter=850/1000 loss=0.122
+  shooting iter=900/1000 loss=0.1213
+  shooting iter=950/1000 loss=0.1216
+  shooting iter=1000/1000 loss=0.1195
+  shooting iter=1000/1000 loss=0.1188
+shooting [209s]  loss=0.119
+  [final]  nrmse=0.3124  l2=0.02088
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2539  E_VF=0.7754  E_spec=2.589e15
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_3LRnSlvJ/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_3LRnSlvJ/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_3LRnSlvJ/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_3LRnSlvJ/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_3LRnSlvJ
+--------------------------------------
+Done: Thu Aug 13 22:36:15 EDT 2026

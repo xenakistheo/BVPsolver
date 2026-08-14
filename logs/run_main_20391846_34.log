@@ -1,0 +1,66 @@
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=GELU-scaled d=20 tlen=50 profile=fast seed=15  solver=Rodas5  N=650
+  shooting iter=50/1000 loss=0.1773
+  shooting iter=100/1000 loss=0.1749
+  shooting iter=150/1000 loss=0.1716
+  shooting iter=200/1000 loss=0.1583
+  shooting iter=250/1000 loss=0.1279
+  shooting iter=300/1000 loss=0.1106
+  shooting iter=350/1000 loss=0.1022
+  shooting iter=400/1000 loss=0.09634
+  shooting iter=450/1000 loss=0.09212
+  shooting iter=500/1000 loss=0.08931
+  shooting iter=550/1000 loss=0.08648
+  shooting iter=600/1000 loss=0.08497
+  shooting iter=650/1000 loss=0.08334
+  shooting iter=700/1000 loss=0.08212
+  shooting iter=750/1000 loss=0.08138
+  shooting iter=800/1000 loss=0.08053
+  shooting iter=850/1000 loss=0.08012
+  shooting iter=900/1000 loss=0.07995
+  shooting iter=950/1000 loss=0.07942
+  shooting iter=1000/1000 loss=0.07926
+  shooting iter=1000/1000 loss=0.07912
+shooting [4106s]  loss=0.0791
+  [final]  nrmse=0.232  l2=0.03094
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=0.1584  E_VF=4.305  E_spec=1.7159999999999998e267
+  [test ]  E_traj=0.1951  E_VF=13570.0  E_spec=1.9900000000000002e265
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kwURAMao/pollu_fit.png
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kwURAMao/pollu_fit_extrapolated.png
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kwURAMao/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kwURAMao/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kwURAMao

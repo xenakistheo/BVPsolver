@@ -1,0 +1,40 @@
+Task 294/416: --problem orego --model mlp --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_294.log
+orego  model=mlp d=3 tlen=112 profile=fast seed=12  solver=Rodas5  N=387
+  shooting iter=50/1000 loss=0.2215
+  shooting iter=100/1000 loss=0.2208
+  shooting iter=150/1000 loss=0.2193
+  shooting iter=200/1000 loss=0.2186
+  shooting iter=250/1000 loss=0.2175
+  shooting iter=300/1000 loss=0.2165
+  shooting iter=350/1000 loss=0.2159
+  shooting iter=400/1000 loss=0.2153
+  shooting iter=450/1000 loss=0.2147
+  shooting iter=500/1000 loss=0.2142
+  shooting iter=550/1000 loss=0.2134
+  shooting iter=600/1000 loss=0.214
+  shooting iter=650/1000 loss=0.213
+  shooting iter=700/1000 loss=0.2127
+  shooting iter=750/1000 loss=0.2126
+  shooting iter=800/1000 loss=0.2136
+  shooting iter=850/1000 loss=0.2119
+  shooting iter=900/1000 loss=0.2116
+  shooting iter=950/1000 loss=0.2115
+  shooting iter=1000/1000 loss=0.2112
+  shooting iter=1000/1000 loss=0.2112
+shooting [1397s]  loss=0.211
+  [final]  nrmse=0.4164  l2=486100.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=0.8963  E_VF=1.003  E_spec=0.9999
+  [test ]  E_traj=0.8385  E_VF=1.003  E_spec=0.9932
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SIbDnVOv/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SIbDnVOv/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SIbDnVOv/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SIbDnVOv/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SIbDnVOv
+--------------------------------------
+Done: Fri Aug 14 00:06:37 EDT 2026

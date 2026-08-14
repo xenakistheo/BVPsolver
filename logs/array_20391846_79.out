@@ -1,0 +1,40 @@
+Task 79/416: --problem rober --model mlp --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_79.log
+rober  model=mlp d=3 tlen=50 profile=fast seed=12  solver=Rodas5  N=243
+  shooting iter=50/1000 loss=6230.0
+  shooting iter=100/1000 loss=1684.0
+  shooting iter=150/1000 loss=1063.0
+  shooting iter=200/1000 loss=274.6
+  shooting iter=250/1000 loss=3531.0
+  shooting iter=300/1000 loss=8532.0
+  shooting iter=350/1000 loss=3158.0
+  shooting iter=400/1000 loss=1974.0
+  shooting iter=450/1000 loss=28.14
+  shooting iter=500/1000 loss=13.96
+  shooting iter=550/1000 loss=6.803
+  shooting iter=600/1000 loss=4.154
+  shooting iter=650/1000 loss=5.719
+  shooting iter=700/1000 loss=2.472
+  shooting iter=750/1000 loss=5.556
+  shooting iter=800/1000 loss=1.576
+  shooting iter=850/1000 loss=3.49
+  shooting iter=900/1000 loss=3.324
+  shooting iter=950/1000 loss=5.366
+  shooting iter=1000/1000 loss=2.582
+  shooting iter=1000/1000 loss=1.11
+shooting [191s]  loss=1.11
+  [final]  nrmse=4.792  l2=2.099
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=59.73  E_VF=123.6  E_spec=1.219e29
+  [test ]  E_traj=1308.0  E_VF=4.635e16  E_spec=1.847e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dD4ptTfu/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dD4ptTfu/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dD4ptTfu/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dD4ptTfu/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dD4ptTfu
+--------------------------------------
+Done: Thu Aug 13 22:27:15 EDT 2026

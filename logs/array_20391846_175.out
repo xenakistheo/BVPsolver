@@ -1,0 +1,40 @@
+Task 175/416: --problem vanderpol --model GELU-scaled --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_175.log
+vanderpol  model=GELU-scaled d=2 tlen=151 profile=fast seed=12  solver=Kvaerno5  N=177
+  shooting iter=50/1000 loss=0.1687
+  shooting iter=100/1000 loss=0.1679
+  shooting iter=150/1000 loss=0.1667
+  shooting iter=200/1000 loss=0.1616
+  shooting iter=250/1000 loss=0.1604
+  shooting iter=300/1000 loss=0.195
+  shooting iter=350/1000 loss=0.2006
+  shooting iter=400/1000 loss=0.1879
+  shooting iter=450/1000 loss=0.1785
+  shooting iter=500/1000 loss=0.1611
+  shooting iter=550/1000 loss=0.1509
+  shooting iter=600/1000 loss=0.1478
+  shooting iter=650/1000 loss=0.1454
+  shooting iter=700/1000 loss=0.1435
+  shooting iter=750/1000 loss=0.1419
+  shooting iter=800/1000 loss=0.1395
+  shooting iter=850/1000 loss=0.1376
+  shooting iter=900/1000 loss=0.1544
+  shooting iter=950/1000 loss=0.1369
+  shooting iter=1000/1000 loss=0.1388
+  shooting iter=1000/1000 loss=0.136
+shooting [267s]  loss=0.136
+  [final]  nrmse=0.2229  l2=330.2
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.7933  E_VF=0.9991  E_spec=0.9998
+  [test ]  E_traj=10420.0  E_VF=22.82  E_spec=0.9962
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Yk23lx21/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Yk23lx21/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Yk23lx21/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Yk23lx21/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Yk23lx21
+--------------------------------------
+Done: Thu Aug 13 22:55:08 EDT 2026

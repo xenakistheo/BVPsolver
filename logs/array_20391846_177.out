@@ -1,0 +1,40 @@
+Task 177/416: --problem vanderpol --model GELU-scaled --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_177.log
+vanderpol  model=GELU-scaled d=2 tlen=151 profile=fast seed=14  solver=Kvaerno5  N=177
+  shooting iter=50/1000 loss=0.1674
+  shooting iter=100/1000 loss=0.1658
+  shooting iter=150/1000 loss=0.1619
+  shooting iter=200/1000 loss=0.1589
+  shooting iter=250/1000 loss=0.1555
+  shooting iter=300/1000 loss=0.1545
+  shooting iter=350/1000 loss=0.1695
+  shooting iter=400/1000 loss=0.1694
+  shooting iter=450/1000 loss=0.1694
+  shooting iter=500/1000 loss=0.1694
+  shooting iter=550/1000 loss=0.1694
+  shooting iter=600/1000 loss=0.1694
+  shooting iter=650/1000 loss=0.1694
+  shooting iter=700/1000 loss=0.1694
+  shooting iter=750/1000 loss=0.1694
+  shooting iter=800/1000 loss=0.1694
+  shooting iter=850/1000 loss=0.1694
+  shooting iter=900/1000 loss=0.1694
+  shooting iter=950/1000 loss=0.1694
+  shooting iter=1000/1000 loss=0.1694
+  shooting iter=1000/1000 loss=0.1517
+shooting [245s]  loss=0.152
+  [final]  nrmse=0.257  l2=332.3
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.9012  E_VF=1.015  E_spec=0.9994
+  [test ]  E_traj=6.993  E_VF=18.21  E_spec=0.9867
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qJltRJ4w/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qJltRJ4w/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qJltRJ4w/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qJltRJ4w/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qJltRJ4w
+--------------------------------------
+Done: Thu Aug 13 22:54:47 EDT 2026

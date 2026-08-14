@@ -1,0 +1,40 @@
+Task 176/416: --problem vanderpol --model GELU-scaled --profile fast --seed 13 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_176.log
+vanderpol  model=GELU-scaled d=2 tlen=151 profile=fast seed=13  solver=Kvaerno5  N=177
+  shooting iter=50/1000 loss=0.1673
+  shooting iter=100/1000 loss=0.1635
+  shooting iter=150/1000 loss=0.1536
+  shooting iter=200/1000 loss=0.149
+  shooting iter=250/1000 loss=0.1431
+  shooting iter=300/1000 loss=0.161
+  shooting iter=350/1000 loss=0.1596
+  shooting iter=400/1000 loss=0.1433
+  shooting iter=450/1000 loss=0.1601
+  shooting iter=500/1000 loss=0.1543
+  shooting iter=550/1000 loss=0.1666
+  shooting iter=600/1000 loss=0.1443
+  shooting iter=650/1000 loss=0.1378
+  shooting iter=700/1000 loss=0.1381
+  shooting iter=750/1000 loss=0.1364
+  shooting iter=800/1000 loss=0.1639
+  shooting iter=850/1000 loss=0.1544
+  shooting iter=900/1000 loss=0.137
+  shooting iter=950/1000 loss=0.1357
+  shooting iter=1000/1000 loss=0.1351
+  shooting iter=1000/1000 loss=0.1347
+shooting [305s]  loss=0.135
+  [final]  nrmse=0.2247  l2=332.7
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.8056  E_VF=1.075  E_spec=0.9996
+  [test ]  E_traj=3103.0  E_VF=164.1  E_spec=0.9914
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_85wdOC4T/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_85wdOC4T/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_85wdOC4T/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_85wdOC4T/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_85wdOC4T
+--------------------------------------
+Done: Thu Aug 13 22:55:48 EDT 2026

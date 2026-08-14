@@ -1,0 +1,99 @@
+hires  model=stiff d=8 tlen=50 profile=fast seed=12  solver=Rodas5  N=816
+  derivmatch lr=0.01 iter=170/3400 loss=0.08037
+  derivmatch lr=0.01 iter=340/3400 loss=0.02655
+  derivmatch lr=0.01 iter=510/3400 loss=0.01285
+  derivmatch lr=0.01 iter=680/3400 loss=0.009209
+  derivmatch lr=0.01 iter=850/3400 loss=0.008825
+  derivmatch lr=0.01 iter=1020/3400 loss=0.004464
+  derivmatch lr=0.01 iter=1190/3400 loss=0.003795
+  derivmatch lr=0.01 iter=1360/3400 loss=0.003723
+  derivmatch lr=0.01 iter=1530/3400 loss=0.04757
+  derivmatch lr=0.01 iter=1700/3400 loss=0.01731
+  derivmatch lr=0.01 iter=1870/3400 loss=0.01076
+  derivmatch lr=0.01 iter=2040/3400 loss=0.007883
+  derivmatch lr=0.01 iter=2210/3400 loss=0.006389
+  derivmatch lr=0.01 iter=2380/3400 loss=0.005417
+  derivmatch lr=0.01 iter=2550/3400 loss=0.004654
+  derivmatch lr=0.01 iter=2720/3400 loss=0.003989
+  derivmatch lr=0.01 iter=2890/3400 loss=0.003393
+  derivmatch lr=0.01 iter=3060/3400 loss=0.002876
+  derivmatch lr=0.01 iter=3230/3400 loss=0.002441
+  derivmatch lr=0.01 iter=3400/3400 loss=0.00208
+  derivmatch lr=0.01 iter=3400/3400 loss=0.00208
+  derivmatch lr=0.003 iter=125/2500 loss=0.00167
+  derivmatch lr=0.003 iter=250/2500 loss=0.001295
+  derivmatch lr=0.003 iter=375/2500 loss=0.001013
+  derivmatch lr=0.003 iter=500/2500 loss=0.0009377
+  derivmatch lr=0.003 iter=625/2500 loss=0.0007001
+  derivmatch lr=0.003 iter=750/2500 loss=0.0006949
+  derivmatch lr=0.003 iter=875/2500 loss=0.0005046
+  derivmatch lr=0.003 iter=1000/2500 loss=0.0004776
+  derivmatch lr=0.003 iter=1125/2500 loss=0.0004013
+  derivmatch lr=0.003 iter=1250/2500 loss=0.001251
+  derivmatch lr=0.003 iter=1375/2500 loss=0.0004496
+  derivmatch lr=0.003 iter=1500/2500 loss=0.0003213
+  derivmatch lr=0.003 iter=1625/2500 loss=0.0003044
+  derivmatch lr=0.003 iter=1750/2500 loss=0.0004869
+  derivmatch lr=0.003 iter=1875/2500 loss=0.0003006
+  derivmatch lr=0.003 iter=2000/2500 loss=0.0002752
+  derivmatch lr=0.003 iter=2125/2500 loss=0.0002521
+  derivmatch lr=0.003 iter=2250/2500 loss=0.000421
+  derivmatch lr=0.003 iter=2375/2500 loss=0.0002382
+  derivmatch lr=0.003 iter=2500/2500 loss=0.0002738
+  derivmatch lr=0.003 iter=2500/2500 loss=0.00023
+  derivmatch lr=0.001 iter=125/2500 loss=0.0002279
+  derivmatch lr=0.001 iter=250/2500 loss=0.0002259
+  derivmatch lr=0.001 iter=375/2500 loss=0.0002235
+  derivmatch lr=0.001 iter=500/2500 loss=0.0002209
+  derivmatch lr=0.001 iter=625/2500 loss=0.000218
+  derivmatch lr=0.001 iter=750/2500 loss=0.0002149
+  derivmatch lr=0.001 iter=875/2500 loss=0.0002116
+  derivmatch lr=0.001 iter=1000/2500 loss=0.0002081
+  derivmatch lr=0.001 iter=1125/2500 loss=0.0002045
+  derivmatch lr=0.001 iter=1250/2500 loss=0.0002077
+  derivmatch lr=0.001 iter=1375/2500 loss=0.0001981
+  derivmatch lr=0.001 iter=1500/2500 loss=0.0001948
+  derivmatch lr=0.001 iter=1625/2500 loss=0.0001913
+  derivmatch lr=0.001 iter=1750/2500 loss=0.0001937
+  derivmatch lr=0.001 iter=1875/2500 loss=0.0001852
+  derivmatch lr=0.001 iter=2000/2500 loss=0.000182
+  derivmatch lr=0.001 iter=2125/2500 loss=0.0001787
+  derivmatch lr=0.001 iter=2250/2500 loss=0.000176
+  derivmatch lr=0.001 iter=2375/2500 loss=0.000173
+  derivmatch lr=0.001 iter=2500/2500 loss=0.0001699
+  derivmatch lr=0.001 iter=2500/2500 loss=0.0001699
+  derivmatch lr=0.0003 iter=80/1600 loss=0.000169
+  derivmatch lr=0.0003 iter=160/1600 loss=0.0001683
+  derivmatch lr=0.0003 iter=240/1600 loss=0.0001674
+  derivmatch lr=0.0003 iter=320/1600 loss=0.0001664
+  derivmatch lr=0.0003 iter=400/1600 loss=0.0001653
+  derivmatch lr=0.0003 iter=480/1600 loss=0.0001641
+  derivmatch lr=0.0003 iter=560/1600 loss=0.0001629
+  derivmatch lr=0.0003 iter=640/1600 loss=0.0001619
+  derivmatch lr=0.0003 iter=720/1600 loss=0.0001601
+  derivmatch lr=0.0003 iter=800/1600 loss=0.0001587
+  derivmatch lr=0.0003 iter=880/1600 loss=0.0001587
+  derivmatch lr=0.0003 iter=960/1600 loss=0.000156
+  derivmatch lr=0.0003 iter=1040/1600 loss=0.0001546
+  derivmatch lr=0.0003 iter=1120/1600 loss=0.0001534
+  derivmatch lr=0.0003 iter=1200/1600 loss=0.0001523
+  derivmatch lr=0.0003 iter=1280/1600 loss=0.0001506
+  derivmatch lr=0.0003 iter=1360/1600 loss=0.0001494
+  derivmatch lr=0.0003 iter=1440/1600 loss=0.0001481
+  derivmatch lr=0.0003 iter=1520/1600 loss=0.0001469
+  derivmatch lr=0.0003 iter=1600/1600 loss=0.0001457
+  derivmatch lr=0.0003 iter=1600/1600 loss=0.0001457
+derivative matching [32s]  fitloss=0.000146
+  [derivative matching]  nrmse=0.06995  l2=0.2609
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.01403  E_VF=0.001565  E_spec=1.856e17
+  [test ]  E_traj=256200.0  E_VF=1.475e7  E_spec=4.366e24
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kHOitriq/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kHOitriq/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kHOitriq/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kHOitriq/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kHOitriq

@@ -1,0 +1,36 @@
+orego  model=GELU-scaled d=3 tlen=112 profile=fast seed=11  solver=Rodas5  N=188
+  shooting iter=50/1000 loss=0.3047
+  shooting iter=100/1000 loss=0.305
+  shooting iter=150/1000 loss=0.305
+  shooting iter=200/1000 loss=0.305
+  shooting iter=250/1000 loss=0.305
+  shooting iter=300/1000 loss=0.305
+  shooting iter=350/1000 loss=0.305
+  shooting iter=400/1000 loss=0.305
+  shooting iter=450/1000 loss=0.305
+  shooting iter=500/1000 loss=0.305
+  shooting iter=550/1000 loss=0.305
+  shooting iter=600/1000 loss=0.305
+  shooting iter=650/1000 loss=0.305
+  shooting iter=700/1000 loss=0.305
+  shooting iter=750/1000 loss=0.305
+  shooting iter=800/1000 loss=0.305
+  shooting iter=850/1000 loss=0.305
+  shooting iter=900/1000 loss=0.305
+  shooting iter=950/1000 loss=0.305
+  shooting iter=1000/1000 loss=0.305
+  shooting iter=1000/1000 loss=0.3003
+shooting [285s]  loss=0.3
+  [final]  nrmse=0.485  l2=493100.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=1.697  E_VF=1318.0  E_spec=0.9999
+  [test ]  E_traj=14.61  E_VF=2474.0  E_spec=0.9974
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_cHeruEZV/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_cHeruEZV/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_cHeruEZV/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_cHeruEZV/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_cHeruEZV

@@ -1,0 +1,40 @@
+Task 104/416: --problem rober --model GELU-scaled --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_104.log
+rober  model=GELU-scaled d=3 tlen=50 profile=fast seed=12  solver=Rodas5  N=188
+  shooting iter=50/1000 loss=0.2191
+  shooting iter=100/1000 loss=0.1785
+  shooting iter=150/1000 loss=0.1581
+  shooting iter=200/1000 loss=0.1522
+  shooting iter=250/1000 loss=0.15
+  shooting iter=300/1000 loss=0.1477
+  shooting iter=350/1000 loss=0.1461
+  shooting iter=400/1000 loss=0.1451
+  shooting iter=450/1000 loss=0.1427
+  shooting iter=500/1000 loss=0.1408
+  shooting iter=550/1000 loss=0.1382
+  shooting iter=600/1000 loss=0.1355
+  shooting iter=650/1000 loss=0.1328
+  shooting iter=700/1000 loss=0.13
+  shooting iter=750/1000 loss=0.1272
+  shooting iter=800/1000 loss=0.1245
+  shooting iter=850/1000 loss=0.1226
+  shooting iter=900/1000 loss=0.1198
+  shooting iter=950/1000 loss=0.1192
+  shooting iter=1000/1000 loss=0.1163
+  shooting iter=1000/1000 loss=0.1159
+shooting [199s]  loss=0.116
+  [final]  nrmse=0.298  l2=0.05602
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2314  E_VF=1.411  E_spec=4.724e13
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2Kjn3SiU/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2Kjn3SiU/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2Kjn3SiU/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2Kjn3SiU/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2Kjn3SiU
+--------------------------------------
+Done: Thu Aug 13 22:36:00 EDT 2026

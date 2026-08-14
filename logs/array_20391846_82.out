@@ -1,0 +1,40 @@
+Task 82/416: --problem rober --model mlp --profile fast --seed 15 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_82.log
+rober  model=mlp d=3 tlen=50 profile=fast seed=15  solver=Rodas5  N=243
+  shooting iter=50/1000 loss=4543.0
+  shooting iter=100/1000 loss=1561.0
+  shooting iter=150/1000 loss=1688.0
+  shooting iter=200/1000 loss=6106.0
+  shooting iter=250/1000 loss=3538.0
+  shooting iter=300/1000 loss=7396.0
+  shooting iter=350/1000 loss=4487.0
+  shooting iter=400/1000 loss=1817.0
+  shooting iter=450/1000 loss=1757.0
+  shooting iter=500/1000 loss=5898.0
+  shooting iter=550/1000 loss=133.0
+  shooting iter=600/1000 loss=69.25
+  shooting iter=650/1000 loss=66.15
+  shooting iter=700/1000 loss=59.44
+  shooting iter=750/1000 loss=59.12
+  shooting iter=800/1000 loss=52.46
+  shooting iter=850/1000 loss=45.5
+  shooting iter=900/1000 loss=41.11
+  shooting iter=950/1000 loss=35.78
+  shooting iter=1000/1000 loss=27.8
+  shooting iter=1000/1000 loss=27.6
+shooting [193s]  loss=27.6
+  [final]  nrmse=108.2  l2=3.278
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=30460.0  E_VF=1158.0  E_spec=1.528e28
+  [test ]  E_traj=13180.0  E_VF=3.055e19  E_spec=5.104e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gvxiY2iv/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gvxiY2iv/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gvxiY2iv/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gvxiY2iv/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gvxiY2iv
+--------------------------------------
+Done: Thu Aug 13 22:28:14 EDT 2026

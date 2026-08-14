@@ -1,0 +1,78 @@
+vanderpol  model=GELU-scaled d=2 tlen=151 profile=fast seed=13  solver=Kvaerno5  N=177
+  collocation: M=163 residuals=1274  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	7.78837406e+02      	NaN                 
+1       	7.78837406e+02      	0.00000000e+00      
+8       	7.78837406e+02      	0.00000000e+00      
+15      	5.64752583e+02      	3.40712788e+00      
+22      	3.76619425e+02      	1.08328943e+00      
+29      	7.01712855e+01      	1.71500496e+00      
+36      	3.88191461e+00      	1.05895436e+00      
+43      	6.15084083e+00      	7.71130121e-01      
+50      	1.00060315e+00      	0.00000000e+00      
+57      	4.42558751e+00      	5.47767509e-01      
+64      	7.72504012e+00      	0.00000000e+00      
+71      	3.83928543e+01      	0.00000000e+00      
+78      	1.88994899e+01      	0.00000000e+00      
+85      	1.88994899e+01      	0.00000000e+00      
+92      	1.88994899e+01      	0.00000000e+00      
+99      	9.41662349e+00      	2.98313390e-01      
+106     	3.78216527e-01      	3.38355753e-03      
+113     	6.45865444e-01      	0.00000000e+00      
+120     	6.45865444e-01      	0.00000000e+00      
+127     	3.78191880e-01      	1.78877139e-03      
+134     	3.81587802e-01      	0.00000000e+00      
+141     	1.21445514e+00      	0.00000000e+00      
+148     	3.78166299e-01      	1.22644477e-01      
+Final   	3.78156044e-01      
+----------------------      
+  AMR 1/1: M=163  err=0.0135  obs=0.00777  nrmse=0.306  best=0.306  refined=0
+collocation [50s]
+  [final]  nrmse=0.3063  l2=325.4
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=1.054  E_VF=0.7538  E_spec=0.9966
+  [test ]  E_traj=724.9  E_VF=0.9262  E_spec=0.9973
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_xyLzAKEQ/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_xyLzAKEQ/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_xyLzAKEQ/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_xyLzAKEQ/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_xyLzAKEQ

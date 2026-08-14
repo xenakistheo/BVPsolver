@@ -1,0 +1,40 @@
+Task 249/416: --problem hires --model GELU-scaled --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_249.log
+hires  model=GELU-scaled d=8 tlen=50 profile=fast seed=14  solver=Rodas5  N=243
+  shooting iter=50/1000 loss=0.3289
+  shooting iter=100/1000 loss=0.2669
+  shooting iter=150/1000 loss=0.1304
+  shooting iter=200/1000 loss=0.1199
+  shooting iter=250/1000 loss=0.1185
+  shooting iter=300/1000 loss=0.1177
+  shooting iter=350/1000 loss=0.1177
+  shooting iter=400/1000 loss=0.1173
+  shooting iter=450/1000 loss=0.1167
+  shooting iter=500/1000 loss=0.1164
+  shooting iter=550/1000 loss=0.116
+  shooting iter=600/1000 loss=0.1156
+  shooting iter=650/1000 loss=0.1155
+  shooting iter=700/1000 loss=0.1152
+  shooting iter=750/1000 loss=0.1147
+  shooting iter=800/1000 loss=0.1139
+  shooting iter=850/1000 loss=0.1127
+  shooting iter=900/1000 loss=0.11
+  shooting iter=950/1000 loss=0.1078
+  shooting iter=1000/1000 loss=0.1033
+  shooting iter=1000/1000 loss=0.1032
+shooting [364s]  loss=0.103
+  [final]  nrmse=0.2123  l2=1.395
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.2716  E_VF=8.051  E_spec=0.9985
+  [test ]  E_traj=10420.0  E_VF=76520.0  E_spec=0.9899
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jZeOiczA/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jZeOiczA/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jZeOiczA/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jZeOiczA/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jZeOiczA
+--------------------------------------
+Done: Thu Aug 13 23:37:31 EDT 2026

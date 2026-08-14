@@ -1,0 +1,40 @@
+Task 246/416: --problem hires --model GELU-scaled --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_246.log
+hires  model=GELU-scaled d=8 tlen=50 profile=fast seed=11  solver=Rodas5  N=243
+  shooting iter=50/1000 loss=0.3152
+  shooting iter=100/1000 loss=0.2906
+  shooting iter=150/1000 loss=0.133
+  shooting iter=200/1000 loss=0.1211
+  shooting iter=250/1000 loss=0.1196
+  shooting iter=300/1000 loss=0.1185
+  shooting iter=350/1000 loss=0.1177
+  shooting iter=400/1000 loss=0.1167
+  shooting iter=450/1000 loss=0.1145
+  shooting iter=500/1000 loss=0.1097
+  shooting iter=550/1000 loss=0.1064
+  shooting iter=600/1000 loss=0.09156
+  shooting iter=650/1000 loss=0.08324
+  shooting iter=700/1000 loss=0.07348
+  shooting iter=750/1000 loss=0.06552
+  shooting iter=800/1000 loss=0.05914
+  shooting iter=850/1000 loss=0.05404
+  shooting iter=900/1000 loss=0.05135
+  shooting iter=950/1000 loss=0.04982
+  shooting iter=1000/1000 loss=0.04515
+  shooting iter=1000/1000 loss=0.04507
+shooting [381s]  loss=0.0451
+  [final]  nrmse=0.1214  l2=0.3706
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.08268  E_VF=1.199  E_spec=0.9978
+  [test ]  E_traj=16970.0  E_VF=273500.0  E_spec=0.9985
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_d90W8OBQ/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_d90W8OBQ/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_d90W8OBQ/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_d90W8OBQ/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_d90W8OBQ
+--------------------------------------
+Done: Thu Aug 13 23:35:50 EDT 2026

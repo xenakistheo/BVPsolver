@@ -1,0 +1,83 @@
+Task 145/416: --problem vanderpol --model stiff --profile fast --seed 14 --pretraining none --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20391846_145.log
+vanderpol  model=stiff d=2 tlen=151 profile=fast seed=14  solver=Kvaerno5  N=268
+  collocation: M=163 residuals=1274  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	7.44396725e+05      	NaN                 
+1       	7.44396725e+05      	0.00000000e+00      
+8       	5.32906500e+05      	1.13070596e+02      
+15      	4.55275029e+04      	1.05218920e+00      
+22      	1.22406527e+04      	0.00000000e+00      
+29      	6.50801738e+03      	0.00000000e+00      
+36      	2.91242973e+03      	0.00000000e+00      
+43      	1.90381370e+03      	7.61843119e-02      
+50      	8.43341271e+02      	1.19808538e+00      
+57      	5.65029527e+02      	0.00000000e+00      
+64      	5.65029527e+02      	0.00000000e+00      
+71      	4.92733348e+02      	6.45260430e-02      
+78      	1.56346278e+02      	1.47239187e+00      
+85      	1.56346278e+02      	0.00000000e+00      
+92      	1.44315751e+02      	1.70610414e-02      
+99      	6.84882640e+01      	6.57719508e-01      
+106     	7.79083067e+01      	0.00000000e+00      
+113     	1.71449961e+02      	0.00000000e+00      
+120     	1.37025900e+02      	7.66664721e-01      
+127     	1.37025900e+02      	0.00000000e+00      
+134     	1.37025900e+02      	0.00000000e+00      
+141     	1.37025900e+02      	0.00000000e+00      
+148     	7.49256862e+01      	0.00000000e+00      
+Final   	6.97241225e+00      
+----------------------      
+  AMR 1/1: M=163  err=5.39  obs=0.11  nrmse=0.396  best=0.283  refined=0
+ derivative matching was best (1/1 rounds ran)
+collocation [41s]
+  [final]  nrmse=0.2828  l2=325.0
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.9663  E_VF=2.763  E_spec=0.9178
+  [test ]  E_traj=1.207  E_VF=1.201e6  E_spec=1171.0
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F2mXkky1/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F2mXkky1/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F2mXkky1/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F2mXkky1/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F2mXkky1
+--------------------------------------
+Done: Thu Aug 13 22:44:33 EDT 2026

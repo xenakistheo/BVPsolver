@@ -1,0 +1,61 @@
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=stiff d=20 tlen=50 profile=fast seed=14  solver=Rodas5  N=4744
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	6.50552285e+06      	NaN                 
+1       	6.50552285e+06      	0.00000000e+00      
+8       	2.37086925e+06      	4.97911523e-01      
+15      	6.13369142e+05      	1.29700035e-01      
+22      	3.50042543e+05      	0.00000000e+00      
+29      	2.19483972e+05      	0.00000000e+00      
+36      	2.16610344e+05      	4.10455045e-02      
+43      	2.19344530e+05      	6.27461707e-02      
+50      	2.29509069e+05      	0.00000000e+00      
+57      	1.73189977e+05      	0.00000000e+00      
+64      	1.69917830e+05      	1.55226636e-01      
+71      	1.39150799e+05      	0.00000000e+00      
+78      	1.42821828e+05      	6.14932128e-03      
+85      	1.10080725e+05      	3.02423637e-01      
+92      	8.12490980e+04      	0.00000000e+00      
+99      	8.12490980e+04      	0.00000000e+00      
+106     	8.01424414e+04      	4.36773574e-02      
+113     	6.96119984e+04      	0.00000000e+00      
+120     	6.46638957e+04      	1.97209002e-02      
+127     	6.43198631e+04      	2.01638385e-02      
