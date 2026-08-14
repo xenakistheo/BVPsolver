@@ -1,0 +1,29 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 0.0
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_83.err"
+init = "default"
+model = "GELU-scaled"
+n_params = 177
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_83.out"
+param = "none"
+pretraining = "none"
+problem = "vanderpol"
+profile = "fast"
+seed = 14
+shapovalova_time = 835.651834229
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-12T12:50:27.997"
+training = "shapovalova"
+training_time = 835.651834229
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = true

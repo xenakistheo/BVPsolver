@@ -1,0 +1,5 @@
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=stiff d=20 tlen=50 profile=fast seed=11  solver=Rodas5  N=4744
+  shooting lr=0.01 iter=17/340 loss=1.079e-5

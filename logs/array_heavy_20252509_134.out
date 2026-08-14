@@ -1,0 +1,28 @@
+Task 134/214: --problem orego --model mlp --profile fast --seed 15 --pretraining none --training shapovalova
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20252509_134.log
+orego  model=mlp d=3 tlen=112 profile=fast seed=15  solver=Rodas5  N=387
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.19, running with linear solver MUMPS 5.9.0.
+
+Option "hessian_approximation" is not chosen as "limited-memory", but eval_h returns false.
+Exception of type: OPTION_INVALID in file "Interfaces/IpTNLPAdapter.cpp" at line 1283:
+ Exception message: eval_h is called but has not been implemented
+
+EXIT: Invalid option encountered.
+shapovalova [14s]  loss=0.0
+  [final]  nrmse=0.4272  l2=485900.0
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_4ScndQ7e/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_4ScndQ7e/orego_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_4ScndQ7e
+--------------------------------------
+Done: Wed Aug 12 13:32:05 EDT 2026

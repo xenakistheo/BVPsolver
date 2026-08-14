@@ -1,0 +1,31 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 0.0
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_100.err"
+init = "default"
+model = "mlp"
+n_params = 552
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_100.out"
+param = "none"
+pretraining = "none"
+problem = "hires"
+profile = "fast"
+seed = 11
+shap-hessian = "exact"
+shapovalova_time = 13.683550868
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-12T13:23:57.911"
+training = "shapovalova"
+training_time = 13.683550868
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 16
+linsolve = "qr"
+lm_iters = 150
+signed_loss = false

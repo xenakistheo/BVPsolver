@@ -1,0 +1,200 @@
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=mlp d=20 tlen=50 profile=fast seed=12  solver=Rodas5  N=3444
+  derivmatch lr=0.01 iter=510/10200 loss=233.6
+  derivmatch lr=0.01 iter=1020/10200 loss=283.3
+  derivmatch lr=0.01 iter=1530/10200 loss=277.1
+  derivmatch lr=0.01 iter=2040/10200 loss=297.0
+  derivmatch lr=0.01 iter=2550/10200 loss=306.7
+  derivmatch lr=0.01 iter=3060/10200 loss=267.9
+  derivmatch lr=0.01 iter=3570/10200 loss=296.5
+  derivmatch lr=0.01 iter=4080/10200 loss=289.3
+  derivmatch lr=0.01 iter=4590/10200 loss=265.2
+  derivmatch lr=0.01 iter=5100/10200 loss=371.2
+  derivmatch lr=0.01 iter=5610/10200 loss=339.5
+  derivmatch lr=0.01 iter=6120/10200 loss=290.8
+  derivmatch lr=0.01 iter=6630/10200 loss=342.3
+  derivmatch lr=0.01 iter=7140/10200 loss=369.6
+  derivmatch lr=0.01 iter=7650/10200 loss=329.9
+  derivmatch lr=0.01 iter=8160/10200 loss=320.6
+  derivmatch lr=0.01 iter=8670/10200 loss=301.4
+  derivmatch lr=0.01 iter=9180/10200 loss=319.3
+  derivmatch lr=0.01 iter=9690/10200 loss=313.9
+  derivmatch lr=0.01 iter=10200/10200 loss=295.5
+  derivmatch lr=0.01 iter=10200/10200 loss=217.9
+  derivmatch lr=0.003 iter=375/7500 loss=243.4
+  derivmatch lr=0.003 iter=750/7500 loss=219.0
+  derivmatch lr=0.003 iter=1125/7500 loss=212.4
+  derivmatch lr=0.003 iter=1500/7500 loss=253.5
+  derivmatch lr=0.003 iter=1875/7500 loss=254.1
+  derivmatch lr=0.003 iter=2250/7500 loss=248.9
+  derivmatch lr=0.003 iter=2625/7500 loss=243.7
+  derivmatch lr=0.003 iter=3000/7500 loss=240.0
+  derivmatch lr=0.003 iter=3375/7500 loss=243.7
+  derivmatch lr=0.003 iter=3750/7500 loss=262.5
+  derivmatch lr=0.003 iter=4125/7500 loss=246.5
+  derivmatch lr=0.003 iter=4500/7500 loss=269.7
+  derivmatch lr=0.003 iter=4875/7500 loss=246.5
+  derivmatch lr=0.003 iter=5250/7500 loss=239.5
+  derivmatch lr=0.003 iter=5625/7500 loss=238.8
+  derivmatch lr=0.003 iter=6000/7500 loss=244.2
+  derivmatch lr=0.003 iter=6375/7500 loss=221.3
+  derivmatch lr=0.003 iter=6750/7500 loss=264.3
+  derivmatch lr=0.003 iter=7125/7500 loss=238.2
+  derivmatch lr=0.003 iter=7500/7500 loss=226.9
+  derivmatch lr=0.003 iter=7500/7500 loss=196.4
+  derivmatch lr=0.001 iter=375/7500 loss=249.8
+  derivmatch lr=0.001 iter=750/7500 loss=236.0
+  derivmatch lr=0.001 iter=1125/7500 loss=269.7
+  derivmatch lr=0.001 iter=1500/7500 loss=235.5
+  derivmatch lr=0.001 iter=1875/7500 loss=228.1
+  derivmatch lr=0.001 iter=2250/7500 loss=225.7
+  derivmatch lr=0.001 iter=2625/7500 loss=229.9
+  derivmatch lr=0.001 iter=3000/7500 loss=218.2
+  derivmatch lr=0.001 iter=3375/7500 loss=206.0
+  derivmatch lr=0.001 iter=3750/7500 loss=221.2
+  derivmatch lr=0.001 iter=4125/7500 loss=231.1
+  derivmatch lr=0.001 iter=4500/7500 loss=227.6
+  derivmatch lr=0.001 iter=4875/7500 loss=220.0
+  derivmatch lr=0.001 iter=5250/7500 loss=217.2
+  derivmatch lr=0.001 iter=5625/7500 loss=238.3
+  derivmatch lr=0.001 iter=6000/7500 loss=222.0
+  derivmatch lr=0.001 iter=6375/7500 loss=218.5
+  derivmatch lr=0.001 iter=6750/7500 loss=232.8
+  derivmatch lr=0.001 iter=7125/7500 loss=198.4
+  derivmatch lr=0.001 iter=7500/7500 loss=208.1
+  derivmatch lr=0.001 iter=7500/7500 loss=182.9
+  derivmatch lr=0.0003 iter=240/4800 loss=184.4
+  derivmatch lr=0.0003 iter=480/4800 loss=178.9
+  derivmatch lr=0.0003 iter=720/4800 loss=189.1
+  derivmatch lr=0.0003 iter=960/4800 loss=193.1
+  derivmatch lr=0.0003 iter=1200/4800 loss=182.0
+  derivmatch lr=0.0003 iter=1440/4800 loss=181.3
+  derivmatch lr=0.0003 iter=1680/4800 loss=187.2
+  derivmatch lr=0.0003 iter=1920/4800 loss=181.3
+  derivmatch lr=0.0003 iter=2160/4800 loss=198.0
+  derivmatch lr=0.0003 iter=2400/4800 loss=188.8
+  derivmatch lr=0.0003 iter=2640/4800 loss=207.6
+  derivmatch lr=0.0003 iter=2880/4800 loss=211.2
+  derivmatch lr=0.0003 iter=3120/4800 loss=200.7
+  derivmatch lr=0.0003 iter=3360/4800 loss=190.2
+  derivmatch lr=0.0003 iter=3600/4800 loss=197.3
+  derivmatch lr=0.0003 iter=3840/4800 loss=196.8
+  derivmatch lr=0.0003 iter=4080/4800 loss=194.7
+  derivmatch lr=0.0003 iter=4320/4800 loss=198.2
+  derivmatch lr=0.0003 iter=4560/4800 loss=196.2
+  derivmatch lr=0.0003 iter=4800/4800 loss=193.5
+  derivmatch lr=0.0003 iter=4800/4800 loss=136.0
+derivative matching [31s]  fitloss=136.0
+  [derivative matching]  nrmse=9.746e17  l2=227.7
+  shooting lr=0.01 iter=17/340 loss=9.05
+  shooting lr=0.01 iter=34/340 loss=16.29
+
+[1883162] signal 7 (2): Bus error
+in expression starting at /orcd/home/002/txenakis/projects/BVPsolver/src/run_main.jl:238
+gc_sweep_sysimg at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/staticdata.c:2336
+gc_sweep_perm_alloc at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:1467 [inlined]
+_jl_gc_collect at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:3189
+ijl_gc_collect at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:3475
+maybe_collect at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:351 [inlined]
+jl_gc_small_alloc_inner at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:727 [inlined]
+jl_gc_small_alloc_noinline at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:785 [inlined]
+jl_gc_alloc_ at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/gc-stock.c:799
+jl_alloc_genericmemory_unchecked at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/genericmemory.c:41
+GenericMemory at ./boot.jl:588 [inlined]
+new_as_memoryref at ./boot.jl:604 [inlined]
+Array at ./boot.jl:651 [inlined]
+Array at ./boot.jl:661 [inlined]
+similar at ./abstractarray.jl:867 [inlined]
+similar at ./abstractarray.jl:866 [inlined]
+similar at ./broadcast.jl:228 [inlined]
+similar at ./broadcast.jl:227 [inlined]
+copy at ./broadcast.jl:919 [inlined]
+materialize at ./broadcast.jl:894 [inlined]
+bias_activation at /home/txenakis/.julia/packages/LuxLib/zPBrt/src/impl/bias_activation.jl:31
+bias_activation at /home/txenakis/.julia/packages/LuxLib/zPBrt/src/impl/bias_activation.jl:16
+fused_dense at /home/txenakis/.julia/packages/LuxLib/zPBrt/src/impl/dense.jl:26 [inlined]
+fused_dense at /home/txenakis/.julia/packages/LuxLib/zPBrt/src/impl/dense.jl:16 [inlined]
+fused_dense_bias_activation at /home/txenakis/.julia/packages/LuxLib/zPBrt/src/api/dense.jl:36
+##d::Denseinternal#345 at /home/txenakis/.julia/packages/Lux/ZSmgp/src/layers/basic.jl:369 [inlined]
+macro expansion at /home/txenakis/.julia/packages/ReactantCore/Fo56R/src/ReactantCore.jl:331 [inlined]
+Dense at ./none:0 [inlined]
+apply at /home/txenakis/.julia/packages/LuxCore/kQC9S/src/LuxCore.jl:155 [inlined]
+macro expansion at /home/txenakis/.julia/packages/Lux/ZSmgp/src/layers/containers.jl (unknown line) [inlined]
+applychain at /home/txenakis/.julia/packages/Lux/ZSmgp/src/layers/containers.jl:577
+Chain at /home/txenakis/.julia/packages/Lux/ZSmgp/src/layers/containers.jl:575 [inlined]
+MLPField at /orcd/home/002/txenakis/projects/BVPsolver/src/models/mlp_field.jl:17
+f_theta at /orcd/home/002/txenakis/projects/BVPsolver/src/models/stiff_field.jl:74 [inlined]
+rhs! at /orcd/home/002/txenakis/projects/BVPsolver/src/training/shooting.jl:2
+Void at /home/txenakis/.julia/packages/SciMLBase/YjW4D/src/utils.jl:631 [inlined]
+CallWrapper at /home/txenakis/.julia/packages/FunctionWrappers/Q5cBx/src/FunctionWrappers.jl:65
+unknown function (ip: 0x15145a0f68fc) at (unknown file)
+macro expansion at /home/txenakis/.julia/packages/FunctionWrappers/Q5cBx/src/FunctionWrappers.jl:137 [inlined]
+do_ccall at /home/txenakis/.julia/packages/FunctionWrappers/Q5cBx/src/FunctionWrappers.jl:125 [inlined]
+FunctionWrapper at /home/txenakis/.julia/packages/FunctionWrappers/Q5cBx/src/FunctionWrappers.jl:144 [inlined]
+_call at /home/txenakis/.julia/packages/FunctionWrappersWrappers/ohhAq/src/FunctionWrappersWrappers.jl:392 [inlined]
+FunctionWrappersWrapper at /home/txenakis/.julia/packages/FunctionWrappersWrappers/ohhAq/src/FunctionWrappersWrappers.jl:384 [inlined]
+ODEFunction at /home/txenakis/.julia/packages/SciMLBase/YjW4D/src/scimlfunctions.jl:2844 [inlined]
+perform_step! at /home/txenakis/.julia/packages/OrdinaryDiffEqRosenbrock/S9V2V/src/rosenbrock_perform_step.jl:778
+perform_step! at /home/txenakis/.julia/packages/OrdinaryDiffEqRosenbrock/S9V2V/src/rosenbrock_perform_step.jl:730 [inlined]
+solve! at /home/txenakis/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/solve.jl:907
+#__solve#90 at /home/txenakis/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/solve.jl:10 [inlined]
+__solve at /home/txenakis/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/solve.jl:1 [inlined]
+#solve_call#26 at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:187 [inlined]
+solve_call at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:152 [inlined]
+#solve_up#33 at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:661
+solve_up at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:634 [inlined]
+#solve#32 at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:618 [inlined]
+solve at /home/txenakis/.julia/packages/DiffEqBase/tubd3/src/solve.jl:606
+unknown function (ip: 0x15145a0e2aa5) at (unknown file)
+loss at /orcd/home/002/txenakis/projects/BVPsolver/src/training/shooting.jl:8
+FixTail at /home/txenakis/.julia/packages/DifferentiationInterface/qwb0w/src/utils/context.jl:172 [inlined]
+chunk_mode_gradient! at /home/txenakis/.julia/packages/ForwardDiff/EaKqS/src/gradient.jl:144
+gradient! at /home/txenakis/.julia/packages/ForwardDiff/EaKqS/src/gradient.jl:41 [inlined]
+value_and_gradient! at /home/txenakis/.julia/packages/DifferentiationInterface/qwb0w/ext/DifferentiationInterfaceForwardDiffExt/onearg.jl:398 [inlined]
+#60 at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/OptimizationDIExt.jl:123 [inlined]
+#60 at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/OptimizationDIExt.jl:123
+unknown function (ip: 0x15145a0c8bfc) at (unknown file)
+__solve at /home/txenakis/.julia/packages/OptimizationOptimisers/nsl1W/src/OptimizationOptimisers.jl:93
+solve! at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:250
+unknown function (ip: 0x15145a0c5089) at (unknown file)
+#solve_call#9 at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:296
+solve_call at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:283 [inlined]
+#solve_up#8 at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:279 [inlined]
+solve_up at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:270 [inlined]
+#solve#2 at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:111
+solve at /home/txenakis/.julia/packages/OptimizationBase/y1GZt/src/solve.jl:100
+unknown function (ip: 0x1514f4ed6342) at (unknown file)
+#shooting#35 at /orcd/home/002/txenakis/projects/BVPsolver/src/training/shooting.jl:31
+shooting at /orcd/home/002/txenakis/projects/BVPsolver/src/training/shooting.jl:1
+unknown function (ip: 0x1514f4ecdd53) at (unknown file)
+macro expansion at ./timing.jl:461 [inlined]
+main at /orcd/home/002/txenakis/projects/BVPsolver/src/run_main.jl:194
+unknown function (ip: 0x151505193d52) at (unknown file)
+main at /orcd/home/002/txenakis/projects/BVPsolver/src/run_main.jl:120
+unknown function (ip: 0x1515051790ef) at (unknown file)
+jl_apply at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+do_call at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/interpreter.c:123
+eval_value at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/interpreter.c:243
+eval_stmt_value at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/interpreter.c:194 [inlined]
+eval_body at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/interpreter.c:707
+jl_interpret_toplevel_thunk at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/interpreter.c:898
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/toplevel.c:1035
+jl_toplevel_eval_flex at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/toplevel.c:975
+ijl_toplevel_eval at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/toplevel.c:1047
+ijl_toplevel_eval_in at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/toplevel.c:1092
+eval at ./boot.jl:489
+include_string at ./loading.jl:2874
+_include at ./loading.jl:2934
+include at ./Base.jl:306
+exec_options at ./client.jl:317
+_start at ./client.jl:550
+jfptr__start_63319.1 at /orcd/software/core/001/pkg/julia/1.12.6/lib/julia/sys.so (unknown line)
+jl_apply at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/julia.h:2391 [inlined]
+true_main at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/jlapi.c:971
+jl_repl_entrypoint at /cache/build/builder-amdci5-4/julialang/julia-release-1-dot-12/src/jlapi.c:1139
+main at julia (unknown line)
+__libc_start_main at /lib64/libc.so.6 (unknown line)
+unknown function (ip: 0x4010b8) at julia
+Allocations: 11694470524 (Pool: 11694138321; Big: 332203); GC: 618027

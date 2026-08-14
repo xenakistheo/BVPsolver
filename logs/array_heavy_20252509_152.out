@@ -1,0 +1,28 @@
+Task 152/214: --problem davis-skodje --model stiff --profile fast --seed 13 --pretraining none --training shapovalova
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20252509_152.log
+davis-skodje  model=stiff d=2 tlen=300 profile=fast seed=13  solver=Rodas5P  N=268
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.19, running with linear solver MUMPS 5.9.0.
+
+Option "hessian_approximation" is not chosen as "limited-memory", but eval_h returns false.
+Exception of type: OPTION_INVALID in file "Interfaces/IpTNLPAdapter.cpp" at line 1283:
+ Exception message: eval_h is called but has not been implemented
+
+EXIT: Invalid option encountered.
+shapovalova [14s]  loss=0.0
+  [final]  nrmse=0.4148  l2=15.07
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RpW7jTKC/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RpW7jTKC/davis-skodje_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RpW7jTKC
+--------------------------------------
+Done: Wed Aug 12 13:36:32 EDT 2026

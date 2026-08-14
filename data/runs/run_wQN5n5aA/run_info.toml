@@ -1,0 +1,30 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 42.047982549
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_129.err"
+init = "default"
+model = "stiff"
+n_params = 486
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_129.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "orego"
+profile = "fast"
+seed = 15
+shap-hessian = "exact"
+shapovalova_time = 17.890887795
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-12T13:31:32.464"
+training = "shapovalova"
+training_time = 59.938870343999994
+
+[cfg]
+amr_rounds = 1
+depth = 2
+dm_iters = 10000
+hidden = 16
+lm_iters = 150
+signed_loss = false

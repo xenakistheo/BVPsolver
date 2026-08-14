@@ -1,0 +1,7 @@
+Task 181/214: --problem pollu --model stiff --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20252509_181.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=stiff d=20 tlen=50 profile=fast seed=12  solver=Rodas5  N=4744
+  shooting lr=0.01 iter=17/340 loss=1.067e-5

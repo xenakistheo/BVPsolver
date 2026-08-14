@@ -1,0 +1,8 @@
+Task 193/214: --problem pollu --model mlp --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20252509_193.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=mlp d=20 tlen=50 profile=fast seed=14  solver=Rodas5  N=3444
+  shooting lr=0.01 iter=17/340 loss=11.53
+  shooting lr=0.01 iter=34/340 loss=6.813

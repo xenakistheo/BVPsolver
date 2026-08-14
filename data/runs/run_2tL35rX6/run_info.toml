@@ -1,0 +1,30 @@
+collocation_time = 0.0
+computer = "orcd"
+derivmatch_time = 32.934065927
+err-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_178.err"
+init = "default"
+model = "GELU-scaled"
+n_params = 177
+ncol = 0
+out-file = "/home/txenakis/projects/BVPsolver/logs/array_heavy_20252509_178.out"
+param = "none"
+pretraining = "derivmatch"
+problem = "davis-skodje"
+profile = "fast"
+seed = 14
+shap-hessian = "exact"
+shapovalova_time = 8.902818295
+shoot-iters = 1000
+shooting_time = 0.0
+sigma = 0.0
+timestamp = "2026-08-12T13:42:46.535"
+training = "shapovalova"
+training_time = 41.836884221999995
+
+[cfg]
+amr_rounds = 3
+depth = 2
+dm_iters = 10000
+hidden = 12
+lm_iters = 150
+signed_loss = false

@@ -1,0 +1,25 @@
+orego  model=GELU-scaled d=3 tlen=112 profile=fast seed=13  solver=Rodas5  N=188
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.19, running with linear solver MUMPS 5.9.0.
+
+Option "hessian_approximation" is not chosen as "limited-memory", but eval_h returns false.
+Exception of type: OPTION_INVALID in file "Interfaces/IpTNLPAdapter.cpp" at line 1283:
+ Exception message: eval_h is called but has not been implemented
+
+EXIT: Invalid option encountered.
+shapovalova [9s]  loss=0.0
+  rollout FAILED: Unstable at t=1.2432928849246627 of 180.0
+  [final]  nrmse=Inf  l2=Inf
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_zko0pXYa/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_zko0pXYa/orego_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_zko0pXYa

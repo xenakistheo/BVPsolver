@@ -1,0 +1,2 @@
+/var/spool/slurmd/job20272782/slurm_script: line 109: 4021559 Bus error               (core dumped) julia --project=. src/run_main.jl --computer orcd --out-file "$OUT_FILE" --err-file "$ERR_FILE" "${ARGS[@]}" 2>&1
+     4021560 Done                    | tee "$LOG_FILE"

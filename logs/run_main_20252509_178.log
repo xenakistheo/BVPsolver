@@ -1,0 +1,110 @@
+davis-skodje  model=GELU-scaled d=2 tlen=300 profile=fast seed=14  solver=Rodas5P  N=177
+  derivmatch lr=0.01 iter=170/3400 loss=2.037
+  derivmatch lr=0.01 iter=340/3400 loss=0.1764
+  derivmatch lr=0.01 iter=510/3400 loss=0.05383
+  derivmatch lr=0.01 iter=680/3400 loss=0.01184
+  derivmatch lr=0.01 iter=850/3400 loss=0.01287
+  derivmatch lr=0.01 iter=1020/3400 loss=0.01263
+  derivmatch lr=0.01 iter=1190/3400 loss=0.006848
+  derivmatch lr=0.01 iter=1360/3400 loss=0.01246
+  derivmatch lr=0.01 iter=1530/3400 loss=0.01301
+  derivmatch lr=0.01 iter=1700/3400 loss=0.004178
+  derivmatch lr=0.01 iter=1870/3400 loss=0.008118
+  derivmatch lr=0.01 iter=2040/3400 loss=0.009737
+  derivmatch lr=0.01 iter=2210/3400 loss=0.00266
+  derivmatch lr=0.01 iter=2380/3400 loss=0.007309
+  derivmatch lr=0.01 iter=2550/3400 loss=0.008479
+  derivmatch lr=0.01 iter=2720/3400 loss=0.00205
+  derivmatch lr=0.01 iter=2890/3400 loss=0.006925
+  derivmatch lr=0.01 iter=3060/3400 loss=0.007621
+  derivmatch lr=0.01 iter=3230/3400 loss=0.001706
+  derivmatch lr=0.01 iter=3400/3400 loss=0.006691
+  derivmatch lr=0.01 iter=3400/3400 loss=0.001626
+  derivmatch lr=0.003 iter=125/2500 loss=0.0009139
+  derivmatch lr=0.003 iter=250/2500 loss=0.0007128
+  derivmatch lr=0.003 iter=375/2500 loss=0.0006444
+  derivmatch lr=0.003 iter=500/2500 loss=0.0005977
+  derivmatch lr=0.003 iter=625/2500 loss=0.0005541
+  derivmatch lr=0.003 iter=750/2500 loss=0.0005123
+  derivmatch lr=0.003 iter=875/2500 loss=0.0005866
+  derivmatch lr=0.003 iter=1000/2500 loss=0.0006238
+  derivmatch lr=0.003 iter=1125/2500 loss=0.001497
+  derivmatch lr=0.003 iter=1250/2500 loss=0.0007407
+  derivmatch lr=0.003 iter=1375/2500 loss=0.0006528
+  derivmatch lr=0.003 iter=1500/2500 loss=0.0004094
+  derivmatch lr=0.003 iter=1625/2500 loss=0.0003366
+  derivmatch lr=0.003 iter=1750/2500 loss=0.0003297
+  derivmatch lr=0.003 iter=1875/2500 loss=0.0002965
+  derivmatch lr=0.003 iter=2000/2500 loss=0.0002703
+  derivmatch lr=0.003 iter=2125/2500 loss=0.00026
+  derivmatch lr=0.003 iter=2250/2500 loss=0.0003698
+  derivmatch lr=0.003 iter=2375/2500 loss=0.0008137
+  derivmatch lr=0.003 iter=2500/2500 loss=0.0002866
+  derivmatch lr=0.003 iter=2500/2500 loss=0.0002179
+  derivmatch lr=0.001 iter=125/2500 loss=0.0002167
+  derivmatch lr=0.001 iter=250/2500 loss=0.0002106
+  derivmatch lr=0.001 iter=375/2500 loss=0.0002055
+  derivmatch lr=0.001 iter=500/2500 loss=0.0002003
+  derivmatch lr=0.001 iter=625/2500 loss=0.0001947
+  derivmatch lr=0.001 iter=750/2500 loss=0.0001887
+  derivmatch lr=0.001 iter=875/2500 loss=0.0001824
+  derivmatch lr=0.001 iter=1000/2500 loss=0.0001759
+  derivmatch lr=0.001 iter=1125/2500 loss=0.0001693
+  derivmatch lr=0.001 iter=1250/2500 loss=0.0001627
+  derivmatch lr=0.001 iter=1375/2500 loss=0.0001561
+  derivmatch lr=0.001 iter=1500/2500 loss=0.0001495
+  derivmatch lr=0.001 iter=1625/2500 loss=0.000143
+  derivmatch lr=0.001 iter=1750/2500 loss=0.0001381
+  derivmatch lr=0.001 iter=1875/2500 loss=0.0001328
+  derivmatch lr=0.001 iter=2000/2500 loss=0.0001488
+  derivmatch lr=0.001 iter=2125/2500 loss=0.0001233
+  derivmatch lr=0.001 iter=2250/2500 loss=0.0003225
+  derivmatch lr=0.001 iter=2375/2500 loss=0.0001148
+  derivmatch lr=0.001 iter=2500/2500 loss=0.0001112
+  derivmatch lr=0.001 iter=2500/2500 loss=0.000111
+  derivmatch lr=0.0003 iter=80/1600 loss=0.0001115
+  derivmatch lr=0.0003 iter=160/1600 loss=0.0001102
+  derivmatch lr=0.0003 iter=240/1600 loss=0.0001097
+  derivmatch lr=0.0003 iter=320/1600 loss=0.000109
+  derivmatch lr=0.0003 iter=400/1600 loss=0.0001083
+  derivmatch lr=0.0003 iter=480/1600 loss=0.0001075
+  derivmatch lr=0.0003 iter=560/1600 loss=0.0001066
+  derivmatch lr=0.0003 iter=640/1600 loss=0.0001056
+  derivmatch lr=0.0003 iter=720/1600 loss=0.0001046
+  derivmatch lr=0.0003 iter=800/1600 loss=0.0001035
+  derivmatch lr=0.0003 iter=880/1600 loss=0.0001024
+  derivmatch lr=0.0003 iter=960/1600 loss=0.0001012
+  derivmatch lr=0.0003 iter=1040/1600 loss=9.993e-5
+  derivmatch lr=0.0003 iter=1120/1600 loss=9.863e-5
+  derivmatch lr=0.0003 iter=1200/1600 loss=9.729e-5
+  derivmatch lr=0.0003 iter=1280/1600 loss=9.59e-5
+  derivmatch lr=0.0003 iter=1360/1600 loss=9.47e-5
+  derivmatch lr=0.0003 iter=1440/1600 loss=9.318e-5
+  derivmatch lr=0.0003 iter=1520/1600 loss=9.179e-5
+  derivmatch lr=0.0003 iter=1600/1600 loss=9.037e-5
+  derivmatch lr=0.0003 iter=1600/1600 loss=9.037e-5
+derivative matching [33s]  fitloss=9.04e-5
+  [derivative matching]  nrmse=0.0004539  l2=0.01401
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.19, running with linear solver MUMPS 5.9.0.
+
+Option "hessian_approximation" is not chosen as "limited-memory", but eval_h returns false.
+Exception of type: OPTION_INVALID in file "Interfaces/IpTNLPAdapter.cpp" at line 1283:
+ Exception message: eval_h is called but has not been implemented
+
+EXIT: Invalid option encountered.
+shapovalova [9s]  loss=0.0
+  [final]  nrmse=0.0004539  l2=0.01401
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2tL35rX6/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2tL35rX6/davis-skodje_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2tL35rX6

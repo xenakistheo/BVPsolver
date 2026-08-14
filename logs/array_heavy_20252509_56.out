@@ -1,0 +1,206 @@
+Task 56/214: --problem rober --model GELU-scaled --profile fast --seed 12 --pretraining derivmatch --training shapovalova
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_20252509_56.log
+rober  model=GELU-scaled d=3 tlen=50 profile=fast seed=12  solver=Rodas5  N=188
+  derivmatch lr=0.01 iter=170/3400 loss=9.193
+  derivmatch lr=0.01 iter=340/3400 loss=7.566
+  derivmatch lr=0.01 iter=510/3400 loss=6.019
+  derivmatch lr=0.01 iter=680/3400 loss=9.453
+  derivmatch lr=0.01 iter=850/3400 loss=9.287
+  derivmatch lr=0.01 iter=1020/3400 loss=9.116
+  derivmatch lr=0.01 iter=1190/3400 loss=8.95
+  derivmatch lr=0.01 iter=1360/3400 loss=6.936
+  derivmatch lr=0.01 iter=1530/3400 loss=9.678
+  derivmatch lr=0.01 iter=1700/3400 loss=7.509
+  derivmatch lr=0.01 iter=1870/3400 loss=6.286
+  derivmatch lr=0.01 iter=2040/3400 loss=6.012
+  derivmatch lr=0.01 iter=2210/3400 loss=5.891
+  derivmatch lr=0.01 iter=2380/3400 loss=6.02
+  derivmatch lr=0.01 iter=2550/3400 loss=5.907
+  derivmatch lr=0.01 iter=2720/3400 loss=5.862
+  derivmatch lr=0.01 iter=2890/3400 loss=5.841
+  derivmatch lr=0.01 iter=3060/3400 loss=5.801
+  derivmatch lr=0.01 iter=3230/3400 loss=5.778
+  derivmatch lr=0.01 iter=3400/3400 loss=7.829
+  derivmatch lr=0.01 iter=3400/3400 loss=5.764
+  derivmatch lr=0.003 iter=125/2500 loss=5.721
+  derivmatch lr=0.003 iter=250/2500 loss=5.68
+  derivmatch lr=0.003 iter=375/2500 loss=5.655
+  derivmatch lr=0.003 iter=500/2500 loss=5.604
+  derivmatch lr=0.003 iter=625/2500 loss=5.569
+  derivmatch lr=0.003 iter=750/2500 loss=5.473
+  derivmatch lr=0.003 iter=875/2500 loss=7.427
+  derivmatch lr=0.003 iter=1000/2500 loss=7.034
+  derivmatch lr=0.003 iter=1125/2500 loss=5.606
+  derivmatch lr=0.003 iter=1250/2500 loss=5.428
+  derivmatch lr=0.003 iter=1375/2500 loss=5.379
+  derivmatch lr=0.003 iter=1500/2500 loss=5.374
+  derivmatch lr=0.003 iter=1625/2500 loss=5.342
+  derivmatch lr=0.003 iter=1750/2500 loss=5.293
+  derivmatch lr=0.003 iter=1875/2500 loss=5.248
+  derivmatch lr=0.003 iter=2000/2500 loss=5.238
+  derivmatch lr=0.003 iter=2125/2500 loss=5.201
+  derivmatch lr=0.003 iter=2250/2500 loss=5.137
+  derivmatch lr=0.003 iter=2375/2500 loss=6.261
+  derivmatch lr=0.003 iter=2500/2500 loss=10.31
+  derivmatch lr=0.003 iter=2500/2500 loss=5.097
+  derivmatch lr=0.001 iter=125/2500 loss=5.089
+  derivmatch lr=0.001 iter=250/2500 loss=5.056
+  derivmatch lr=0.001 iter=375/2500 loss=5.011
+  derivmatch lr=0.001 iter=500/2500 loss=5.736
+  derivmatch lr=0.001 iter=625/2500 loss=4.986
+  derivmatch lr=0.001 iter=750/2500 loss=4.966
+  derivmatch lr=0.001 iter=875/2500 loss=4.95
+  derivmatch lr=0.001 iter=1000/2500 loss=4.935
+  derivmatch lr=0.001 iter=1125/2500 loss=4.92
+  derivmatch lr=0.001 iter=1250/2500 loss=4.905
+  derivmatch lr=0.001 iter=1375/2500 loss=4.891
+  derivmatch lr=0.001 iter=1500/2500 loss=4.877
+  derivmatch lr=0.001 iter=1625/2500 loss=4.863
+  derivmatch lr=0.001 iter=1750/2500 loss=4.849
+  derivmatch lr=0.001 iter=1875/2500 loss=4.835
+  derivmatch lr=0.001 iter=2000/2500 loss=4.821
+  derivmatch lr=0.001 iter=2125/2500 loss=4.825
+  derivmatch lr=0.001 iter=2250/2500 loss=4.8
+  derivmatch lr=0.001 iter=2375/2500 loss=4.763
+  derivmatch lr=0.001 iter=2500/2500 loss=4.751
+  derivmatch lr=0.001 iter=2500/2500 loss=4.733
+  derivmatch lr=0.0003 iter=80/1600 loss=4.73
+  derivmatch lr=0.0003 iter=160/1600 loss=4.726
+  derivmatch lr=0.0003 iter=240/1600 loss=4.72
+  derivmatch lr=0.0003 iter=320/1600 loss=4.714
+  derivmatch lr=0.0003 iter=400/1600 loss=4.708
+  derivmatch lr=0.0003 iter=480/1600 loss=4.701
+  derivmatch lr=0.0003 iter=560/1600 loss=4.694
+  derivmatch lr=0.0003 iter=640/1600 loss=4.687
+  derivmatch lr=0.0003 iter=720/1600 loss=4.68
+  derivmatch lr=0.0003 iter=800/1600 loss=4.672
+  derivmatch lr=0.0003 iter=880/1600 loss=4.667
+  derivmatch lr=0.0003 iter=960/1600 loss=4.658
+  derivmatch lr=0.0003 iter=1040/1600 loss=4.652
+  derivmatch lr=0.0003 iter=1120/1600 loss=4.645
+  derivmatch lr=0.0003 iter=1200/1600 loss=4.641
+  derivmatch lr=0.0003 iter=1280/1600 loss=4.634
+  derivmatch lr=0.0003 iter=1360/1600 loss=4.629
+  derivmatch lr=0.0003 iter=1440/1600 loss=4.622
+  derivmatch lr=0.0003 iter=1520/1600 loss=4.615
+  derivmatch lr=0.0003 iter=1600/1600 loss=4.609
+  derivmatch lr=0.0003 iter=1600/1600 loss=4.609
+derivative matching [30s]  fitloss=4.61
+  [derivative matching]  nrmse=20.84  l2=7.716
+
+******************************************************************************
+This program contains Ipopt, a library for large-scale nonlinear optimization.
+ Ipopt is released as open source code under the Eclipse Public License (EPL).
+         For more information visit https://github.com/coin-or/Ipopt
+******************************************************************************
+
+This is Ipopt version 3.14.19, running with linear solver MUMPS 5.9.0.
+
+Number of nonzeros in equality constraint Jacobian...:    36003
+Number of nonzeros in inequality constraint Jacobian.:        0
+Number of nonzeros in Lagrangian Hessian.............:        0
+
+Total number of variables............................:      338
+                     variables with only lower bounds:        0
+                variables with lower and upper bounds:        0
+                     variables with only upper bounds:        0
+Total number of equality constraints.................:      153
+Total number of inequality constraints...............:        0
+        inequality constraints with only lower bounds:        0
+   inequality constraints with lower and upper bounds:        0
+        inequality constraints with only upper bounds:        0
+
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+   0  7.0571539e-03 3.86e-02 6.25e-05   0.0 0.00e+00    -  0.00e+00 0.00e+00   0
+   1  3.5359145e+00 3.76e-04 2.51e+01 -11.0 1.01e+00    -  1.00e+00 1.00e+00h  1
+   2  3.5283857e+00 5.62e-04 1.22e+05 -11.0 1.96e-01    -  1.00e+00 1.00e+00h  1
+   3  3.5272454e+00 1.64e-04 1.15e+04 -11.0 2.13e-01    -  1.00e+00 1.00e+00h  1
+   4  3.5279263e+00 1.89e-05 1.17e+03 -11.0 8.25e-02    -  1.00e+00 1.00e+00h  1
+   5  3.5258481e+00 9.34e-07 6.37e+02 -11.0 9.70e-03    -  1.00e+00 1.00e+00h  1
+   6  3.5258347e+00 6.33e-09 5.50e+00 -11.0 8.41e-04    -  1.00e+00 1.00e+00h  1
+   7  3.5258345e+00 1.16e-12 6.03e-02 -11.0 1.51e-04    -  1.00e+00 1.00e+00h  1
+   8  3.5258334e+00 5.27e-10 1.50e+00 -11.0 3.00e-03    -  1.00e+00 1.00e+00h  1
+   9  3.5257877e+00 9.33e-07 1.17e+01 -11.0 1.27e-01    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  10  3.5257219e+00 2.26e-05 3.00e+00 -11.0 7.08e+00    -  1.00e+00 6.25e-02h  5
+  11  3.5252439e+00 7.32e-05 2.95e-02 -11.0 1.44e+00    -  1.00e+00 1.00e+00h  1
+  12  3.5249560e+00 5.92e-04 2.94e-02 -11.0 2.98e+02    -  1.00e+00 7.81e-03h  8
+  13  3.5250576e+00 6.50e-04 2.89e-02 -11.0 1.66e+02    -  1.00e+00 1.56e-02h  7
+  14  3.5250028e+00 2.83e-03 8.61e+01 -11.0 3.82e+00    -  1.00e+00 1.25e-01h  4
+  15  3.2702261e+00 2.99e-03 8.57e+01 -11.0 6.18e+00    -  1.00e+00 1.00e+00f  1
+  16  3.1594436e+00 4.87e-03 4.46e+01 -11.0 9.03e+01    -  1.00e+00 1.56e-02f  7
+  17  2.6113110e+00 1.47e-03 6.64e+01 -11.0 5.91e+00    -  1.00e+00 5.00e-01f  2
+  18  1.9459152e+00 1.07e-02 8.75e+01 -11.0 4.74e+00    -  1.00e+00 1.00e+00f  1
+  19  1.5751381e+00 4.03e-03 6.96e+01 -11.0 1.20e+01    -  1.00e+00 5.00e-01f  2
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  20  1.4022355e+00 3.96e-03 6.87e+01 -11.0 1.39e+01    -  1.00e+00 1.56e-02f  7
+  21  2.2060173e+00 1.97e-03 3.48e+01 -11.0 2.85e+00    -  1.00e+00 5.00e-01h  2
+  22  2.1879972e+00 1.85e-03 3.37e+01 -11.0 2.19e+01    -  1.00e+00 3.12e-02f  6
+  23  2.9494389e+00 8.42e-04 1.69e+01 -11.0 2.18e+00    -  1.00e+00 5.00e-01h  2
+  24  3.0429404e+00 6.89e-04 1.27e+01 -11.0 2.47e+00    -  1.00e+00 2.50e-01h  3
+  25  3.0532900e+00 8.50e-04 1.85e+04 -11.0 7.65e+00    -  1.00e+00 3.12e-02h  6
+  26  3.2235844e+00 6.19e-04 1.77e+01 -11.0 1.06e+01    -  1.00e+00 1.25e-01h  4
+  27  3.1689105e+00 7.76e-04 5.53e+04 -11.0 2.17e+01    -  1.00e+00 6.25e-02f  5
+  28  3.2012551e+00 5.26e-04 4.95e+04 -11.0 5.27e+00    -  1.00e+00 1.25e-01h  4
+  29  1.3270307e+02 1.31e+02 3.51e+06 -11.0 1.85e+01    -  1.00e+00 1.00e+00w  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  30  1.0987674e+02 3.70e+01 1.16e+06 -11.0 2.28e+00    -  1.00e+00 1.00e+00w  1
+  31  9.2488709e+01 6.52e+00 2.28e+04 -11.0 1.70e+00    -  1.00e+00 1.00e+00w  1
+  32  3.5047764e+00 5.04e-04 4.55e+04 -11.0 8.13e-01    -  1.00e+00 6.25e-02h  4
+  33  3.4787483e+00 2.52e-04 2.78e+04 -11.0 7.71e-01    -  1.00e+00 5.00e-01h  2
+  34  3.5037315e+00 1.25e-04 1.40e+04 -11.0 4.77e-01    -  1.00e+00 5.00e-01h  2
+  35  3.5169286e+00 9.41e-05 9.69e+03 -11.0 2.45e-01    -  1.00e+00 2.50e-01h  3
+  36  3.4887972e+00 4.70e-05 3.37e+03 -11.0 8.71e-02    -  1.00e+00 5.00e-01f  2
+  37  3.5253193e+00 7.21e-06 3.72e+01 -11.0 1.29e-02    -  1.00e+00 1.00e+00h  1
+  38  3.5252209e+00 3.12e-06 4.00e+01 -11.0 1.62e-03    -  1.00e+00 1.00e+00h  1
+  39  3.5256552e+00 8.58e-07 2.11e+01 -11.0 1.01e-02    -  1.00e+00 1.00e+00h  1
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  40  3.5248650e+00 3.46e-07 6.53e+00 -11.0 5.36e-03    -  1.00e+00 1.00e+00h  1
+  41  3.5248635e+00 6.23e-08 3.39e+00 -11.0 1.72e-03    -  1.00e+00 1.00e+00h  1
+  42  3.5248632e+00 4.93e-08 8.89e-01 -11.0 1.97e-03    -  1.00e+00 1.00e+00h  1
+  43  3.5248632e+00 7.74e-09 3.68e-01 -11.0 1.10e-03    -  1.00e+00 1.00e+00h  1
+  44  3.5248778e+00 1.26e-10 1.92e-02 -11.0 5.02e-02    -  1.00e+00 1.00e+00H  1
+  45  3.5248778e+00 1.38e-10 1.92e-02 -11.0 1.06e+02    -  1.00e+00 3.81e-06h 19
+  46  3.5248778e+00 1.38e-10 1.92e-02 -11.0 6.29e-01    -  1.00e+00 1.22e-04h 14
+  47  3.5248578e+00 7.66e-06 1.91e-02 -11.0 9.99e+02    -  1.00e+00 4.88e-04f 12
+  48  3.5248444e+00 1.34e-05 1.91e-02 -11.0 3.68e+02    -  1.00e+00 9.77e-04h 11
+  49  3.5248326e+00 1.96e-05 1.90e-02 -11.0 2.99e+01    -  1.00e+00 7.81e-03h  8
+iter    objective    inf_pr   inf_du lg(mu)  ||d||  lg(rg) alpha_du alpha_pr  ls
+  50  3.5248554e+00 1.93e-08 2.00e-02 -11.0 2.00e-02    -  1.00e+00 1.00e+00h  1
+  51  3.5256673e+00 8.85e-10 9.79e-03 -11.0 3.71e-02    -  1.00e+00 1.00e+00H  1
+  52  3.5248250e+00 1.14e-06 1.48e-03 -11.0 3.23e-02    -  1.00e+00 1.00e+00f  1
+  53  3.5248245e+00 1.30e-09 4.11e-04 -11.0 1.32e-03    -  1.00e+00 1.00e+00h  1
+  54  3.5248243e+00 2.44e-11 5.93e-05 -11.0 2.90e-04    -  1.00e+00 1.00e+00h  1
+
+Number of Iterations....: 54
+
+                                   (scaled)                 (unscaled)
+Objective...............:   3.5248243462803179e+00    3.5248243462803179e+00
+Dual infeasibility......:   5.9346996856065221e-05    5.9346996856065221e-05
+Constraint violation....:   2.4367872303310278e-11    2.4367872303310278e-11
+Variable bound violation:   0.0000000000000000e+00    0.0000000000000000e+00
+Complementarity.........:   0.0000000000000000e+00    0.0000000000000000e+00
+Overall NLP error.......:   2.1550706800841096e-09    5.9346996856065221e-05
+
+
+Number of objective function evaluations             = 182
+Number of objective gradient evaluations             = 55
+Number of equality constraint evaluations            = 209
+Number of inequality constraint evaluations          = 0
+Number of equality constraint Jacobian evaluations   = 55
+Number of inequality constraint Jacobian evaluations = 0
+Number of Lagrangian Hessian evaluations             = 0
+Total seconds in IPOPT                               = 28.675
+
+EXIT: Optimal Solution Found.
+shapovalova [37s]  loss=3.52
+  [final]  nrmse=0.4669  l2=1.166
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gdGhFPAz/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gdGhFPAz/rober_spectral_fit.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_gdGhFPAz
+--------------------------------------
+Done: Wed Aug 12 08:07:38 EDT 2026
