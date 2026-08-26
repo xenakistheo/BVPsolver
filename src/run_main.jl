@@ -28,6 +28,20 @@ config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
 gelu_arch(problem) = config_key(problem) === :pollu ? (hidden = 10, depth = 3) :
                                                       (hidden = 5,  depth = 6)
 
+# Capacity matching 
+nparams(m) = length(ComponentVector(Lux.f64(first(Lux.setup(Xoshiro(0), m)))))
+
+function matched_width(build, target; hi = 512)
+    lo = 2
+    nparams(build(hi)) < target &&
+        error("capacity matching: width $hi is still under $target params")
+    while lo < hi
+        mid = (lo + hi) ÷ 2
+        nparams(build(mid)) < target ? (lo = mid + 1) : (hi = mid)
+    end
+    return lo
+end
+
 function problem_kwargs(problem, param)
     param === nothing && return (;)
     key = config_key(problem)
@@ -148,18 +162,21 @@ function main(args = parse_cli())
 
     ymid = (ymax .+ ymin) ./ 2
     td   = get(cfg, :time_dependent, false)
-    model = if arch == "stiff"
-        build_stiff_field(d, Ydata, spec.tsteps, ymid, yscale;
-                          width = cfg.hidden, depth = cfg.depth,
-                          signed_loss = cfg.signed_loss, time_dependent = td, init = init)
-    elseif arch == "GELU-scaled"
-        a = gelu_arch(problem)
-        build_mlp_field(d, Ydata, spec.tsteps, yscale;
-                        width = a.hidden, depth = a.depth,
-                        scaling = :eq, activation = gelu, time_dependent = td, init = init)
+    build_stiff() = build_stiff_field(d, Ydata, spec.tsteps, ymid, yscale;
+                                      width = cfg.hidden, depth = cfg.depth,
+                                      signed_loss = cfg.signed_loss,
+                                      time_dependent = td, init = init)
+    model, model_width = if arch == "stiff"
+        build_stiff(), cfg.hidden
     else
-        build_mlp_field(d, Ydata, spec.tsteps, yscale;
-                        width = cfg.hidden, depth = cfg.depth, time_dependent = td, init = init)
+        a = arch == "GELU-scaled" ? gelu_arch(problem) : (hidden = cfg.hidden, depth = cfg.depth)
+        build_base(w) = build_mlp_field(d, Ydata, spec.tsteps, yscale;
+                                        width = w, depth = a.depth,
+                                        scaling    = arch == "GELU-scaled" ? :eq  : :none,
+                                        activation = arch == "GELU-scaled" ? gelu : tanh,
+                                        time_dependent = td, init = init)
+        w = matched_width(build_base, nparams(build_stiff()))
+        build_base(w), w
     end
     ps, st = Lux.setup(Xoshiro(seed), model); ps = Lux.f64(ps)
     init_stiff!(ps, model)
@@ -167,7 +184,7 @@ function main(args = parse_cli())
              d, tlen, Ydata, yscale, model, st, ps_axes = getaxes(ComponentVector(ps)))
 
     n_params = length(ComponentVector(ps))
-    println("$(spec.name)  model=$arch d=$d tlen=$tlen profile=$profile seed=$seed" *
+    println("$(spec.name)  model=$arch width=$model_width d=$d tlen=$tlen profile=$profile seed=$seed" *
             (sigma > 0 ? " sigma=$sigma" : "") *
             (init === :default ? "" : " init=$init") *
             "  solver=$(typeof(spec.solver).name.name)  N=$n_params")
@@ -246,6 +263,7 @@ function main(args = parse_cli())
     run_info["training_time"]    = derivmatch_time + collocation_time +
                                    shooting_time + shapovalova_time
     run_info["n_params"]         = n_params
+    run_info["model_width"]      = model_width
     run_info["timestamp"]        = string(now())
 
     run_info["E_trajectory_species_train"] = train_err.traj_species
