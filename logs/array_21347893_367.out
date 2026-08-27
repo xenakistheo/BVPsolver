@@ -1,0 +1,40 @@
+Task 367/416: --problem davis-skodje --model mlp --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_367.log
+davis-skodje  model=mlp width=14 d=2 tlen=300 profile=fast seed=12  solver=Rodas5P  N=282
+  shooting iter=50/1000 loss=0.3292
+  shooting iter=100/1000 loss=0.1863
+  shooting iter=150/1000 loss=0.1471
+  shooting iter=200/1000 loss=0.1335
+  shooting iter=250/1000 loss=0.1246
+  shooting iter=300/1000 loss=0.1187
+  shooting iter=350/1000 loss=0.1142
+  shooting iter=400/1000 loss=0.1102
+  shooting iter=450/1000 loss=0.1063
+  shooting iter=500/1000 loss=0.102
+  shooting iter=550/1000 loss=0.09856
+  shooting iter=600/1000 loss=0.09526
+  shooting iter=650/1000 loss=0.09245
+  shooting iter=700/1000 loss=0.09005
+  shooting iter=750/1000 loss=0.08815
+  shooting iter=800/1000 loss=0.08588
+  shooting iter=850/1000 loss=0.08505
+  shooting iter=900/1000 loss=0.08227
+  shooting iter=950/1000 loss=0.08157
+  shooting iter=1000/1000 loss=0.07927
+  shooting iter=1000/1000 loss=0.0788
+shooting [241s]  loss=0.0788
+  [final]  nrmse=0.1801  l2=8.821
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.09752  E_VF=0.4384  E_spec=0.6596
+  [test ]  E_traj=1.386e9  E_VF=3.009e11  E_spec=0.3676
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IMcgPE1N/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IMcgPE1N/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IMcgPE1N/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IMcgPE1N/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IMcgPE1N
+--------------------------------------
+Done: Wed Aug 26 23:54:13 EDT 2026

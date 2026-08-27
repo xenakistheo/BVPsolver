@@ -1,0 +1,40 @@
+Task 131/416: --problem vanderpol --model stiff --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_131.log
+vanderpol  model=stiff width=12 d=2 tlen=151 profile=fast seed=14  solver=Kvaerno5  N=268
+  shooting iter=50/1000 loss=0.1957
+  shooting iter=100/1000 loss=0.1939
+  shooting iter=150/1000 loss=0.1861
+  shooting iter=200/1000 loss=0.1958
+  shooting iter=250/1000 loss=0.1975
+  shooting iter=300/1000 loss=0.197
+  shooting iter=350/1000 loss=0.1962
+  shooting iter=400/1000 loss=0.1951
+  shooting iter=450/1000 loss=0.1925
+  shooting iter=500/1000 loss=0.1827
+  shooting iter=550/1000 loss=0.1991
+  shooting iter=600/1000 loss=0.1989
+  shooting iter=650/1000 loss=0.1987
+  shooting iter=700/1000 loss=0.1984
+  shooting iter=750/1000 loss=0.198
+  shooting iter=800/1000 loss=0.1974
+  shooting iter=850/1000 loss=0.1961
+  shooting iter=900/1000 loss=0.1894
+  shooting iter=950/1000 loss=0.1886
+  shooting iter=1000/1000 loss=0.1874
+  shooting iter=1000/1000 loss=0.1817
+shooting [129s]  loss=0.182
+  [final]  nrmse=0.2916  l2=325.1
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.9981  E_VF=3.474  E_spec=1.12
+  [test ]  E_traj=1.423  E_VF=2.604e6  E_spec=2084.0
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_uQUqk7ND/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_uQUqk7ND/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_uQUqk7ND/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_uQUqk7ND/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_uQUqk7ND
+--------------------------------------
+Done: Wed Aug 26 21:12:57 EDT 2026

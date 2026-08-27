@@ -1,0 +1,100 @@
+Task 47/416: --problem pollu --model GELU-scaled --profile fast --seed 15 --pretraining none --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_47.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=GELU-scaled width=40 d=20 tlen=50 profile=fast seed=15  solver=Rodas5  N=4940
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	1.93936487e+03      	NaN                 
+1       	9.98628914e+02      	7.64541532e-01      
+8       	2.27501533e+02      	1.98208366e-01      
+15      	2.30450172e+02      	0.00000000e+00      
+22      	2.22696252e+02      	5.38767877e-01      
+29      	2.22228501e+02      	0.00000000e+00      
+36      	2.36924503e+02      	1.37105388e+00      
+43      	2.19504904e+02      	0.00000000e+00      
+50      	3.40595716e+02      	0.00000000e+00      
+57      	3.40595716e+02      	0.00000000e+00      
+64      	2.23227145e+02      	3.86999178e-02      
+71      	1.74297269e+02      	1.52779069e+00      
+78      	1.69978320e+02      	8.19813885e-01      
+85      	1.69522995e+02      	0.00000000e+00      
+92      	1.63800930e+02      	0.00000000e+00      
+99      	1.61207697e+02      	0.00000000e+00      
+106     	1.58577813e+02      	0.00000000e+00      
+113     	1.57495825e+02      	2.67365514e-01      
+120     	1.57233142e+02      	0.00000000e+00      
+127     	1.56590816e+02      	0.00000000e+00      
+134     	1.56164934e+02      	2.16213814e-01      
+141     	1.55789853e+02      	2.47829732e-01      
+148     	1.55421899e+02      	3.61919491e-01      
+Final   	1.55421899e+02      
+----------------------      
+  AMR 1/1: M=72  err=4170.0  obs=0.00205  nrmse=0.401  best=0.401  refined=0
+collocation [6903s]
+  [final]  nrmse=0.4007  l2=0.00261
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=0.528  E_VF=1.24  E_spec=3.703e287
+  [test ]  E_traj=4.968  E_VF=0.07799  E_spec=1.6310000000000003e288
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_QUqSpP7c/pollu_fit.png
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_QUqSpP7c/pollu_fit_extrapolated.png
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_QUqSpP7c/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_QUqSpP7c/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_QUqSpP7c
+--------------------------------------
+Done: Wed Aug 26 22:23:04 EDT 2026

@@ -1,0 +1,40 @@
+Task 105/416: --problem rober --model GELU-scaled --profile fast --seed 13 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_105.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=13  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2191
+  shooting iter=100/1000 loss=0.1807
+  shooting iter=150/1000 loss=0.1643
+  shooting iter=200/1000 loss=0.158
+  shooting iter=250/1000 loss=0.1548
+  shooting iter=300/1000 loss=0.1521
+  shooting iter=350/1000 loss=0.1508
+  shooting iter=400/1000 loss=0.1496
+  shooting iter=450/1000 loss=0.147
+  shooting iter=500/1000 loss=0.1437
+  shooting iter=550/1000 loss=0.142
+  shooting iter=600/1000 loss=0.1404
+  shooting iter=650/1000 loss=0.1383
+  shooting iter=700/1000 loss=0.1372
+  shooting iter=750/1000 loss=0.1354
+  shooting iter=800/1000 loss=0.1352
+  shooting iter=850/1000 loss=0.1338
+  shooting iter=900/1000 loss=0.1326
+  shooting iter=950/1000 loss=0.1314
+  shooting iter=1000/1000 loss=0.1318
+  shooting iter=1000/1000 loss=0.1305
+shooting [356s]  loss=0.13
+  [final]  nrmse=0.3302  l2=0.01678
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2837  E_VF=0.5607  E_spec=5.354e13
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_5sPT02mO/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_5sPT02mO/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_5sPT02mO/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_5sPT02mO/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_5sPT02mO
+--------------------------------------
+Done: Wed Aug 26 21:00:37 EDT 2026

@@ -1,0 +1,40 @@
+Task 395/416: --problem davis-skodje --model GELU-scaled --profile fast --seed 15 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_395.log
+davis-skodje  model=GELU-scaled width=7 d=2 tlen=300 profile=fast seed=15  solver=Rodas5P  N=317
+  shooting iter=50/1000 loss=0.1945
+  shooting iter=100/1000 loss=0.1329
+  shooting iter=150/1000 loss=0.1236
+  shooting iter=200/1000 loss=0.09131
+  shooting iter=250/1000 loss=0.05477
+  shooting iter=300/1000 loss=0.02795
+  shooting iter=350/1000 loss=0.004404
+  shooting iter=400/1000 loss=0.002549
+  shooting iter=450/1000 loss=0.00253
+  shooting iter=500/1000 loss=0.002556
+  shooting iter=550/1000 loss=0.002348
+  shooting iter=600/1000 loss=0.001499
+  shooting iter=650/1000 loss=0.001329
+  shooting iter=700/1000 loss=0.002508
+  shooting iter=750/1000 loss=0.003364
+  shooting iter=800/1000 loss=0.002901
+  shooting iter=850/1000 loss=0.0009625
+  shooting iter=900/1000 loss=0.001987
+  shooting iter=950/1000 loss=0.001094
+  shooting iter=1000/1000 loss=0.0008797
+  shooting iter=1000/1000 loss=0.000816
+shooting [421s]  loss=0.000816
+  [final]  nrmse=0.00126  l2=0.04439
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=3.234e-6  E_VF=0.005016  E_spec=0.4632
+  [test ]  E_traj=2.198e9  E_VF=9.677e8  E_spec=0.967
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DqviMcDp/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DqviMcDp/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DqviMcDp/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DqviMcDp/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DqviMcDp
+--------------------------------------
+Done: Thu Aug 27 00:03:01 EDT 2026

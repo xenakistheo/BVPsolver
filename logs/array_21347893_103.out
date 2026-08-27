@@ -1,0 +1,40 @@
+Task 103/416: --problem rober --model GELU-scaled --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_103.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=11  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2315
+  shooting iter=100/1000 loss=0.1645
+  shooting iter=150/1000 loss=0.1517
+  shooting iter=200/1000 loss=0.1465
+  shooting iter=250/1000 loss=0.1429
+  shooting iter=300/1000 loss=0.139
+  shooting iter=350/1000 loss=0.1324
+  shooting iter=400/1000 loss=0.13
+  shooting iter=450/1000 loss=0.1281
+  shooting iter=500/1000 loss=0.1244
+  shooting iter=550/1000 loss=0.123
+  shooting iter=600/1000 loss=0.1221
+  shooting iter=650/1000 loss=0.1212
+  shooting iter=700/1000 loss=0.1201
+  shooting iter=750/1000 loss=0.1191
+  shooting iter=800/1000 loss=0.1213
+  shooting iter=850/1000 loss=0.1163
+  shooting iter=900/1000 loss=0.1196
+  shooting iter=950/1000 loss=0.118
+  shooting iter=1000/1000 loss=0.1148
+  shooting iter=1000/1000 loss=0.114
+shooting [460s]  loss=0.114
+  [final]  nrmse=0.3031  l2=0.05179
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2394  E_VF=1.368  E_spec=6.609e14
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_NijrNxEg/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_NijrNxEg/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_NijrNxEg/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_NijrNxEg/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_NijrNxEg
+--------------------------------------
+Done: Wed Aug 26 21:02:17 EDT 2026

@@ -1,0 +1,40 @@
+Task 153/416: --problem vanderpol --model mlp --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_153.log
+vanderpol  model=mlp width=14 d=2 tlen=151 profile=fast seed=12  solver=Kvaerno5  N=282
+  shooting iter=50/1000 loss=0.3133
+  shooting iter=100/1000 loss=0.1797
+  shooting iter=150/1000 loss=0.1762
+  shooting iter=200/1000 loss=0.175
+  shooting iter=250/1000 loss=0.1738
+  shooting iter=300/1000 loss=0.1718
+  shooting iter=350/1000 loss=0.1643
+  shooting iter=400/1000 loss=0.173
+  shooting iter=450/1000 loss=1.158
+  shooting iter=500/1000 loss=0.1803
+  shooting iter=550/1000 loss=0.1796
+  shooting iter=600/1000 loss=0.1789
+  shooting iter=650/1000 loss=0.1779
+  shooting iter=700/1000 loss=0.1764
+  shooting iter=750/1000 loss=0.1756
+  shooting iter=800/1000 loss=0.1752
+  shooting iter=850/1000 loss=0.1747
+  shooting iter=900/1000 loss=0.1741
+  shooting iter=950/1000 loss=0.1736
+  shooting iter=1000/1000 loss=0.1693
+  shooting iter=1000/1000 loss=0.1605
+shooting [220s]  loss=0.16
+  [final]  nrmse=0.2594  l2=325.9
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.8903  E_VF=0.9989  E_spec=0.9993
+  [test ]  E_traj=627.0  E_VF=104.0  E_spec=0.9668
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_lmOGuWs9/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_lmOGuWs9/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_lmOGuWs9/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_lmOGuWs9/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_lmOGuWs9
+--------------------------------------
+Done: Wed Aug 26 21:22:40 EDT 2026

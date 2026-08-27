@@ -1,0 +1,40 @@
+Task 342/416: --problem davis-skodje --model stiff --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_342.log
+davis-skodje  model=stiff width=12 d=2 tlen=300 profile=fast seed=12  solver=Rodas5P  N=268
+  shooting iter=50/1000 loss=0.1863
+  shooting iter=100/1000 loss=0.03843
+  shooting iter=150/1000 loss=0.01843
+  shooting iter=200/1000 loss=0.01239
+  shooting iter=250/1000 loss=0.01001
+  shooting iter=300/1000 loss=0.008507
+  shooting iter=350/1000 loss=0.007257
+  shooting iter=400/1000 loss=0.005353
+  shooting iter=450/1000 loss=0.003791
+  shooting iter=500/1000 loss=0.004622
+  shooting iter=550/1000 loss=0.002972
+  shooting iter=600/1000 loss=0.002847
+  shooting iter=650/1000 loss=0.003201
+  shooting iter=700/1000 loss=0.002499
+  shooting iter=750/1000 loss=0.003149
+  shooting iter=800/1000 loss=0.00232
+  shooting iter=850/1000 loss=0.002564
+  shooting iter=900/1000 loss=0.002117
+  shooting iter=950/1000 loss=0.00217
+  shooting iter=1000/1000 loss=0.001475
+  shooting iter=1000/1000 loss=0.001374
+shooting [522s]  loss=0.00137
+  [final]  nrmse=0.002734  l2=0.1322
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=2.21e-5  E_VF=0.02612  E_spec=0.8666
+  [test ]  E_traj=1.089e9  E_VF=3.219e12  E_spec=0.1551
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_GYmGI49i/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_GYmGI49i/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_GYmGI49i/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_GYmGI49i/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_GYmGI49i
+--------------------------------------
+Done: Wed Aug 26 23:46:59 EDT 2026

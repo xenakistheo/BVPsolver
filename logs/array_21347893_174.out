@@ -1,0 +1,40 @@
+Task 174/416: --problem vanderpol --model GELU-scaled --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_174.log
+vanderpol  model=GELU-scaled width=7 d=2 tlen=151 profile=fast seed=11  solver=Kvaerno5  N=317
+  shooting iter=50/1000 loss=0.1662
+  shooting iter=100/1000 loss=0.166
+  shooting iter=150/1000 loss=0.165
+  shooting iter=200/1000 loss=0.1641
+  shooting iter=250/1000 loss=0.1635
+  shooting iter=300/1000 loss=0.1631
+  shooting iter=350/1000 loss=0.1629
+  shooting iter=400/1000 loss=0.1626
+  shooting iter=450/1000 loss=0.1623
+  shooting iter=500/1000 loss=0.1619
+  shooting iter=550/1000 loss=0.1612
+  shooting iter=600/1000 loss=0.1603
+  shooting iter=650/1000 loss=0.1594
+  shooting iter=700/1000 loss=0.1626
+  shooting iter=750/1000 loss=0.1601
+  shooting iter=800/1000 loss=0.159
+  shooting iter=850/1000 loss=0.158
+  shooting iter=900/1000 loss=0.1573
+  shooting iter=950/1000 loss=0.1666
+  shooting iter=1000/1000 loss=0.1681
+  shooting iter=1000/1000 loss=0.1569
+shooting [528s]  loss=0.157
+  [final]  nrmse=0.2715  l2=324.1
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=0.9252  E_VF=0.9196  E_spec=0.9921
+  [test ]  E_traj=113.1  E_VF=19.49  E_spec=0.9815
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_mKRFSi8F/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_mKRFSi8F/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_mKRFSi8F/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_mKRFSi8F/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_mKRFSi8F
+--------------------------------------
+Done: Wed Aug 26 21:35:43 EDT 2026

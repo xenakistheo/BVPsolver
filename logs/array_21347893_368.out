@@ -1,0 +1,40 @@
+Task 368/416: --problem davis-skodje --model mlp --profile fast --seed 13 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_368.log
+davis-skodje  model=mlp width=14 d=2 tlen=300 profile=fast seed=13  solver=Rodas5P  N=282
+  shooting iter=50/1000 loss=0.131
+  shooting iter=100/1000 loss=0.108
+  shooting iter=150/1000 loss=0.09494
+  shooting iter=200/1000 loss=0.08744
+  shooting iter=250/1000 loss=0.0827
+  shooting iter=300/1000 loss=0.07556
+  shooting iter=350/1000 loss=0.07088
+  shooting iter=400/1000 loss=0.06681
+  shooting iter=450/1000 loss=0.06406
+  shooting iter=500/1000 loss=0.0616
+  shooting iter=550/1000 loss=0.05809
+  shooting iter=600/1000 loss=0.05611
+  shooting iter=650/1000 loss=0.05366
+  shooting iter=700/1000 loss=0.053
+  shooting iter=750/1000 loss=0.04991
+  shooting iter=800/1000 loss=0.04889
+  shooting iter=850/1000 loss=0.04703
+  shooting iter=900/1000 loss=0.04484
+  shooting iter=950/1000 loss=0.04319
+  shooting iter=1000/1000 loss=0.04212
+  shooting iter=1000/1000 loss=0.042
+shooting [348s]  loss=0.042
+  [final]  nrmse=0.1004  l2=4.917
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.0303  E_VF=0.3024  E_spec=0.4586
+  [test ]  E_traj=3.654e10  E_VF=3.038e14  E_spec=0.0283
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jjW5RRpE/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jjW5RRpE/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jjW5RRpE/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jjW5RRpE/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jjW5RRpE
+--------------------------------------
+Done: Wed Aug 26 23:56:03 EDT 2026

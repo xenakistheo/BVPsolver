@@ -1,0 +1,40 @@
+Task 224/416: --problem hires --model mlp --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_224.log
+hires  model=mlp width=21 d=8 tlen=50 profile=fast seed=14  solver=Rodas5  N=827
+  shooting iter=50/1000 loss=145.3
+  shooting iter=100/1000 loss=42.68
+  shooting iter=150/1000 loss=229.3
+  shooting iter=200/1000 loss=24.28
+  shooting iter=250/1000 loss=170.3
+  shooting iter=300/1000 loss=139.3
+  shooting iter=350/1000 loss=46.27
+  shooting iter=400/1000 loss=25.91
+  shooting iter=450/1000 loss=21.76
+  shooting iter=500/1000 loss=18.45
+  shooting iter=550/1000 loss=15.83
+  shooting iter=600/1000 loss=1343.0
+  shooting iter=650/1000 loss=738.0
+  shooting iter=700/1000 loss=244.0
+  shooting iter=750/1000 loss=125.7
+  shooting iter=800/1000 loss=153.5
+  shooting iter=850/1000 loss=358.3
+  shooting iter=900/1000 loss=93.22
+  shooting iter=950/1000 loss=37.14
+  shooting iter=1000/1000 loss=36.92
+  shooting iter=1000/1000 loss=13.31
+shooting [4212s]  loss=13.3
+  [final]  nrmse=29.78  l2=57.04
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=3983.0  E_VF=7320.0  E_spec=3.637e19
+  [test ]  E_traj=1.283e9  E_VF=8.254e11  E_spec=7.6439999999999995e31
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vrjbNieq/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vrjbNieq/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vrjbNieq/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vrjbNieq/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vrjbNieq
+--------------------------------------
+Done: Wed Aug 26 23:34:13 EDT 2026

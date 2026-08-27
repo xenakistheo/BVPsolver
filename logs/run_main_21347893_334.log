@@ -1,0 +1,79 @@
+orego  model=GELU-scaled width=9 d=3 tlen=112 profile=fast seed=14  solver=Rodas5  N=516
+  rollout FAILED: Unstable at t=30.357254670497497 of 180.0
+  collocation: M=127 residuals=1470  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	5.44998173e+03      	NaN                 
+1       	5.44998173e+03      	0.00000000e+00      
+8       	1.81565533e+03      	8.96393530e-02      
+15      	8.71974276e+02      	0.00000000e+00      
+22      	8.01576347e+02      	0.00000000e+00      
+29      	7.90212363e+02      	0.00000000e+00      
+36      	7.75515229e+02      	0.00000000e+00      
+43      	8.45118436e+02      	0.00000000e+00      
+50      	8.45118436e+02      	0.00000000e+00      
+57      	8.30531439e+02      	5.30121812e-04      
+64      	7.75136523e+02      	0.00000000e+00      
+71      	7.77068091e+02      	0.00000000e+00      
+78      	7.78679105e+02      	2.33204033e-03      
+85      	7.85128459e+02      	0.00000000e+00      
+92      	8.03992392e+02      	0.00000000e+00      
+99      	8.43748469e+02      	7.26214621e-03      
+106     	9.71145100e+02      	0.00000000e+00      
+113     	9.33102492e+02      	2.28666524e-03      
+120     	9.17014043e+02      	0.00000000e+00      
+127     	9.06713683e+02      	0.00000000e+00      
+134     	9.05246972e+02      	1.29407076e-03      
+141     	9.07623670e+02      	1.67072841e-03      
+148     	9.13252325e+02      	2.57132716e-03      
+Final   	7.63201968e+02      
+----------------------      
+  AMR 1/1: M=127  err=64000.0  obs=0.0019  nrmse=0.563  best=0.563  refined=0
+collocation [85s]
+  [final]  nrmse=0.5628  l2=936600.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=2.009  E_VF=0.8131  E_spec=0.9995
+  [test ]  E_traj=873.4  E_VF=3.684  E_spec=1.022
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2HdMv3Xk/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2HdMv3Xk/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2HdMv3Xk/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2HdMv3Xk/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_2HdMv3Xk

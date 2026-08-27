@@ -1,0 +1,10 @@
+Task 34/416: --problem pollu --model GELU-scaled --profile fast --seed 15 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_34.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=GELU-scaled width=40 d=20 tlen=50 profile=fast seed=15  solver=Rodas5  N=4940
+  shooting iter=50/1000 loss=0.176
+  shooting iter=100/1000 loss=0.167
+  shooting iter=150/1000 loss=0.1217
+  shooting iter=200/1000 loss=0.103

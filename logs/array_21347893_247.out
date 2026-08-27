@@ -1,0 +1,40 @@
+Task 247/416: --problem hires --model GELU-scaled --profile fast --seed 12 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_247.log
+hires  model=GELU-scaled width=11 d=8 tlen=50 profile=fast seed=12  solver=Rodas5  N=855
+  shooting iter=50/1000 loss=0.2937
+  shooting iter=100/1000 loss=0.1218
+  shooting iter=150/1000 loss=0.1173
+  shooting iter=200/1000 loss=0.114
+  shooting iter=250/1000 loss=0.1104
+  shooting iter=300/1000 loss=0.1019
+  shooting iter=350/1000 loss=0.07905
+  shooting iter=400/1000 loss=0.05243
+  shooting iter=450/1000 loss=0.04783
+  shooting iter=500/1000 loss=0.04745
+  shooting iter=550/1000 loss=0.04476
+  shooting iter=600/1000 loss=0.04437
+  shooting iter=650/1000 loss=0.04407
+  shooting iter=700/1000 loss=0.04291
+  shooting iter=750/1000 loss=0.04452
+  shooting iter=800/1000 loss=0.04538
+  shooting iter=850/1000 loss=0.04252
+  shooting iter=900/1000 loss=0.04315
+  shooting iter=950/1000 loss=0.04247
+  shooting iter=1000/1000 loss=0.04204
+  shooting iter=1000/1000 loss=0.04158
+shooting [3450s]  loss=0.0416
+  [final]  nrmse=0.1234  l2=0.3921
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.086  E_VF=0.7296  E_spec=1.657
+  [test ]  E_traj=17450.0  E_VF=711400.0  E_spec=0.9761
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jVYB3v7h/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jVYB3v7h/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jVYB3v7h/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jVYB3v7h/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jVYB3v7h
+--------------------------------------
+Done: Wed Aug 26 23:40:55 EDT 2026

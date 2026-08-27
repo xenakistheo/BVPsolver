@@ -1,0 +1,40 @@
+Task 201/416: --problem hires --model stiff --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_201.log
+hires  model=stiff width=16 d=8 tlen=50 profile=fast seed=14  solver=Rodas5  N=816
+  shooting iter=50/1000 loss=0.2164
+  shooting iter=100/1000 loss=0.1736
+  shooting iter=150/1000 loss=0.1479
+  shooting iter=200/1000 loss=0.1235
+  shooting iter=250/1000 loss=0.1143
+  shooting iter=300/1000 loss=0.1004
+  shooting iter=350/1000 loss=0.08971
+  shooting iter=400/1000 loss=0.08442
+  shooting iter=450/1000 loss=0.08157
+  shooting iter=500/1000 loss=0.08553
+  shooting iter=550/1000 loss=0.07993
+  shooting iter=600/1000 loss=0.0766
+  shooting iter=650/1000 loss=0.07396
+  shooting iter=700/1000 loss=0.06792
+  shooting iter=750/1000 loss=0.06348
+  shooting iter=800/1000 loss=0.05968
+  shooting iter=850/1000 loss=0.05931
+  shooting iter=900/1000 loss=0.06036
+  shooting iter=950/1000 loss=0.05916
+  shooting iter=1000/1000 loss=0.0579
+  shooting iter=1000/1000 loss=0.0579
+shooting [5892s]  loss=0.0579
+  [final]  nrmse=0.192  l2=1.221
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.2476  E_VF=0.7942  E_spec=1.421e18
+  [test ]  E_traj=53.17  E_VF=3.039e9  E_spec=1.276e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fBPOAyhV/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fBPOAyhV/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fBPOAyhV/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fBPOAyhV/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fBPOAyhV
+--------------------------------------
+Done: Wed Aug 26 23:26:03 EDT 2026

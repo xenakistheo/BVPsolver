@@ -1,0 +1,40 @@
+Task 78/416: --problem rober --model mlp --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_78.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=11  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=287.4
+  shooting iter=100/1000 loss=106.7
+  shooting iter=150/1000 loss=47.11
+  shooting iter=200/1000 loss=31.02
+  shooting iter=250/1000 loss=20.42
+  shooting iter=300/1000 loss=13.57
+  shooting iter=350/1000 loss=11.82
+  shooting iter=400/1000 loss=7.646
+  shooting iter=450/1000 loss=12.77
+  shooting iter=500/1000 loss=7.278
+  shooting iter=550/1000 loss=10.65
+  shooting iter=600/1000 loss=12.92
+  shooting iter=650/1000 loss=7.648
+  shooting iter=700/1000 loss=6.447
+  shooting iter=750/1000 loss=10.16
+  shooting iter=800/1000 loss=10.04
+  shooting iter=850/1000 loss=8.409
+  shooting iter=900/1000 loss=4.436
+  shooting iter=950/1000 loss=12.47
+  shooting iter=1000/1000 loss=6.055
+  shooting iter=1000/1000 loss=3.921
+shooting [519s]  loss=3.92
+  [final]  nrmse=17.11  l2=2.972
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=761.8  E_VF=291.1  E_spec=5.387e28
+  [test ]  E_traj=4894.0  E_VF=9.682e16  E_spec=7.363e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yr5qqpyM/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yr5qqpyM/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yr5qqpyM/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yr5qqpyM/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_yr5qqpyM
+--------------------------------------
+Done: Wed Aug 26 20:51:11 EDT 2026

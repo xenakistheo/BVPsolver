@@ -1,0 +1,40 @@
+Task 248/416: --problem hires --model GELU-scaled --profile fast --seed 13 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_248.log
+hires  model=GELU-scaled width=11 d=8 tlen=50 profile=fast seed=13  solver=Rodas5  N=855
+  shooting iter=50/1000 loss=0.2249
+  shooting iter=100/1000 loss=0.1203
+  shooting iter=150/1000 loss=0.1177
+  shooting iter=200/1000 loss=0.1156
+  shooting iter=250/1000 loss=0.112
+  shooting iter=300/1000 loss=0.1064
+  shooting iter=350/1000 loss=0.09519
+  shooting iter=400/1000 loss=0.08241
+  shooting iter=450/1000 loss=0.05916
+  shooting iter=500/1000 loss=0.0471
+  shooting iter=550/1000 loss=0.04505
+  shooting iter=600/1000 loss=0.04417
+  shooting iter=650/1000 loss=0.0414
+  shooting iter=700/1000 loss=0.04139
+  shooting iter=750/1000 loss=0.04061
+  shooting iter=800/1000 loss=0.04136
+  shooting iter=850/1000 loss=0.04128
+  shooting iter=900/1000 loss=0.03949
+  shooting iter=950/1000 loss=0.03842
+  shooting iter=1000/1000 loss=0.03881
+  shooting iter=1000/1000 loss=0.03835
+shooting [4423s]  loss=0.0383
+  [final]  nrmse=0.1171  l2=0.422
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=0.08153  E_VF=0.6139  E_spec=4125.0
+  [test ]  E_traj=14050.0  E_VF=118400.0  E_spec=3.065e13
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_1SErhbP8/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_1SErhbP8/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_1SErhbP8/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_1SErhbP8/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_1SErhbP8
+--------------------------------------
+Done: Wed Aug 26 23:57:07 EDT 2026

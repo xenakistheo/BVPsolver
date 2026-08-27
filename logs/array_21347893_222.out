@@ -1,0 +1,40 @@
+Task 222/416: --problem hires --model mlp --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_222.log
+hires  model=mlp width=21 d=8 tlen=50 profile=fast seed=11  solver=Rodas5  N=827
+  shooting iter=50/1000 loss=154.7
+  shooting iter=100/1000 loss=279.5
+  shooting iter=150/1000 loss=119.1
+  shooting iter=200/1000 loss=26.69
+  shooting iter=250/1000 loss=19.98
+  shooting iter=300/1000 loss=19.55
+  shooting iter=350/1000 loss=13.04
+  shooting iter=400/1000 loss=9.285
+  shooting iter=450/1000 loss=6.005
+  shooting iter=500/1000 loss=4.087
+  shooting iter=550/1000 loss=3.752
+  shooting iter=600/1000 loss=62.0
+  shooting iter=650/1000 loss=23.17
+  shooting iter=700/1000 loss=10.67
+  shooting iter=750/1000 loss=14.88
+  shooting iter=800/1000 loss=10.43
+  shooting iter=850/1000 loss=8.79
+  shooting iter=900/1000 loss=7.89
+  shooting iter=950/1000 loss=7.349
+  shooting iter=1000/1000 loss=6.883
+  shooting iter=1000/1000 loss=3.442
+shooting [5200s]  loss=3.44
+  [final]  nrmse=7.339  l2=17.27
+extrapolation window: T=321.8122 -> T_test=643.624  n_test=100
+  [train]  E_traj=148.8  E_VF=4782.0  E_spec=5.328e19
+  [test ]  E_traj=1.369e7  E_VF=1.894e10  E_spec=3.8450000000000004e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qtglw1Uo/hires_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qtglw1Uo/hires_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qtglw1Uo/hires_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qtglw1Uo/hires_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#18#19"{Type{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qtglw1Uo
+--------------------------------------
+Done: Wed Aug 26 23:49:43 EDT 2026

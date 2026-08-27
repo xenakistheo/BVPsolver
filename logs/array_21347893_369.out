@@ -1,0 +1,40 @@
+Task 369/416: --problem davis-skodje --model mlp --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_369.log
+davis-skodje  model=mlp width=14 d=2 tlen=300 profile=fast seed=14  solver=Rodas5P  N=282
+  shooting iter=50/1000 loss=0.1235
+  shooting iter=100/1000 loss=0.1038
+  shooting iter=150/1000 loss=0.09641
+  shooting iter=200/1000 loss=0.08793
+  shooting iter=250/1000 loss=0.08299
+  shooting iter=300/1000 loss=0.07847
+  shooting iter=350/1000 loss=0.0741
+  shooting iter=400/1000 loss=0.07089
+  shooting iter=450/1000 loss=0.06746
+  shooting iter=500/1000 loss=0.0646
+  shooting iter=550/1000 loss=0.06287
+  shooting iter=600/1000 loss=0.06067
+  shooting iter=650/1000 loss=0.05916
+  shooting iter=700/1000 loss=0.05729
+  shooting iter=750/1000 loss=0.05479
+  shooting iter=800/1000 loss=0.05246
+  shooting iter=850/1000 loss=0.05215
+  shooting iter=900/1000 loss=0.0494
+  shooting iter=950/1000 loss=0.04774
+  shooting iter=1000/1000 loss=0.04717
+  shooting iter=1000/1000 loss=0.04667
+shooting [317s]  loss=0.0467
+  [final]  nrmse=0.1135  l2=5.562
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.03877  E_VF=0.3314  E_spec=0.4483
+  [test ]  E_traj=1.393e10  E_VF=4.012e13  E_spec=0.07773
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dkTI2hiv/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dkTI2hiv/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dkTI2hiv/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dkTI2hiv/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_dkTI2hiv
+--------------------------------------
+Done: Wed Aug 26 23:55:28 EDT 2026

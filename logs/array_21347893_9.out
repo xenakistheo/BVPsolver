@@ -1,0 +1,97 @@
+Task 9/416: --problem pollu --model stiff --profile fast --seed 15 --pretraining none --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_9.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=stiff width=32 d=20 tlen=50 profile=fast seed=15  solver=Rodas5  N=4744
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	5.58288188e+06      	NaN                 
+1       	5.58288188e+06      	0.00000000e+00      
+8       	6.70162172e+05      	0.00000000e+00      
+15      	2.47888992e+05      	0.00000000e+00      
+22      	2.42405847e+05      	6.67601744e-03      
+29      	1.20845228e+05      	5.00182467e-01      
+36      	1.29278539e+05      	0.00000000e+00      
+43      	1.28919137e+05      	0.00000000e+00      
+50      	1.66633776e+05      	0.00000000e+00      
+57      	1.56818689e+05      	4.51338048e-01      
+64      	2.18940430e+05      	0.00000000e+00      
+71      	2.41790178e+05      	7.92438591e-03      
+78      	1.82455580e+05      	0.00000000e+00      
+85      	1.25422926e+05      	2.37857478e-01      
+92      	1.26294086e+05      	0.00000000e+00      
+99      	1.00347005e+05      	8.26209539e-03      
+106     	8.49364214e+04      	0.00000000e+00      
+113     	8.06104679e+04      	1.94661989e-01      
+120     	8.46364326e+04      	5.17745677e-01      
+127     	8.88356859e+04      	0.00000000e+00      
+134     	9.12201316e+04      	3.38367794e-01      
+141     	1.14499911e+05      	0.00000000e+00      
+148     	1.04334088e+05      	0.00000000e+00      
+Final   	7.45152235e+04      
+----------------------      
+  AMR 1/1: M=72  err=1.68e9  obs=0.00139  nrmse=0.406  best=0.396  refined=0
+ derivative matching was best (1/1 rounds ran)
+collocation [6149s]
+  [final]  nrmse=0.3963  l2=0.2626
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=0.7204  E_VF=1.005  E_spec=1.9869999999999999e301
+  [test ]  E_traj=1.408  E_VF=7.061e9  E_spec=9.02e300
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jQFQoVkh/pollu_fit.png
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+┌ Warning: No strict ticks found
+└ @ PlotUtils ~/.julia/packages/PlotUtils/HX80C/src/ticks.jl:194
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jQFQoVkh/pollu_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jQFQoVkh/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jQFQoVkh/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jQFQoVkh
+--------------------------------------
+Done: Wed Aug 26 22:10:32 EDT 2026

@@ -1,0 +1,40 @@
+Task 344/416: --problem davis-skodje --model stiff --profile fast --seed 14 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_344.log
+davis-skodje  model=stiff width=12 d=2 tlen=300 profile=fast seed=14  solver=Rodas5P  N=268
+  shooting iter=50/1000 loss=0.1044
+  shooting iter=100/1000 loss=0.02722
+  shooting iter=150/1000 loss=0.01668
+  shooting iter=200/1000 loss=0.008615
+  shooting iter=250/1000 loss=0.004615
+  shooting iter=300/1000 loss=0.003228
+  shooting iter=350/1000 loss=0.002625
+  shooting iter=400/1000 loss=0.002158
+  shooting iter=450/1000 loss=0.00174
+  shooting iter=500/1000 loss=0.002242
+  shooting iter=550/1000 loss=0.001325
+  shooting iter=600/1000 loss=0.001115
+  shooting iter=650/1000 loss=0.001112
+  shooting iter=700/1000 loss=0.00132
+  shooting iter=750/1000 loss=0.001217
+  shooting iter=800/1000 loss=0.0007265
+  shooting iter=850/1000 loss=0.001104
+  shooting iter=900/1000 loss=0.0006856
+  shooting iter=950/1000 loss=0.00119
+  shooting iter=1000/1000 loss=0.001361
+  shooting iter=1000/1000 loss=0.0005366
+shooting [557s]  loss=0.000537
+  [final]  nrmse=0.001173  l2=0.05634
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=4.032e-6  E_VF=1.04e-5  E_spec=0.1012
+  [test ]  E_traj=7.67e7  E_VF=1.94e12  E_spec=0.6803
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fXje8hWY/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fXje8hWY/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fXje8hWY/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fXje8hWY/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_fXje8hWY
+--------------------------------------
+Done: Wed Aug 26 23:48:32 EDT 2026

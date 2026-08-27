@@ -1,0 +1,36 @@
+davis-skodje  model=mlp width=14 d=2 tlen=300 profile=fast seed=11  solver=Rodas5P  N=282
+  shooting iter=50/1000 loss=0.1339
+  shooting iter=100/1000 loss=0.1196
+  shooting iter=150/1000 loss=0.1124
+  shooting iter=200/1000 loss=0.1058
+  shooting iter=250/1000 loss=0.1001
+  shooting iter=300/1000 loss=0.09524
+  shooting iter=350/1000 loss=0.09148
+  shooting iter=400/1000 loss=0.08673
+  shooting iter=450/1000 loss=0.08317
+  shooting iter=500/1000 loss=0.07971
+  shooting iter=550/1000 loss=0.07684
+  shooting iter=600/1000 loss=0.07469
+  shooting iter=650/1000 loss=0.07246
+  shooting iter=700/1000 loss=0.07133
+  shooting iter=750/1000 loss=0.06855
+  shooting iter=800/1000 loss=0.06659
+  shooting iter=850/1000 loss=0.0658
+  shooting iter=900/1000 loss=0.06337
+  shooting iter=950/1000 loss=0.06262
+  shooting iter=1000/1000 loss=0.06126
+  shooting iter=1000/1000 loss=0.0606
+shooting [291s]  loss=0.0606
+  [final]  nrmse=0.1429  l2=7.002
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.06144  E_VF=0.386  E_spec=0.521
+  [test ]  E_traj=1.161e10  E_VF=3.071e13  E_spec=0.1503
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RbuyemSP/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RbuyemSP/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RbuyemSP/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RbuyemSP/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_RbuyemSP

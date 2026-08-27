@@ -1,0 +1,40 @@
+Task 293/416: --problem orego --model mlp --profile fast --seed 11 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_293.log
+orego  model=mlp width=19 d=3 tlen=112 profile=fast seed=11  solver=Rodas5  N=516
+  shooting iter=50/1000 loss=0.2196
+  shooting iter=100/1000 loss=0.2192
+  shooting iter=150/1000 loss=0.2189
+  shooting iter=200/1000 loss=0.2196
+  shooting iter=250/1000 loss=0.2191
+  shooting iter=300/1000 loss=0.2185
+  shooting iter=350/1000 loss=0.2188
+  shooting iter=400/1000 loss=0.2187
+  shooting iter=450/1000 loss=0.2187
+  shooting iter=500/1000 loss=0.2187
+  shooting iter=550/1000 loss=0.2187
+  shooting iter=600/1000 loss=0.2186
+  shooting iter=650/1000 loss=0.2186
+  shooting iter=700/1000 loss=0.2183
+  shooting iter=750/1000 loss=0.2176
+  shooting iter=800/1000 loss=0.2196
+  shooting iter=850/1000 loss=0.2187
+  shooting iter=900/1000 loss=0.219
+  shooting iter=950/1000 loss=0.2187
+  shooting iter=1000/1000 loss=0.2185
+  shooting iter=1000/1000 loss=0.2176
+shooting [809s]  loss=0.218
+  [final]  nrmse=0.4218  l2=485800.0
+extrapolation window: T=180.0 -> T_test=360.0  n_test=224
+  [train]  E_traj=0.9537  E_VF=1.002  E_spec=1.0
+  [test ]  E_traj=0.9363  E_VF=1.003  E_spec=1.003
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z9gpIzeQ/orego_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z9gpIzeQ/orego_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z9gpIzeQ/orego_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z9gpIzeQ/orego_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#20#21"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z9gpIzeQ
+--------------------------------------
+Done: Wed Aug 26 23:26:05 EDT 2026

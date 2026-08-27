@@ -1,0 +1,88 @@
+Task 21/416: --problem pollu --model mlp --profile fast --seed 12 --pretraining none --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_21.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=mlp width=40 d=20 tlen=50 profile=fast seed=12  solver=Rodas5  N=4940
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	5.57034643e+21      	NaN                 
+1       	1.65220720e+20      	4.18857607e-01      
+8       	3.10371323e+17      	1.03843601e-01      
+15      	1.20949919e+18      	2.50872580e-01      
+22      	8.27511009e+17      	0.00000000e+00      
+29      	5.28853383e+18      	3.29243197e-01      
+36      	7.53599150e+17      	7.33497172e-01      
+43      	6.61985295e+17      	0.00000000e+00      
+50      	2.02826712e+18      	5.21730935e-01      
+57      	2.73230434e+19      	1.09873967e+00      
+64      	6.62497710e+19      	0.00000000e+00      
+71      	5.60879549e+18      	0.00000000e+00      
+78      	1.57817214e+17      	0.00000000e+00      
+85      	5.54364963e+17      	0.00000000e+00      
+92      	5.61392313e+16      	3.71084532e-01      
+99      	7.37006095e+15      	0.00000000e+00      
+106     	1.95112873e+16      	0.00000000e+00      
+113     	5.07762727e+15      	0.00000000e+00      
+120     	1.27332662e+16      	2.04865339e-01      
+127     	5.50050627e+17      	0.00000000e+00      
+134     	4.64800839e+16      	0.00000000e+00      
+141     	8.50960987e+15      	1.23222595e-01      
+148     	1.18750411e+17      	5.62817865e-01      
+Final   	2.76422347e+15      
+----------------------      
+  AMR 1/1: M=72  err=2.33e30  obs=1.4e-9  nrmse=8.55e16  best=8.55e16  refined=0
+collocation [9824s]
+  [final]  nrmse=8.554e16  l2=502.6
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=1.345e34  E_VF=0.2609  E_spec=Inf
+  [test ]  E_traj=1.566e37  E_VF=9.603e29  E_spec=1.9300000000000002e304
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jxdu8JYx/pollu_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jxdu8JYx/pollu_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jxdu8JYx/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jxdu8JYx/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_jxdu8JYx
+--------------------------------------
+Done: Wed Aug 26 23:11:50 EDT 2026

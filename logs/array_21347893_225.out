@@ -1,0 +1,8 @@
+Task 225/416: --problem hires --model mlp --profile fast --seed 15 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_21347893_225.log
+hires  model=mlp width=21 d=8 tlen=50 profile=fast seed=15  solver=Rodas5  N=827
+  shooting iter=50/1000 loss=155.9
+  shooting iter=100/1000 loss=135.4
+  shooting iter=150/1000 loss=103.2
+  shooting iter=200/1000 loss=255.5
+  shooting iter=250/1000 loss=18.61
