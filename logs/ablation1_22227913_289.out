@@ -1,0 +1,94 @@
+Task 289/360: --problem orego --model GELU-scaled --profile fast --seed 29 --pretraining derivmatch --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_22227913_289.log
+orego  model=GELU-scaled width=9 d=3 tlen=112 profile=fast seed=29  solver=Rodas5  N=516
+  derivmatch lr=0.01 iter=170/3400 loss=10.61
+  derivmatch lr=0.01 iter=340/3400 loss=7.573
+  derivmatch lr=0.01 iter=510/3400 loss=3.201
+  derivmatch lr=0.01 iter=680/3400 loss=2.935
+  derivmatch lr=0.01 iter=850/3400 loss=2.395
+  derivmatch lr=0.01 iter=1020/3400 loss=1.975
+  derivmatch lr=0.01 iter=1190/3400 loss=14.99
+  derivmatch lr=0.01 iter=1360/3400 loss=14.46
+  derivmatch lr=0.01 iter=1530/3400 loss=8.615
+  derivmatch lr=0.01 iter=1700/3400 loss=4.341
+  derivmatch lr=0.01 iter=1870/3400 loss=4.18
+  derivmatch lr=0.01 iter=2040/3400 loss=3.154
+  derivmatch lr=0.01 iter=2210/3400 loss=2.961
+  derivmatch lr=0.01 iter=2380/3400 loss=3.268
+  derivmatch lr=0.01 iter=2550/3400 loss=2.821
+  derivmatch lr=0.01 iter=2720/3400 loss=2.978
+  derivmatch lr=0.01 iter=2890/3400 loss=25.16
+  derivmatch lr=0.01 iter=3060/3400 loss=14.65
+  derivmatch lr=0.01 iter=3230/3400 loss=14.51
+  derivmatch lr=0.01 iter=3400/3400 loss=14.67
+  derivmatch lr=0.01 iter=3400/3400 loss=1.65
+  derivmatch lr=0.003 iter=125/2500 loss=1.765
+  derivmatch lr=0.003 iter=250/2500 loss=1.304
+  derivmatch lr=0.003 iter=375/2500 loss=1.298
+  derivmatch lr=0.003 iter=500/2500 loss=1.292
+  derivmatch lr=0.003 iter=625/2500 loss=1.299
+  derivmatch lr=0.003 iter=750/2500 loss=2.711
+  derivmatch lr=0.003 iter=875/2500 loss=2.477
+  derivmatch lr=0.003 iter=1000/2500 loss=1.577
+  derivmatch lr=0.003 iter=1125/2500 loss=1.394
+  derivmatch lr=0.003 iter=1250/2500 loss=1.46
+  derivmatch lr=0.003 iter=1375/2500 loss=1.396
+  derivmatch lr=0.003 iter=1500/2500 loss=1.24
+  derivmatch lr=0.003 iter=1625/2500 loss=2.724
+  derivmatch lr=0.003 iter=1750/2500 loss=1.613
+  derivmatch lr=0.003 iter=1875/2500 loss=1.539
+  derivmatch lr=0.003 iter=2000/2500 loss=1.515
+  derivmatch lr=0.003 iter=2125/2500 loss=1.449
+  derivmatch lr=0.003 iter=2250/2500 loss=1.419
+  derivmatch lr=0.003 iter=2375/2500 loss=1.409
+  derivmatch lr=0.003 iter=2500/2500 loss=1.589
+  derivmatch lr=0.003 iter=2500/2500 loss=1.15
+  derivmatch lr=0.001 iter=125/2500 loss=1.047
+  derivmatch lr=0.001 iter=250/2500 loss=1.02
+  derivmatch lr=0.001 iter=375/2500 loss=0.9134
+  derivmatch lr=0.001 iter=500/2500 loss=1.012
+  derivmatch lr=0.001 iter=625/2500 loss=0.7372
+  derivmatch lr=0.001 iter=750/2500 loss=0.6354
+  derivmatch lr=0.001 iter=875/2500 loss=0.6207
+  derivmatch lr=0.001 iter=1000/2500 loss=0.5243
+  derivmatch lr=0.001 iter=1125/2500 loss=0.5185
+  derivmatch lr=0.001 iter=1250/2500 loss=0.5119
+  derivmatch lr=0.001 iter=1375/2500 loss=0.437
+  derivmatch lr=0.001 iter=1500/2500 loss=0.3744
+  derivmatch lr=0.001 iter=1625/2500 loss=0.4046
+  derivmatch lr=0.001 iter=1750/2500 loss=0.4037
+  derivmatch lr=0.001 iter=1875/2500 loss=0.3875
+  derivmatch lr=0.001 iter=2000/2500 loss=0.3174
+  derivmatch lr=0.001 iter=2125/2500 loss=0.3114
+  derivmatch lr=0.001 iter=2250/2500 loss=0.3474
+  derivmatch lr=0.001 iter=2375/2500 loss=0.5321
+  derivmatch lr=0.001 iter=2500/2500 loss=0.4683
+  derivmatch lr=0.001 iter=2500/2500 loss=0.2753
+  derivmatch lr=0.0003 iter=80/1600 loss=0.2536
+  derivmatch lr=0.0003 iter=160/1600 loss=0.3284
+  derivmatch lr=0.0003 iter=240/1600 loss=0.2313
+  derivmatch lr=0.0003 iter=320/1600 loss=0.2243
+  derivmatch lr=0.0003 iter=400/1600 loss=0.226
+  derivmatch lr=0.0003 iter=480/1600 loss=0.2108
+  derivmatch lr=0.0003 iter=560/1600 loss=0.207
+  derivmatch lr=0.0003 iter=640/1600 loss=0.2837
+  derivmatch lr=0.0003 iter=720/1600 loss=0.1975
+  derivmatch lr=0.0003 iter=800/1600 loss=0.1912
+  derivmatch lr=0.0003 iter=880/1600 loss=0.1876
+  derivmatch lr=0.0003 iter=960/1600 loss=0.1844
+  derivmatch lr=0.0003 iter=1040/1600 loss=0.2909
+  derivmatch lr=0.0003 iter=1120/1600 loss=0.2584
+  derivmatch lr=0.0003 iter=1200/1600 loss=0.203
+  derivmatch lr=0.0003 iter=1280/1600 loss=0.1713
+  derivmatch lr=0.0003 iter=1360/1600 loss=0.1858
+  derivmatch lr=0.0003 iter=1440/1600 loss=0.1624
+  derivmatch lr=0.0003 iter=1520/1600 loss=0.1589
+  derivmatch lr=0.0003 iter=1600/1600 loss=0.1613
+  derivmatch lr=0.0003 iter=1600/1600 loss=0.1582
+derivative matching [29s]  fitloss=0.158
+  rollout FAILED: Unstable at t=13.145033465968778 of 180.0
+  [derivative matching]  nrmse=Inf  l2=Inf
+  shooting iter=50/1000 loss=0.2696
+  shooting iter=100/1000 loss=0.2685
+  shooting iter=150/1000 loss=0.2685
+  shooting iter=200/1000 loss=0.2685
