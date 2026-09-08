@@ -1,0 +1,78 @@
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=32  solver=Rodas5  N=348
+  collocation: M=54 residuals=627  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	5.25281185e+09      	NaN                 
+1       	8.89046979e+08      	3.19963345e-01      
+8       	1.67203799e+07      	2.76592022e-01      
+15      	1.09597433e+08      	0.00000000e+00      
+22      	6.38675400e+07      	5.47999188e-01      
+29      	1.68205172e+08      	0.00000000e+00      
+36      	1.09141850e+08      	7.13188981e-01      
+43      	5.35848053e+08      	0.00000000e+00      
+50      	5.14572074e+08      	0.00000000e+00      
+57      	1.11573035e+07      	3.75652729e-01      
+64      	8.25366946e+06      	3.90788106e-01      
+71      	1.44963849e+08      	4.84560565e-01      
+78      	8.37034088e+08      	6.19281990e-01      
+85      	2.35976834e+08      	0.00000000e+00      
+92      	1.19743373e+09      	0.00000000e+00      
+99      	4.00736392e+08      	0.00000000e+00      
+106     	3.86009345e+08      	0.00000000e+00      
+113     	1.81831247e+08      	4.81765187e-01      
+120     	5.97413830e+07      	0.00000000e+00      
+127     	2.50372653e+09      	0.00000000e+00      
+134     	4.00774879e+08      	0.00000000e+00      
+141     	2.48276746e+07      	2.57794268e-01      
+148     	9.46242875e+08      	3.13336262e-01      
+Final   	8.14754778e+06      
+----------------------      
+  AMR 1/1: M=54  err=5.88e13  obs=9.65e-5  nrmse=4.69  best=4.69  refined=0
+collocation [23s]
+  [final]  nrmse=4.692  l2=0.1983
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=57.3  E_VF=0.4808  E_spec=1.326e29
+  [test ]  E_traj=224300.0  E_VF=9.428e16  E_spec=4.7310000000000006e28
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z24uGsKq/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z24uGsKq/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z24uGsKq/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z24uGsKq/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_z24uGsKq

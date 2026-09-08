@@ -1,0 +1,40 @@
+Task 36/150: --problem rober --model stiff --profile fast --seed 36 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_22277775_36.log
+rober  model=stiff width=12 d=3 tlen=50 profile=fast seed=36  solver=Rodas5  N=318
+  shooting iter=50/1000 loss=0.182
+  shooting iter=100/1000 loss=0.09452
+  shooting iter=150/1000 loss=0.03218
+  shooting iter=200/1000 loss=0.009661
+  shooting iter=250/1000 loss=0.005136
+  shooting iter=300/1000 loss=0.00307
+  shooting iter=350/1000 loss=0.002198
+  shooting iter=400/1000 loss=0.002135
+  shooting iter=450/1000 loss=0.001654
+  shooting iter=500/1000 loss=0.001715
+  shooting iter=550/1000 loss=0.001892
+  shooting iter=600/1000 loss=0.001478
+  shooting iter=650/1000 loss=0.001319
+  shooting iter=700/1000 loss=0.001375
+  shooting iter=750/1000 loss=0.001628
+  shooting iter=800/1000 loss=0.001045
+  shooting iter=850/1000 loss=0.001253
+  shooting iter=900/1000 loss=0.00186
+  shooting iter=950/1000 loss=0.001101
+  shooting iter=1000/1000 loss=0.0008063
+  shooting iter=1000/1000 loss=0.0006569
+shooting [486s]  loss=0.000657
+  [final]  nrmse=0.001509  l2=0.005121
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=8.3e-6  E_VF=0.05533  E_spec=2.012e27
+  [test ]  E_traj=0.8655  E_VF=1.222e11  E_spec=8.004e23
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_irqMrYDI/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_irqMrYDI/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_irqMrYDI/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_irqMrYDI/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_irqMrYDI
+--------------------------------------
+Done: Tue Sep  8 06:09:49 EDT 2026

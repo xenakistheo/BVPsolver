@@ -1,0 +1,40 @@
+Task 133/150: --problem rober --model GELU-scaled --profile fast --seed 33 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_22277775_133.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=33  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2158
+  shooting iter=100/1000 loss=0.1642
+  shooting iter=150/1000 loss=0.1515
+  shooting iter=200/1000 loss=0.1449
+  shooting iter=250/1000 loss=0.1424
+  shooting iter=300/1000 loss=0.139
+  shooting iter=350/1000 loss=0.1365
+  shooting iter=400/1000 loss=0.1342
+  shooting iter=450/1000 loss=0.132
+  shooting iter=500/1000 loss=0.1305
+  shooting iter=550/1000 loss=0.128
+  shooting iter=600/1000 loss=0.1248
+  shooting iter=650/1000 loss=0.1239
+  shooting iter=700/1000 loss=0.1216
+  shooting iter=750/1000 loss=0.1206
+  shooting iter=800/1000 loss=0.1189
+  shooting iter=850/1000 loss=0.1178
+  shooting iter=900/1000 loss=0.1194
+  shooting iter=950/1000 loss=0.1156
+  shooting iter=1000/1000 loss=0.1146
+  shooting iter=1000/1000 loss=0.1146
+shooting [427s]  loss=0.115
+  [final]  nrmse=0.3059  l2=0.03271
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2437  E_VF=1.101  E_spec=1.837e13
+  [test ]  E_traj=7.75e14  E_VF=22960.0  E_spec=3.133e10
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_EQNqqfAK/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_EQNqqfAK/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_EQNqqfAK/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_EQNqqfAK/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_EQNqqfAK
+--------------------------------------
+Done: Tue Sep  8 06:36:25 EDT 2026

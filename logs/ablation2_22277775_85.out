@@ -1,0 +1,40 @@
+Task 85/150: --problem rober --model mlp --profile fast --seed 35 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_22277775_85.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=35  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=3742.0
+  shooting iter=100/1000 loss=14920.0
+  shooting iter=150/1000 loss=18080.0
+  shooting iter=200/1000 loss=20030.0
+  shooting iter=250/1000 loss=5227.0
+  shooting iter=300/1000 loss=5470.0
+  shooting iter=350/1000 loss=5403.0
+  shooting iter=400/1000 loss=5996.0
+  shooting iter=450/1000 loss=3154.0
+  shooting iter=500/1000 loss=288.3
+  shooting iter=550/1000 loss=62.28
+  shooting iter=600/1000 loss=31.43
+  shooting iter=650/1000 loss=11.12
+  shooting iter=700/1000 loss=10.2
+  shooting iter=750/1000 loss=7.258
+  shooting iter=800/1000 loss=5.156
+  shooting iter=850/1000 loss=4.04
+  shooting iter=900/1000 loss=2.581
+  shooting iter=950/1000 loss=2.345
+  shooting iter=1000/1000 loss=7.413
+  shooting iter=1000/1000 loss=0.9463
+shooting [364s]  loss=0.946
+  [final]  nrmse=3.279  l2=3.41
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=28.29  E_VF=1286.0  E_spec=9.915000000000001e29
+  [test ]  E_traj=4616.0  E_VF=1.646e18  E_spec=4.867e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_M1GMkdLh/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_M1GMkdLh/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_M1GMkdLh/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_M1GMkdLh/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_M1GMkdLh
+--------------------------------------
+Done: Tue Sep  8 06:11:13 EDT 2026

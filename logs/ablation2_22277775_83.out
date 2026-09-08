@@ -1,0 +1,40 @@
+Task 83/150: --problem rober --model mlp --profile fast --seed 33 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_22277775_83.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=33  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=5192.0
+  shooting iter=100/1000 loss=17940.0
+  shooting iter=150/1000 loss=1360.0
+  shooting iter=200/1000 loss=2160.0
+  shooting iter=250/1000 loss=4794.0
+  shooting iter=300/1000 loss=9777.0
+  shooting iter=350/1000 loss=4837.0
+  shooting iter=400/1000 loss=51.79
+  shooting iter=450/1000 loss=19.52
+  shooting iter=500/1000 loss=8.866
+  shooting iter=550/1000 loss=12.07
+  shooting iter=600/1000 loss=6.2
+  shooting iter=650/1000 loss=7.295
+  shooting iter=700/1000 loss=10.7
+  shooting iter=750/1000 loss=9.137
+  shooting iter=800/1000 loss=3.266
+  shooting iter=850/1000 loss=3.488
+  shooting iter=900/1000 loss=6.952
+  shooting iter=950/1000 loss=4.148
+  shooting iter=1000/1000 loss=4.451
+  shooting iter=1000/1000 loss=1.424
+shooting [592s]  loss=1.42
+  [final]  nrmse=3.722  l2=7.927
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=42.99  E_VF=500.7  E_spec=4.945e28
+  [test ]  E_traj=10990.0  E_VF=4.662e18  E_spec=1.127e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_T1tI3CXw/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_T1tI3CXw/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_T1tI3CXw/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_T1tI3CXw/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_T1tI3CXw
+--------------------------------------
+Done: Tue Sep  8 06:14:51 EDT 2026
