@@ -5,6 +5,7 @@ ENV["GKSwstype"] = "100"
 using Lux, Random, ComponentArrays
 using ArgParse, JLD2, TOML, Dates
 using StiffNN
+using ForwardDiff, LinearAlgebra
 
 const CONFIGS = (
     pollu     = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
@@ -123,12 +124,45 @@ function parse_cli()
             arg_type = String
             default = "exact"
             range_tester = x -> x in ("exact", "limited-memory")
+        "--track-gradient"
+            help = "After each stage, record ‖∇_θ rollout_loss(ctx, θ)‖ into gradient_norm"
+            action = :store_true
     end
     return parse_args(s)
 end
 
 toml_safe(value) = value === nothing ? "none" : value
 toml_safe(value::Symbol) = String(value)
+
+# ── Optional --track-gradient diagnostic ────────────────────────────────────
+# This does not touch any training function; it is purely an extra metric computed
+# from the θ each stage already returns. rollout_loss is the same rollout-vs-data
+# objective shooting() optimizes (an ODE solve compared against ctx.Ydata), used here
+# only as the fixed reference loss to differentiate.
+function rollout_loss(ctx, θ)
+    P   = Array(rollout(ctx, θ))
+    n   = size(P, 2)
+    w   = ctx.yscale
+    pen = sum(abs, ctx.Ydata ./ w) / length(ctx.Ydata)
+    n == 0 && return pen
+    R = (P .- view(ctx.Ydata, :, 1:n)) ./ w
+    return (sum(abs, R) + pen * ctx.d * (ctx.tlen - n)) / (ctx.d * ctx.tlen)
+end
+
+rollout_grad_norm(ctx, θ) = norm(ForwardDiff.gradient(p -> rollout_loss(ctx, p), θ))
+
+function track_gradient!(gradient_norm, track_gradient, ctx, θ)
+    track_gradient || return nothing
+    g = try
+        rollout_grad_norm(ctx, θ)
+    catch e
+        println("  gradient_norm computation FAILED: $e")
+        NaN
+    end
+    println("  gradient_norm = $(round(g; sigdigits=4))")
+    push!(gradient_norm, g)
+    return nothing
+end
 
 function main(args = parse_cli())
     problem         = args["problem"]
@@ -145,6 +179,7 @@ function main(args = parse_cli())
     use_shooting    = args["training"] == "shooting"
     use_shap        = args["training"] == "shapovalova"
     use_collocation = args["training"] == "collocation"
+    track_gradient  = args["track-gradient"]
 
     cfg     = CONFIGS[config_key(problem)]
     spec    = make_problem(problem; T = Float64, profile = profile,
@@ -195,27 +230,32 @@ function main(args = parse_cli())
     collocation_time = 0.0
     shooting_time    = 0.0
     shapovalova_time = 0.0
+    gradient_norm    = Float64[]
     if use_derivmatch
         derivmatch_time = @elapsed ((θ, fitloss) = derivative_matching(ctx, θ, fd_derivatives(Ydata, spec.tsteps),
                                                          cfg.dm_iters))
         println("derivative matching [$(round(Int, derivmatch_time))s]  fitloss=$(round(fitloss; sigdigits=3))")
         report(ctx, "derivative matching", θ)
+        track_gradient!(gradient_norm, track_gradient, ctx, θ)
     end
     if use_shap
         shapovalova_time = @elapsed ((θ, shaploss) =
             shapovalova(ctx, θ, ncol > 0 ? ncol : tlen; hessian_approximation = shap_hessian))
         println("shapovalova [$(round(Int, shapovalova_time))s]  loss=$(round(shaploss; sigdigits=3))")
         report(ctx, "final", θ)
+        track_gradient!(gradient_norm, track_gradient, ctx, θ)
     end
     if use_shooting
         shooting_time = @elapsed ((θ, shootloss) = shooting(ctx, θ, shoot_iters))
         println("shooting [$(round(Int, shooting_time))s]  loss=$(round(shootloss; sigdigits=3))")
         report(ctx, "final", θ)
+        track_gradient!(gradient_norm, track_gradient, ctx, θ)
     end
     if use_collocation
         collocation_time = @elapsed (θ = train_collocation(ctx, θ, cfg; score = p -> metrics(ctx, p).nrmse))
         println("collocation [$(round(Int, collocation_time))s]")
         report(ctx, "final", θ)
+        track_gradient!(gradient_norm, track_gradient, ctx, θ)
     end
 
     # ── Extrapolation / error metrics (see metrics.md) ──────────────────────
@@ -265,6 +305,7 @@ function main(args = parse_cli())
     run_info["n_params"]         = n_params
     run_info["model_width"]      = model_width
     run_info["timestamp"]        = string(now())
+    run_info["gradient_norm"]    = gradient_norm
 
     run_info["E_trajectory_species_train"] = train_err.traj_species
     run_info["E_trajectory_train"]         = train_err.traj
