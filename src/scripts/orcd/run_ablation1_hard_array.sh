@@ -33,35 +33,35 @@ mkdir -p "$LOG_DIR"
 # historical max 3.68h), so 7h gives ample margin without guessing at a
 # genuinely pathological runtime.
 TASKS=(
-    # pollu, GELU-scaled, shooting -- seeds 20-29 (all 10 failed at 3h;
+    # pollu, GELU-scaled, shooting -- seeds 100-109 (all 10 failed at 3h;
     # historical completions for this combo run 1.0-3.7h)
-    "--problem pollu --model GELU-scaled --profile fast --seed 20 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 21 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 22 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 23 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 24 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 25 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 26 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 27 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 28 --pretraining derivmatch --training shooting"
-    "--problem pollu --model GELU-scaled --profile fast --seed 29 --pretraining derivmatch --training shooting"
-    # vanderpol, stiff, shooting -- seeds 24, 27
-    "--problem vanderpol --model stiff --profile fast --seed 24 --pretraining derivmatch --training shooting"
-    "--problem vanderpol --model stiff --profile fast --seed 27 --pretraining derivmatch --training shooting"
-    # vanderpol, mlp, shooting -- seeds 21, 26, 27, 28
-    "--problem vanderpol --model mlp --profile fast --seed 21 --pretraining derivmatch --training shooting"
-    "--problem vanderpol --model mlp --profile fast --seed 26 --pretraining derivmatch --training shooting"
-    "--problem vanderpol --model mlp --profile fast --seed 27 --pretraining derivmatch --training shooting"
-    "--problem vanderpol --model mlp --profile fast --seed 28 --pretraining derivmatch --training shooting"
-    # vanderpol, GELU-scaled, shooting -- seed 26
-    "--problem vanderpol --model GELU-scaled --profile fast --seed 26 --pretraining derivmatch --training shooting"
-    # hires, stiff, shooting -- seed 25
-    "--problem hires --model stiff --profile fast --seed 25 --pretraining derivmatch --training shooting"
-    # orego, mlp, shooting -- seeds 22, 29
-    "--problem orego --model mlp --profile fast --seed 22 --pretraining derivmatch --training shooting"
-    "--problem orego --model mlp --profile fast --seed 29 --pretraining derivmatch --training shooting"
-    # orego, GELU-scaled, shooting -- seed 29
-    "--problem orego --model GELU-scaled --profile fast --seed 29 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 100 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 101 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 102 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 103 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 104 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 105 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 106 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 107 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 108 --pretraining derivmatch --training shooting"
+    "--problem pollu --model GELU-scaled --profile fast --seed 109 --pretraining derivmatch --training shooting"
+    # vanderpol, stiff, shooting -- seeds 104, 107
+    "--problem vanderpol --model stiff --profile fast --seed 104 --pretraining derivmatch --training shooting"
+    "--problem vanderpol --model stiff --profile fast --seed 107 --pretraining derivmatch --training shooting"
+    # vanderpol, mlp, shooting -- seeds 101, 106, 107, 108
+    "--problem vanderpol --model mlp --profile fast --seed 101 --pretraining derivmatch --training shooting"
+    "--problem vanderpol --model mlp --profile fast --seed 106 --pretraining derivmatch --training shooting"
+    "--problem vanderpol --model mlp --profile fast --seed 107 --pretraining derivmatch --training shooting"
+    "--problem vanderpol --model mlp --profile fast --seed 108 --pretraining derivmatch --training shooting"
+    # vanderpol, GELU-scaled, shooting -- seed 106
+    "--problem vanderpol --model GELU-scaled --profile fast --seed 106 --pretraining derivmatch --training shooting"
+    # hires, stiff, shooting -- seed 105
+    "--problem hires --model stiff --profile fast --seed 105 --pretraining derivmatch --training shooting"
+    # orego, mlp, shooting -- seeds 102, 109
+    "--problem orego --model mlp --profile fast --seed 102 --pretraining derivmatch --training shooting"
+    "--problem orego --model mlp --profile fast --seed 109 --pretraining derivmatch --training shooting"
+    # orego, GELU-scaled, shooting -- seed 109
+    "--problem orego --model GELU-scaled --profile fast --seed 109 --pretraining derivmatch --training shooting"
 )
 
 TASK_ID="${SLURM_ARRAY_TASK_ID:?SLURM_ARRAY_TASK_ID is unset; submit this script with sbatch --array=...}"

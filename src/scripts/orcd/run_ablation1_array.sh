@@ -24,8 +24,8 @@ mkdir -p "$LOG_DIR"
 
 # ── Sweep definition (new_runs.md, Ablation nr. 1) ──────────────────────────
 # All 6 problems x 3 models x 2 training regimes (derivmatch pretraining
-# followed by either shooting or collocation) x 10 seeds (20-29).
-# 6 * 3 * 2 * 10 = 360 tasks.
+# followed by either shooting or collocation) x 50 seeds (100-149).
+# 6 * 3 * 2 * 50 = 1800 tasks.
 PROBLEMS=(pollu rober vanderpol hires orego davis-skodje)
 MODELS=(stiff mlp GELU-scaled)
 # "pretraining:training" pairs
@@ -33,7 +33,7 @@ CONFIGS=(
     "derivmatch:shooting"
     "derivmatch:collocation"
 )
-SEEDS=(20 21 22 23 24 25 26 27 28 29)
+SEEDS=(100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149)
 
 TASKS=()
 for problem in "${PROBLEMS[@]}"; do
@@ -70,7 +70,7 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # ── Usage ────────────────────────────────────────────────────────────────
-# Total tasks = 360. At --mem=8G, this account's QOS ceiling (MaxTRESPU
+# Total tasks = 1800. At --mem=8G, this account's QOS ceiling (MaxTRESPU
 # mem=386G) caps concurrent running tasks at 386G / 8G ≈ 48, so %48
 # throttles to that (same reasoning as run_main_array.sh).
 #
@@ -80,4 +80,4 @@ echo "Done: $(date)"
 # `sbatch --array=<id1>,<id2>,...%N` and a higher --mem/--time.
 #
 # Run from the project root:
-#   sbatch --array=0-359%48 src/scripts/orcd/run_ablation1_array.sh
+#   sbatch --array=0-1799%48 src/scripts/orcd/run_ablation1_array.sh

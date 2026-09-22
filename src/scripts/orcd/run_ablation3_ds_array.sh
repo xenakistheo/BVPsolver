@@ -25,8 +25,8 @@ mkdir -p "$LOG_DIR"
 # ── Sweep definition (new_runs.md, Ablation nr. 3) ──────────────────────────
 # davis-skodje only, sweeping epsilon (--param) over 6 values, comparing
 # stiff+derivmatch+collocation vs GELU-scaled+derivmatch+shooting,
-# x 10 seeds (40-49).
-# 2 * 6 * 10 = 120 tasks.
+# x 50 seeds (300-349).
+# 2 * 6 * 50 = 600 tasks.
 PROBLEM="davis-skodje"
 EPSILONS=(1e-1 1e-2 1e-3 1e-4 1e-5 1e-6)
 # "model:pretraining:training" triples
@@ -34,7 +34,7 @@ CONFIGS=(
     "stiff:derivmatch:collocation"
     "GELU-scaled:derivmatch:shooting"
 )
-SEEDS=(40 41 42 43 44 45 46 47 48 49)
+SEEDS=(300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349)
 
 TASKS=()
 for eps in "${EPSILONS[@]}"; do
@@ -71,7 +71,7 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # ── Usage ────────────────────────────────────────────────────────────────
-# Total tasks = 120. At --mem=8G, this account's QOS ceiling (MaxTRESPU
+# Total tasks = 600. At --mem=8G, this account's QOS ceiling (MaxTRESPU
 # mem=386G) caps concurrent running tasks at 386G / 8G ≈ 48, so %48
 # throttles to that (same reasoning as run_main_array.sh).
 #
@@ -81,4 +81,4 @@ echo "Done: $(date)"
 # and a higher --mem/--time.
 #
 # Run from the project root:
-#   sbatch --array=0-119%48 src/scripts/orcd/run_ablation3_ds_array.sh
+#   sbatch --array=0-599%48 src/scripts/orcd/run_ablation3_ds_array.sh

@@ -23,10 +23,10 @@ LOG_DIR="$REPO_ROOT/logs"
 mkdir -p "$LOG_DIR"
 
 # ── Sweep definition (new_runs.md, Ablation nr. 2) ──────────────────────────
-# rober only, 3 models x 5 pretraining/training combos x 10 seeds (30-39).
+# rober only, 3 models x 5 pretraining/training combos x 50 seeds (200-249).
 # pretraining = {derivmatch, none}, training = {none, shooting, collocation},
 # with (none, none) excluded (nothing would be trained).
-# 3 * 5 * 10 = 150 tasks.
+# 3 * 5 * 50 = 750 tasks.
 PROBLEMS=(rober)
 MODELS=(stiff mlp GELU-scaled)
 # "pretraining:training" pairs
@@ -37,7 +37,7 @@ CONFIGS=(
     "none:shooting"
     "none:collocation"
 )
-SEEDS=(30 31 32 33 34 35 36 37 38 39)
+SEEDS=(200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249)
 
 TASKS=()
 for problem in "${PROBLEMS[@]}"; do
@@ -74,10 +74,11 @@ echo "--------------------------------------"
 echo "Done: $(date)"
 
 # ── Usage ────────────────────────────────────────────────────────────────
-# Total tasks = 150. At --mem=8G, this account's QOS ceiling (MaxTRESPU
+# Total tasks = 750. At --mem=8G, this account's QOS ceiling (MaxTRESPU
 # mem=386G) caps concurrent running tasks at 386G / 8G ≈ 48, so %48
-# throttles to that (same reasoning as run_main_array.sh). All 150 tasks
-# fit under this account's QOS MaxSubmitPU=448 alongside other array jobs.
+# throttles to that (same reasoning as run_main_array.sh). NOTE: 750 tasks
+# EXCEEDS this account's QOS MaxSubmitPU=448 -- submit in batches (e.g.
+# two `--array=` ranges) or alongside fewer other array jobs.
 #
 # If a chunk of tasks times out or OOMs at 8G/3h (as happened previously
 # for shooting/shapovalova on some problems, see run_main_array_heavy.sh),
@@ -85,4 +86,4 @@ echo "Done: $(date)"
 # `sbatch --array=<id1>,<id2>,...%N` and a higher --mem/--time.
 #
 # Run from the project root:
-#   sbatch --array=0-149%48 src/scripts/orcd/run_ablation2_array.sh
+#   sbatch --array=0-749%48 src/scripts/orcd/run_ablation2_array.sh
