@@ -1,0 +1,40 @@
+Task 688/750: --problem rober --model GELU-scaled --profile fast --seed 238 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_688.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=238  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2046
+  shooting iter=100/1000 loss=0.1535
+  shooting iter=150/1000 loss=0.146
+  shooting iter=200/1000 loss=0.1428
+  shooting iter=250/1000 loss=0.1404
+  shooting iter=300/1000 loss=0.1376
+  shooting iter=350/1000 loss=0.1355
+  shooting iter=400/1000 loss=0.1333
+  shooting iter=450/1000 loss=0.1317
+  shooting iter=500/1000 loss=0.1296
+  shooting iter=550/1000 loss=0.1263
+  shooting iter=600/1000 loss=0.1254
+  shooting iter=650/1000 loss=0.1228
+  shooting iter=700/1000 loss=0.1207
+  shooting iter=750/1000 loss=0.1231
+  shooting iter=800/1000 loss=0.118
+  shooting iter=850/1000 loss=0.1155
+  shooting iter=900/1000 loss=0.1147
+  shooting iter=950/1000 loss=0.1121
+  shooting iter=1000/1000 loss=0.1082
+  shooting iter=1000/1000 loss=0.1081
+shooting [507s]  loss=0.108
+  [final]  nrmse=0.289  l2=0.0859
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.218  E_VF=5.46  E_spec=3.502e13
+  [test ]  E_traj=1.416e17  E_VF=364.9  E_spec=3.063e11
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DDTJUPqi/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DDTJUPqi/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DDTJUPqi/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DDTJUPqi/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_DDTJUPqi
+--------------------------------------
+Done: Thu Sep 24 16:10:04 EDT 2026

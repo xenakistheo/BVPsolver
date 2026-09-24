@@ -105,3 +105,22 @@ derivative matching [30s]  fitloss=0.596
   shooting iter=800/1000 loss=4.634
   shooting iter=850/1000 loss=4.619
   shooting iter=900/1000 loss=4.578
+  shooting iter=950/1000 loss=4.349
+  shooting iter=1000/1000 loss=4.649
+  shooting iter=1000/1000 loss=0.1492
+shooting [17870s]  loss=0.197
+  [final]  nrmse=0.3462  l2=327.4
+extrapolation window: T=200.0 -> T_test=400.0  n_test=302
+  [train]  E_traj=1.221  E_VF=0.8025  E_spec=0.6036
+  [test ]  E_traj=10560.0  E_VF=281.9  E_spec=0.3533
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_YLFjIrga/vanderpol_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_YLFjIrga/vanderpol_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_YLFjIrga/vanderpol_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_YLFjIrga/vanderpol_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#14#15"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_YLFjIrga
+--------------------------------------
+Done: Thu Sep 24 13:59:39 EDT 2026

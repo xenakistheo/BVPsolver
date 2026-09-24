@@ -157,3 +157,13 @@ extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
   [train]  E_traj=73.82  E_VF=0.5137  E_spec=0.9678
   [test ]  E_traj=2.245e23  E_VF=1.15e8  E_spec=1.0
 saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_hrJHMUwX/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_hrJHMUwX/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_hrJHMUwX/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_hrJHMUwX/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_hrJHMUwX
+--------------------------------------
+Done: Thu Sep 24 13:51:11 EDT 2026

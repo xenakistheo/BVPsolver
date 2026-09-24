@@ -1,0 +1,40 @@
+Task 663/750: --problem rober --model GELU-scaled --profile fast --seed 213 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_663.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=213  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.24
+  shooting iter=100/1000 loss=0.1656
+  shooting iter=150/1000 loss=0.1505
+  shooting iter=200/1000 loss=0.1412
+  shooting iter=250/1000 loss=0.1369
+  shooting iter=300/1000 loss=0.1336
+  shooting iter=350/1000 loss=0.1318
+  shooting iter=400/1000 loss=0.1282
+  shooting iter=450/1000 loss=0.1264
+  shooting iter=500/1000 loss=0.1241
+  shooting iter=550/1000 loss=0.1211
+  shooting iter=600/1000 loss=0.119
+  shooting iter=650/1000 loss=0.1184
+  shooting iter=700/1000 loss=0.117
+  shooting iter=750/1000 loss=0.1178
+  shooting iter=800/1000 loss=0.1147
+  shooting iter=850/1000 loss=0.1137
+  shooting iter=900/1000 loss=0.113
+  shooting iter=950/1000 loss=0.1114
+  shooting iter=1000/1000 loss=0.1093
+  shooting iter=1000/1000 loss=0.1092
+shooting [481s]  loss=0.109
+  [final]  nrmse=0.2953  l2=0.04181
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2271  E_VF=1.419  E_spec=1.898e15
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_XoIGtoet/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_XoIGtoet/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_XoIGtoet/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_XoIGtoet/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_XoIGtoet
+--------------------------------------
+Done: Thu Sep 24 15:46:21 EDT 2026

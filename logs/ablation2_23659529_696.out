@@ -1,0 +1,40 @@
+Task 696/750: --problem rober --model GELU-scaled --profile fast --seed 246 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_696.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=246  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2165
+  shooting iter=100/1000 loss=0.1629
+  shooting iter=150/1000 loss=0.1531
+  shooting iter=200/1000 loss=0.1501
+  shooting iter=250/1000 loss=0.1477
+  shooting iter=300/1000 loss=0.1463
+  shooting iter=350/1000 loss=0.146
+  shooting iter=400/1000 loss=0.1446
+  shooting iter=450/1000 loss=0.143
+  shooting iter=500/1000 loss=0.141
+  shooting iter=550/1000 loss=0.1403
+  shooting iter=600/1000 loss=0.1377
+  shooting iter=650/1000 loss=0.1349
+  shooting iter=700/1000 loss=0.1326
+  shooting iter=750/1000 loss=0.1321
+  shooting iter=800/1000 loss=0.13
+  shooting iter=850/1000 loss=0.1279
+  shooting iter=900/1000 loss=0.13
+  shooting iter=950/1000 loss=0.1256
+  shooting iter=1000/1000 loss=0.1248
+  shooting iter=1000/1000 loss=0.1247
+shooting [382s]  loss=0.125
+  [final]  nrmse=0.3218  l2=0.01801
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2695  E_VF=0.6977  E_spec=5.74e15
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_MqvvnbcQ/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_MqvvnbcQ/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_MqvvnbcQ/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_MqvvnbcQ/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_MqvvnbcQ
+--------------------------------------
+Done: Thu Sep 24 16:11:58 EDT 2026

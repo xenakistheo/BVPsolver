@@ -1,0 +1,40 @@
+Task 656/750: --problem rober --model GELU-scaled --profile fast --seed 206 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_656.log
+rober  model=GELU-scaled width=7 d=3 tlen=50 profile=fast seed=206  solver=Rodas5  N=332
+  shooting iter=50/1000 loss=0.2326
+  shooting iter=100/1000 loss=0.1858
+  shooting iter=150/1000 loss=0.1582
+  shooting iter=200/1000 loss=0.1522
+  shooting iter=250/1000 loss=0.1476
+  shooting iter=300/1000 loss=0.1444
+  shooting iter=350/1000 loss=0.1414
+  shooting iter=400/1000 loss=0.1387
+  shooting iter=450/1000 loss=0.1364
+  shooting iter=500/1000 loss=0.1337
+  shooting iter=550/1000 loss=0.1323
+  shooting iter=600/1000 loss=0.131
+  shooting iter=650/1000 loss=0.1309
+  shooting iter=700/1000 loss=0.1283
+  shooting iter=750/1000 loss=0.1275
+  shooting iter=800/1000 loss=0.1236
+  shooting iter=850/1000 loss=0.1263
+  shooting iter=900/1000 loss=0.121
+  shooting iter=950/1000 loss=0.1214
+  shooting iter=1000/1000 loss=0.1208
+  shooting iter=1000/1000 loss=0.1188
+shooting [434s]  loss=0.119
+  [final]  nrmse=0.3098  l2=0.03002
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.2498  E_VF=0.8107  E_spec=1.266e14
+  [test ]  E_traj=6.801e13  E_VF=126400.0  E_spec=1.684e10
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IFQWiAhL/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IFQWiAhL/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IFQWiAhL/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IFQWiAhL/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_IFQWiAhL
+--------------------------------------
+Done: Thu Sep 24 15:43:48 EDT 2026
