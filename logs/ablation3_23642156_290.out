@@ -95,3 +95,33 @@ derivative matching [28s]  fitloss=9.21e-5
   shooting iter=250/1000 loss=1.367e89
   shooting iter=300/1000 loss=9.686e88
   shooting iter=350/1000 loss=6.841e88
+  shooting iter=400/1000 loss=4.82e88
+  shooting iter=450/1000 loss=3.388e88
+  shooting iter=500/1000 loss=2.378e88
+  shooting iter=550/1000 loss=1.668e88
+  shooting iter=600/1000 loss=1.1700000000000001e88
+  shooting iter=650/1000 loss=8.213e87
+  shooting iter=700/1000 loss=5.783e87
+  shooting iter=750/1000 loss=4.089000000000001e87
+  shooting iter=800/1000 loss=2.906e87
+  shooting iter=850/1000 loss=2.079e87
+  shooting iter=900/1000 loss=1.499e87
+  shooting iter=950/1000 loss=1.0900000000000002e87
+  shooting iter=1000/1000 loss=8.0e86
+  shooting iter=1000/1000 loss=0.06724
+shooting [4542s]  loss=0.0672
+  [final]  nrmse=0.1492  l2=3.784
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.03585  E_VF=0.3225  E_spec=0.5359
+  [test ]  E_traj=NaN  E_VF=NaN  E_spec=NaN
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_WkSSn4N5/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_WkSSn4N5/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_WkSSn4N5/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_WkSSn4N5/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_WkSSn4N5
+--------------------------------------
+Done: Thu Sep 24 09:43:31 EDT 2026

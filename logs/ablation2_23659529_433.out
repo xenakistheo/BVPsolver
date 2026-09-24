@@ -1,0 +1,40 @@
+Task 433/750: --problem rober --model mlp --profile fast --seed 233 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_433.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=233  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=32.31
+  shooting iter=100/1000 loss=23.51
+  shooting iter=150/1000 loss=14.9
+  shooting iter=200/1000 loss=6.493
+  shooting iter=250/1000 loss=14.91
+  shooting iter=300/1000 loss=16.91
+  shooting iter=350/1000 loss=12.11
+  shooting iter=400/1000 loss=16.95
+  shooting iter=450/1000 loss=3.528
+  shooting iter=500/1000 loss=7.095
+  shooting iter=550/1000 loss=8.72
+  shooting iter=600/1000 loss=7.668
+  shooting iter=650/1000 loss=5.009
+  shooting iter=700/1000 loss=18.23
+  shooting iter=750/1000 loss=12.57
+  shooting iter=800/1000 loss=6.254
+  shooting iter=850/1000 loss=6.147
+  shooting iter=900/1000 loss=11.37
+  shooting iter=950/1000 loss=11.42
+  shooting iter=1000/1000 loss=13.33
+  shooting iter=1000/1000 loss=1.414
+shooting [369s]  loss=1.41
+  [final]  nrmse=6.068  l2=4.534
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=95.27  E_VF=1068.0  E_spec=1.0210000000000001e29
+  [test ]  E_traj=7952.0  E_VF=1.277e19  E_spec=9.094e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vCnCEfHP/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vCnCEfHP/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vCnCEfHP/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vCnCEfHP/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_vCnCEfHP
+--------------------------------------
+Done: Thu Sep 24 12:20:41 EDT 2026

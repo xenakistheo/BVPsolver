@@ -1,0 +1,40 @@
+Task 406/750: --problem rober --model mlp --profile fast --seed 206 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_406.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=206  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=113.4
+  shooting iter=100/1000 loss=49.81
+  shooting iter=150/1000 loss=38.5
+  shooting iter=200/1000 loss=38.14
+  shooting iter=250/1000 loss=39.05
+  shooting iter=300/1000 loss=22.45
+  shooting iter=350/1000 loss=30.84
+  shooting iter=400/1000 loss=16.48
+  shooting iter=450/1000 loss=9.584
+  shooting iter=500/1000 loss=11.36
+  shooting iter=550/1000 loss=8.16
+  shooting iter=600/1000 loss=19.55
+  shooting iter=650/1000 loss=18.1
+  shooting iter=700/1000 loss=10.74
+  shooting iter=750/1000 loss=6.056
+  shooting iter=800/1000 loss=18.12
+  shooting iter=850/1000 loss=13.15
+  shooting iter=900/1000 loss=5.477
+  shooting iter=950/1000 loss=19.64
+  shooting iter=1000/1000 loss=9.982
+  shooting iter=1000/1000 loss=4.011
+shooting [488s]  loss=4.01
+  [final]  nrmse=12.21  l2=4.414
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=387.8  E_VF=189.0  E_spec=1.1120000000000001e29
+  [test ]  E_traj=1.25e6  E_VF=3.426e18  E_spec=3.419e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SzejvteJ/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SzejvteJ/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SzejvteJ/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SzejvteJ/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_SzejvteJ
+--------------------------------------
+Done: Thu Sep 24 12:17:35 EDT 2026

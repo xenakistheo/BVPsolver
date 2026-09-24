@@ -1,0 +1,40 @@
+Task 405/750: --problem rober --model mlp --profile fast --seed 205 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_405.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=205  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=1301.0
+  shooting iter=100/1000 loss=740.6
+  shooting iter=150/1000 loss=282.4
+  shooting iter=200/1000 loss=143.9
+  shooting iter=250/1000 loss=110.5
+  shooting iter=300/1000 loss=92.33
+  shooting iter=350/1000 loss=74.34
+  shooting iter=400/1000 loss=55.97
+  shooting iter=450/1000 loss=44.03
+  shooting iter=500/1000 loss=34.17
+  shooting iter=550/1000 loss=26.41
+  shooting iter=600/1000 loss=19.84
+  shooting iter=650/1000 loss=13.77
+  shooting iter=700/1000 loss=12.28
+  shooting iter=750/1000 loss=10.39
+  shooting iter=800/1000 loss=9.512
+  shooting iter=850/1000 loss=7.667
+  shooting iter=900/1000 loss=7.183
+  shooting iter=950/1000 loss=7.223
+  shooting iter=1000/1000 loss=5.859
+  shooting iter=1000/1000 loss=5.401
+shooting [1134s]  loss=5.4
+  [final]  nrmse=37.63  l2=7.147
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=3684.0  E_VF=146.6  E_spec=2.33e28
+  [test ]  E_traj=80.01  E_VF=3.963e15  E_spec=2.221e28
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_wx73pIrN/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_wx73pIrN/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_wx73pIrN/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_wx73pIrN/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_wx73pIrN
+--------------------------------------
+Done: Thu Sep 24 12:26:18 EDT 2026

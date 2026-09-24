@@ -1,0 +1,40 @@
+Task 434/750: --problem rober --model mlp --profile fast --seed 234 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_434.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=234  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=48.98
+  shooting iter=100/1000 loss=35.54
+  shooting iter=150/1000 loss=14.47
+  shooting iter=200/1000 loss=4.751
+  shooting iter=250/1000 loss=12.78
+  shooting iter=300/1000 loss=13.89
+  shooting iter=350/1000 loss=8.591
+  shooting iter=400/1000 loss=20.8
+  shooting iter=450/1000 loss=9.371
+  shooting iter=500/1000 loss=2.892
+  shooting iter=550/1000 loss=6.376
+  shooting iter=600/1000 loss=6.4
+  shooting iter=650/1000 loss=3.486
+  shooting iter=700/1000 loss=7.111
+  shooting iter=750/1000 loss=15.61
+  shooting iter=800/1000 loss=8.338
+  shooting iter=850/1000 loss=2.161
+  shooting iter=900/1000 loss=12.05
+  shooting iter=950/1000 loss=9.367
+  shooting iter=1000/1000 loss=5.736
+  shooting iter=1000/1000 loss=0.9908
+shooting [480s]  loss=0.991
+  [final]  nrmse=3.039  l2=2.988
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=24.01  E_VF=166.0  E_spec=1.215e29
+  [test ]  E_traj=159.8  E_VF=1.859e19  E_spec=6.312000000000001e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_aDMnazMX/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_aDMnazMX/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_aDMnazMX/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_aDMnazMX/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_aDMnazMX
+--------------------------------------
+Done: Thu Sep 24 12:22:32 EDT 2026

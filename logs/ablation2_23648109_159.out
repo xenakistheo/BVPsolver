@@ -1,0 +1,40 @@
+Task 159/750: --problem rober --model stiff --profile fast --seed 209 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23648109_159.log
+rober  model=stiff width=12 d=3 tlen=50 profile=fast seed=209  solver=Rodas5  N=318
+  shooting iter=50/1000 loss=0.1415
+  shooting iter=100/1000 loss=0.06297
+  shooting iter=150/1000 loss=0.02115
+  shooting iter=200/1000 loss=0.005739
+  shooting iter=250/1000 loss=0.003682
+  shooting iter=300/1000 loss=0.003003
+  shooting iter=350/1000 loss=0.002728
+  shooting iter=400/1000 loss=0.001347
+  shooting iter=450/1000 loss=0.001775
+  shooting iter=500/1000 loss=0.002218
+  shooting iter=550/1000 loss=0.003075
+  shooting iter=600/1000 loss=0.002355
+  shooting iter=650/1000 loss=0.001144
+  shooting iter=700/1000 loss=0.001926
+  shooting iter=750/1000 loss=0.001259
+  shooting iter=800/1000 loss=0.001298
+  shooting iter=850/1000 loss=0.001291
+  shooting iter=900/1000 loss=0.001046
+  shooting iter=950/1000 loss=0.001121
+  shooting iter=1000/1000 loss=0.001278
+  shooting iter=1000/1000 loss=0.0007326
+shooting [427s]  loss=0.000733
+  [final]  nrmse=0.001675  l2=0.003415
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=8.09e-6  E_VF=0.07485  E_spec=1.094e27
+  [test ]  E_traj=6.279  E_VF=3.945e10  E_spec=5.118e24
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F01YLvGl/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F01YLvGl/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F01YLvGl/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F01YLvGl/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_F01YLvGl
+--------------------------------------
+Done: Thu Sep 24 11:11:35 EDT 2026

@@ -1,0 +1,40 @@
+Task 182/750: --problem rober --model stiff --profile fast --seed 232 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23648109_182.log
+rober  model=stiff width=12 d=3 tlen=50 profile=fast seed=232  solver=Rodas5  N=318
+  shooting iter=50/1000 loss=0.1772
+  shooting iter=100/1000 loss=0.1086
+  shooting iter=150/1000 loss=0.07116
+  shooting iter=200/1000 loss=0.05479
+  shooting iter=250/1000 loss=0.05372
+  shooting iter=300/1000 loss=0.05334
+  shooting iter=350/1000 loss=0.05339
+  shooting iter=400/1000 loss=0.05307
+  shooting iter=450/1000 loss=0.05303
+  shooting iter=500/1000 loss=0.05319
+  shooting iter=550/1000 loss=0.05294
+  shooting iter=600/1000 loss=0.05295
+  shooting iter=650/1000 loss=0.05322
+  shooting iter=700/1000 loss=0.05293
+  shooting iter=750/1000 loss=0.05297
+  shooting iter=800/1000 loss=0.05329
+  shooting iter=850/1000 loss=0.0531
+  shooting iter=900/1000 loss=0.05299
+  shooting iter=950/1000 loss=0.05279
+  shooting iter=1000/1000 loss=0.05303
+  shooting iter=1000/1000 loss=0.05265
+shooting [422s]  loss=0.0527
+  [final]  nrmse=0.1828  l2=1.484
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=0.3349  E_VF=2.655  E_spec=1.148e27
+  [test ]  E_traj=18.18  E_VF=1.812e15  E_spec=4.942e26
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_HjIKe7rX/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_HjIKe7rX/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_HjIKe7rX/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_HjIKe7rX/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_HjIKe7rX
+--------------------------------------
+Done: Thu Sep 24 11:13:21 EDT 2026

@@ -1,0 +1,40 @@
+Task 426/750: --problem rober --model mlp --profile fast --seed 226 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_426.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=226  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=449.3
+  shooting iter=100/1000 loss=128.9
+  shooting iter=150/1000 loss=113.2
+  shooting iter=200/1000 loss=25.25
+  shooting iter=250/1000 loss=7.924
+  shooting iter=300/1000 loss=9.482
+  shooting iter=350/1000 loss=13.59
+  shooting iter=400/1000 loss=6.17
+  shooting iter=450/1000 loss=20.62
+  shooting iter=500/1000 loss=8.765
+  shooting iter=550/1000 loss=2.872
+  shooting iter=600/1000 loss=2.297
+  shooting iter=650/1000 loss=14.84
+  shooting iter=700/1000 loss=9.98
+  shooting iter=750/1000 loss=9.165
+  shooting iter=800/1000 loss=3.957
+  shooting iter=850/1000 loss=9.602
+  shooting iter=900/1000 loss=2.601
+  shooting iter=950/1000 loss=4.662
+  shooting iter=1000/1000 loss=11.47
+  shooting iter=1000/1000 loss=0.4345
+shooting [352s]  loss=0.435
+  [final]  nrmse=0.8657  l2=2.328
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=2.251  E_VF=59.29  E_spec=1.6330000000000002e29
+  [test ]  E_traj=998.6  E_VF=5.22e18  E_spec=7.773e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BF9KTMMr/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BF9KTMMr/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BF9KTMMr/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BF9KTMMr/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BF9KTMMr
+--------------------------------------
+Done: Thu Sep 24 12:19:17 EDT 2026

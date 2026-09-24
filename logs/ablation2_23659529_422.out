@@ -1,0 +1,40 @@
+Task 422/750: --problem rober --model mlp --profile fast --seed 222 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_422.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=222  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=15000.0
+  shooting iter=100/1000 loss=5937.0
+  shooting iter=150/1000 loss=10910.0
+  shooting iter=200/1000 loss=262.0
+  shooting iter=250/1000 loss=14430.0
+  shooting iter=300/1000 loss=16930.0
+  shooting iter=350/1000 loss=5580.0
+  shooting iter=400/1000 loss=2122.0
+  shooting iter=450/1000 loss=5128.0
+  shooting iter=500/1000 loss=17520.0
+  shooting iter=550/1000 loss=202.9
+  shooting iter=600/1000 loss=8228.0
+  shooting iter=650/1000 loss=2559.0
+  shooting iter=700/1000 loss=1409.0
+  shooting iter=750/1000 loss=3791.0
+  shooting iter=800/1000 loss=2706.0
+  shooting iter=850/1000 loss=2508.0
+  shooting iter=900/1000 loss=3933.0
+  shooting iter=950/1000 loss=1203.0
+  shooting iter=1000/1000 loss=5159.0
+  shooting iter=1000/1000 loss=79.09
+shooting [272s]  loss=79.1
+  [final]  nrmse=235.5  l2=1694.0
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=415300.0  E_VF=933.7  E_spec=6.5090000000000005e28
+  [test ]  E_traj=7.907e24  E_VF=6.039e16  E_spec=7.516e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_O2oQUHNE/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_O2oQUHNE/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_O2oQUHNE/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_O2oQUHNE/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_O2oQUHNE
+--------------------------------------
+Done: Thu Sep 24 12:17:05 EDT 2026

@@ -1,0 +1,40 @@
+Task 425/750: --problem rober --model mlp --profile fast --seed 225 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_425.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=225  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=36.78
+  shooting iter=100/1000 loss=20.13
+  shooting iter=150/1000 loss=9.082
+  shooting iter=200/1000 loss=3.592
+  shooting iter=250/1000 loss=3.144
+  shooting iter=300/1000 loss=3.636
+  shooting iter=350/1000 loss=2.411
+  shooting iter=400/1000 loss=2.589
+  shooting iter=450/1000 loss=4.852
+  shooting iter=500/1000 loss=2.944
+  shooting iter=550/1000 loss=3.622
+  shooting iter=600/1000 loss=4.347
+  shooting iter=650/1000 loss=1.579
+  shooting iter=700/1000 loss=2.112
+  shooting iter=750/1000 loss=1.593
+  shooting iter=800/1000 loss=5.067
+  shooting iter=850/1000 loss=1.763
+  shooting iter=900/1000 loss=3.529
+  shooting iter=950/1000 loss=1.25
+  shooting iter=1000/1000 loss=1.657
+  shooting iter=1000/1000 loss=1.063
+shooting [363s]  loss=1.06
+  [final]  nrmse=4.652  l2=3.124
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=56.45  E_VF=233.9  E_spec=1.831e29
+  [test ]  E_traj=43.06  E_VF=7.388e18  E_spec=8.382e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kxSv6rWI/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kxSv6rWI/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kxSv6rWI/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kxSv6rWI/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_kxSv6rWI
+--------------------------------------
+Done: Thu Sep 24 12:19:28 EDT 2026

@@ -1,0 +1,40 @@
+Task 414/750: --problem rober --model mlp --profile fast --seed 214 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_414.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=214  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=37.21
+  shooting iter=100/1000 loss=17.52
+  shooting iter=150/1000 loss=31.58
+  shooting iter=200/1000 loss=21.27
+  shooting iter=250/1000 loss=14.33
+  shooting iter=300/1000 loss=9.884
+  shooting iter=350/1000 loss=5.402
+  shooting iter=400/1000 loss=7.906
+  shooting iter=450/1000 loss=3.973
+  shooting iter=500/1000 loss=1.231
+  shooting iter=550/1000 loss=13.51
+  shooting iter=600/1000 loss=9.805
+  shooting iter=650/1000 loss=10.9
+  shooting iter=700/1000 loss=5.565
+  shooting iter=750/1000 loss=2.124
+  shooting iter=800/1000 loss=3.943
+  shooting iter=850/1000 loss=6.31
+  shooting iter=900/1000 loss=2.702
+  shooting iter=950/1000 loss=10.68
+  shooting iter=1000/1000 loss=3.797
+  shooting iter=1000/1000 loss=0.634
+shooting [300s]  loss=0.634
+  [final]  nrmse=1.854  l2=2.967
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=8.852  E_VF=570.0  E_spec=3.5000000000000005e29
+  [test ]  E_traj=1224.0  E_VF=1.771e19  E_spec=9.973e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Q1oxZUMb/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Q1oxZUMb/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Q1oxZUMb/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Q1oxZUMb/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_Q1oxZUMb
+--------------------------------------
+Done: Thu Sep 24 12:16:32 EDT 2026

@@ -1,0 +1,40 @@
+Task 436/750: --problem rober --model mlp --profile fast --seed 236 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_436.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=236  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=32.41
+  shooting iter=100/1000 loss=18.59
+  shooting iter=150/1000 loss=24.57
+  shooting iter=200/1000 loss=24.97
+  shooting iter=250/1000 loss=2.001
+  shooting iter=300/1000 loss=11.42
+  shooting iter=350/1000 loss=9.267
+  shooting iter=400/1000 loss=11.54
+  shooting iter=450/1000 loss=14.31
+  shooting iter=500/1000 loss=10.3
+  shooting iter=550/1000 loss=14.59
+  shooting iter=600/1000 loss=29.19
+  shooting iter=650/1000 loss=4.528
+  shooting iter=700/1000 loss=7.67
+  shooting iter=750/1000 loss=15.07
+  shooting iter=800/1000 loss=3.311
+  shooting iter=850/1000 loss=1.901
+  shooting iter=900/1000 loss=13.33
+  shooting iter=950/1000 loss=6.952
+  shooting iter=1000/1000 loss=3.963
+  shooting iter=1000/1000 loss=1.021
+shooting [475s]  loss=1.02
+  [final]  nrmse=2.439  l2=4.365
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=15.03  E_VF=831.4  E_spec=1.2280000000000001e29
+  [test ]  E_traj=22410.0  E_VF=3.762e18  E_spec=8.082e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_9BxvLuxx/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_9BxvLuxx/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_9BxvLuxx/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_9BxvLuxx/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_9BxvLuxx
+--------------------------------------
+Done: Thu Sep 24 12:22:33 EDT 2026

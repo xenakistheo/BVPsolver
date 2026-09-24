@@ -1,0 +1,40 @@
+Task 421/750: --problem rober --model mlp --profile fast --seed 221 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_421.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=221  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=138.3
+  shooting iter=100/1000 loss=91.8
+  shooting iter=150/1000 loss=59.48
+  shooting iter=200/1000 loss=29.04
+  shooting iter=250/1000 loss=12.34
+  shooting iter=300/1000 loss=7.795
+  shooting iter=350/1000 loss=5.193
+  shooting iter=400/1000 loss=5.88
+  shooting iter=450/1000 loss=5.983
+  shooting iter=500/1000 loss=2.424
+  shooting iter=550/1000 loss=8.964
+  shooting iter=600/1000 loss=4.336
+  shooting iter=650/1000 loss=3.136
+  shooting iter=700/1000 loss=4.564
+  shooting iter=750/1000 loss=4.243
+  shooting iter=800/1000 loss=2.329
+  shooting iter=850/1000 loss=1.525
+  shooting iter=900/1000 loss=6.707
+  shooting iter=950/1000 loss=6.059
+  shooting iter=1000/1000 loss=1.834
+  shooting iter=1000/1000 loss=1.364
+shooting [571s]  loss=1.36
+  [final]  nrmse=5.991  l2=2.808
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=93.61  E_VF=195.8  E_spec=3.307e29
+  [test ]  E_traj=183.5  E_VF=4.918e18  E_spec=2.904e29
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_0BfhJSil/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_0BfhJSil/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_0BfhJSil/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_0BfhJSil/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_0BfhJSil
+--------------------------------------
+Done: Thu Sep 24 12:22:04 EDT 2026

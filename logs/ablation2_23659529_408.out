@@ -1,0 +1,40 @@
+Task 408/750: --problem rober --model mlp --profile fast --seed 208 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_408.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=208  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=533.3
+  shooting iter=100/1000 loss=163.8
+  shooting iter=150/1000 loss=61.27
+  shooting iter=200/1000 loss=26.05
+  shooting iter=250/1000 loss=19.07
+  shooting iter=300/1000 loss=17.34
+  shooting iter=350/1000 loss=13.91
+  shooting iter=400/1000 loss=12.2
+  shooting iter=450/1000 loss=6.789
+  shooting iter=500/1000 loss=6.505
+  shooting iter=550/1000 loss=5.433
+  shooting iter=600/1000 loss=4.158
+  shooting iter=650/1000 loss=3.955
+  shooting iter=700/1000 loss=2.226
+  shooting iter=750/1000 loss=8.391
+  shooting iter=800/1000 loss=2.989
+  shooting iter=850/1000 loss=3.316
+  shooting iter=900/1000 loss=2.395
+  shooting iter=950/1000 loss=3.114
+  shooting iter=1000/1000 loss=2.469
+  shooting iter=1000/1000 loss=1.366
+shooting [375s]  loss=1.37
+  [final]  nrmse=4.454  l2=4.684
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=51.46  E_VF=246.1  E_spec=1.132e28
+  [test ]  E_traj=10160.0  E_VF=8.517e18  E_spec=1.298e30
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_p8X0eozO/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_p8X0eozO/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_p8X0eozO/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_p8X0eozO/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_p8X0eozO
+--------------------------------------
+Done: Thu Sep 24 12:17:41 EDT 2026

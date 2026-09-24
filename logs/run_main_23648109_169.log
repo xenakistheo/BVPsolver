@@ -1,0 +1,36 @@
+rober  model=stiff width=12 d=3 tlen=50 profile=fast seed=219  solver=Rodas5  N=318
+  shooting iter=50/1000 loss=0.1795
+  shooting iter=100/1000 loss=0.1054
+  shooting iter=150/1000 loss=0.06274
+  shooting iter=200/1000 loss=0.05453
+  shooting iter=250/1000 loss=0.05141
+  shooting iter=300/1000 loss=0.02974
+  shooting iter=350/1000 loss=0.01764
+  shooting iter=400/1000 loss=0.01149
+  shooting iter=450/1000 loss=0.005172
+  shooting iter=500/1000 loss=0.002664
+  shooting iter=550/1000 loss=0.002121
+  shooting iter=600/1000 loss=0.002285
+  shooting iter=650/1000 loss=0.001343
+  shooting iter=700/1000 loss=0.001507
+  shooting iter=750/1000 loss=0.001449
+  shooting iter=800/1000 loss=0.001973
+  shooting iter=850/1000 loss=0.0009859
+  shooting iter=900/1000 loss=0.002212
+  shooting iter=950/1000 loss=0.001279
+  shooting iter=1000/1000 loss=0.001962
+  shooting iter=1000/1000 loss=0.0006712
+shooting [432s]  loss=0.000671
+  [final]  nrmse=0.001071  l2=0.003959
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=3.683e-6  E_VF=0.1875  E_spec=2.8490000000000003e28
+  [test ]  E_traj=1.651  E_VF=6.845e12  E_spec=1.307e24
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qMxQXeWL/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qMxQXeWL/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qMxQXeWL/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qMxQXeWL/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_qMxQXeWL

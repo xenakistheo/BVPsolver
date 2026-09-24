@@ -1,0 +1,6 @@
+Task 402/750: --problem rober --model mlp --profile fast --seed 202 --pretraining none --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23659529_402.log
+rober  model=mlp width=15 d=3 tlen=50 profile=fast seed=202  solver=Rodas5  N=348
+  shooting iter=50/1000 loss=47080.0
+  shooting iter=100/1000 loss=10860.0
+  shooting iter=150/1000 loss=1794.0

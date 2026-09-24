@@ -93,3 +93,31 @@ derivative matching [35s]  fitloss=0.0014
   shooting iter=250/1000 loss=0.05966
   shooting iter=300/1000 loss=0.05966
   shooting iter=350/1000 loss=0.05966
+  shooting iter=400/1000 loss=0.05966
+  shooting iter=450/1000 loss=0.05966
+  shooting iter=500/1000 loss=0.05966
+  shooting iter=550/1000 loss=0.05966
+  shooting iter=600/1000 loss=0.05966
+  shooting iter=650/1000 loss=0.05966
+  shooting iter=700/1000 loss=0.05966
+  shooting iter=750/1000 loss=0.05966
+  shooting iter=800/1000 loss=0.05966
+  shooting iter=850/1000 loss=0.05966
+  shooting iter=900/1000 loss=0.05966
+  shooting iter=950/1000 loss=0.05966
+  shooting iter=1000/1000 loss=0.05966
+  shooting iter=1000/1000 loss=0.05134
+shooting [2154s]  loss=0.0513
+  [final]  nrmse=0.08874  l2=2.768
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=0.03794  E_VF=2.191  E_spec=0.6492
+  [test ]  E_traj=1.604e13  E_VF=2.807e14  E_spec=0.9959
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_deHLENxX/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_deHLENxX/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_deHLENxX/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_deHLENxX/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_deHLENxX

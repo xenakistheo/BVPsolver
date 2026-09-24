@@ -103,3 +103,24 @@ derivative matching [27s]  fitloss=0.00028
   shooting iter=700/1000 loss=0.0003237
   shooting iter=750/1000 loss=0.0003694
   shooting iter=800/1000 loss=0.001134
+  shooting iter=850/1000 loss=0.001008
+  shooting iter=900/1000 loss=0.0005839
+  shooting iter=950/1000 loss=0.0002507
+  shooting iter=1000/1000 loss=0.0003509
+  shooting iter=1000/1000 loss=0.0001729
+shooting [1142s]  loss=0.000173
+  [final]  nrmse=0.0003413  l2=0.01528
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=1.629e-6  E_VF=0.03141  E_spec=0.4084
+  [test ]  E_traj=2.595e7  E_VF=4.381e9  E_spec=0.5136
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_PSznXI86/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_PSznXI86/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_PSznXI86/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_PSznXI86/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_PSznXI86
+--------------------------------------
+Done: Thu Sep 24 08:59:49 EDT 2026
