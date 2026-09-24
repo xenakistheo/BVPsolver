@@ -1,0 +1,174 @@
+Task 171/1800: --problem pollu --model mlp --profile fast --seed 121 --pretraining derivmatch --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23493023_171.log
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+pollu  model=mlp width=40 d=20 tlen=50 profile=fast seed=121  solver=Rodas5  N=4940
+  derivmatch lr=0.01 iter=510/10200 loss=286.6
+  derivmatch lr=0.01 iter=1020/10200 loss=302.6
+  derivmatch lr=0.01 iter=1530/10200 loss=303.2
+  derivmatch lr=0.01 iter=2040/10200 loss=284.1
+  derivmatch lr=0.01 iter=2550/10200 loss=301.2
+  derivmatch lr=0.01 iter=3060/10200 loss=284.1
+  derivmatch lr=0.01 iter=3570/10200 loss=309.1
+  derivmatch lr=0.01 iter=4080/10200 loss=331.5
+  derivmatch lr=0.01 iter=4590/10200 loss=303.5
+  derivmatch lr=0.01 iter=5100/10200 loss=297.5
+  derivmatch lr=0.01 iter=5610/10200 loss=314.6
+  derivmatch lr=0.01 iter=6120/10200 loss=300.0
+  derivmatch lr=0.01 iter=6630/10200 loss=344.5
+  derivmatch lr=0.01 iter=7140/10200 loss=332.3
+  derivmatch lr=0.01 iter=7650/10200 loss=341.3
+  derivmatch lr=0.01 iter=8160/10200 loss=335.2
+  derivmatch lr=0.01 iter=8670/10200 loss=315.4
+  derivmatch lr=0.01 iter=9180/10200 loss=321.9
+  derivmatch lr=0.01 iter=9690/10200 loss=321.6
+  derivmatch lr=0.01 iter=10200/10200 loss=317.0
+  derivmatch lr=0.01 iter=10200/10200 loss=222.8
+  derivmatch lr=0.003 iter=375/7500 loss=238.7
+  derivmatch lr=0.003 iter=750/7500 loss=253.8
+  derivmatch lr=0.003 iter=1125/7500 loss=254.8
+  derivmatch lr=0.003 iter=1500/7500 loss=259.6
+  derivmatch lr=0.003 iter=1875/7500 loss=242.3
+  derivmatch lr=0.003 iter=2250/7500 loss=266.9
+  derivmatch lr=0.003 iter=2625/7500 loss=258.4
+  derivmatch lr=0.003 iter=3000/7500 loss=255.5
+  derivmatch lr=0.003 iter=3375/7500 loss=280.2
+  derivmatch lr=0.003 iter=3750/7500 loss=249.0
+  derivmatch lr=0.003 iter=4125/7500 loss=255.0
+  derivmatch lr=0.003 iter=4500/7500 loss=268.4
+  derivmatch lr=0.003 iter=4875/7500 loss=264.9
+  derivmatch lr=0.003 iter=5250/7500 loss=270.5
+  derivmatch lr=0.003 iter=5625/7500 loss=240.9
+  derivmatch lr=0.003 iter=6000/7500 loss=260.4
+  derivmatch lr=0.003 iter=6375/7500 loss=264.5
+  derivmatch lr=0.003 iter=6750/7500 loss=252.3
+  derivmatch lr=0.003 iter=7125/7500 loss=271.1
+  derivmatch lr=0.003 iter=7500/7500 loss=283.1
+  derivmatch lr=0.003 iter=7500/7500 loss=201.6
+  derivmatch lr=0.001 iter=375/7500 loss=216.1
+  derivmatch lr=0.001 iter=750/7500 loss=208.1
+  derivmatch lr=0.001 iter=1125/7500 loss=215.2
+  derivmatch lr=0.001 iter=1500/7500 loss=217.8
+  derivmatch lr=0.001 iter=1875/7500 loss=214.0
+  derivmatch lr=0.001 iter=2250/7500 loss=217.3
+  derivmatch lr=0.001 iter=2625/7500 loss=224.9
+  derivmatch lr=0.001 iter=3000/7500 loss=221.9
+  derivmatch lr=0.001 iter=3375/7500 loss=220.3
+  derivmatch lr=0.001 iter=3750/7500 loss=232.8
+  derivmatch lr=0.001 iter=4125/7500 loss=218.7
+  derivmatch lr=0.001 iter=4500/7500 loss=216.0
+  derivmatch lr=0.001 iter=4875/7500 loss=221.4
+  derivmatch lr=0.001 iter=5250/7500 loss=217.6
+  derivmatch lr=0.001 iter=5625/7500 loss=216.9
+  derivmatch lr=0.001 iter=6000/7500 loss=222.4
+  derivmatch lr=0.001 iter=6375/7500 loss=221.5
+  derivmatch lr=0.001 iter=6750/7500 loss=209.5
+  derivmatch lr=0.001 iter=7125/7500 loss=225.2
+  derivmatch lr=0.001 iter=7500/7500 loss=231.9
+  derivmatch lr=0.001 iter=7500/7500 loss=171.0
+  derivmatch lr=0.0003 iter=240/4800 loss=177.3
+  derivmatch lr=0.0003 iter=480/4800 loss=191.6
+  derivmatch lr=0.0003 iter=720/4800 loss=184.1
+  derivmatch lr=0.0003 iter=960/4800 loss=176.3
+  derivmatch lr=0.0003 iter=1200/4800 loss=179.9
+  derivmatch lr=0.0003 iter=1440/4800 loss=204.0
+  derivmatch lr=0.0003 iter=1680/4800 loss=218.3
+  derivmatch lr=0.0003 iter=1920/4800 loss=215.8
+  derivmatch lr=0.0003 iter=2160/4800 loss=212.1
+  derivmatch lr=0.0003 iter=2400/4800 loss=205.1
+  derivmatch lr=0.0003 iter=2640/4800 loss=199.3
+  derivmatch lr=0.0003 iter=2880/4800 loss=194.8
+  derivmatch lr=0.0003 iter=3120/4800 loss=198.0
+  derivmatch lr=0.0003 iter=3360/4800 loss=184.7
+  derivmatch lr=0.0003 iter=3600/4800 loss=184.4
+  derivmatch lr=0.0003 iter=3840/4800 loss=185.9
+  derivmatch lr=0.0003 iter=4080/4800 loss=211.2
+  derivmatch lr=0.0003 iter=4320/4800 loss=207.3
+  derivmatch lr=0.0003 iter=4560/4800 loss=197.2
+  derivmatch lr=0.0003 iter=4800/4800 loss=207.4
+  derivmatch lr=0.0003 iter=4800/4800 loss=153.1
+derivative matching [56s]  fitloss=153.0
+  [derivative matching]  nrmse=6.592e17  l2=169.6
+  collocation: M=72 residuals=5260  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	9.83298940e+18      	NaN                 
+1       	9.84507512e+18      	8.35718369e-02      
+8       	3.38823212e+19      	0.00000000e+00      
+15      	9.10226643e+18      	1.87171011e-01      
+22      	4.44171860e+16      	3.24800836e-01      
+29      	1.26633246e+18      	5.42297563e-01      
+36      	6.22002757e+18      	0.00000000e+00      
+43      	2.55367283e+19      	0.00000000e+00      
+50      	4.42741872e+19      	0.00000000e+00      
+57      	4.20394597e+18      	6.47425433e-01      
+64      	3.50764213e+17      	5.41251997e-01      
+71      	2.41320736e+17      	4.61140380e-01      
+78      	3.39978043e+19      	8.55979493e-01      
+85      	1.58618236e+19      	2.20152561e+00      
+92      	1.66264504e+18      	0.00000000e+00      
+99      	1.23662632e+17      	0.00000000e+00      
+106     	4.44722374e+16      	2.66850392e-01      
+113     	1.64546707e+17      	5.85462418e-01      
+120     	9.08403537e+15      	0.00000000e+00      
+127     	1.79811961e+17      	0.00000000e+00      
+134     	1.36615802e+16      	2.17283623e-01      
+141     	2.66969641e+17      	0.00000000e+00      
+148     	6.86696458e+16      	0.00000000e+00      
+Final   	9.72459843e+14      
+----------------------      
+  AMR 1/1: M=72  err=5.5e29  obs=2.69e-9  nrmse=8.35e16  best=8.35e16  refined=0
+collocation [7849s]
+  [final]  nrmse=8.348e16  l2=373.9
+┌ Warning: Verbosity toggle: dt_epsilon 
+│  Initial timestep too small (near machine epsilon), using default: dt = 1.0e-6
+└ @ OrdinaryDiffEqCore ~/.julia/packages/OrdinaryDiffEqCore/NVUZl/src/initdt.jl:222
+extrapolation window: T=60.0 -> T_test=120.0  n_test=100
+  [train]  E_traj=1.281e34  E_VF=5.519  E_spec=7.759e305
+  [test ]  E_traj=1.877e37  E_VF=7.719e26  E_spec=6.063999999999999e305
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_A7JKlJa5/pollu_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_A7JKlJa5/pollu_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_A7JKlJa5/pollu_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_A7JKlJa5/pollu_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#16#17"{Vector{Float64}}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_A7JKlJa5
+--------------------------------------
+Done: Wed Sep 23 00:36:33 EDT 2026

@@ -1,0 +1,126 @@
+Task 316/1800: --problem rober --model stiff --profile fast --seed 116 --pretraining derivmatch --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23493023_316.log
+rober  model=stiff width=12 d=3 tlen=50 profile=fast seed=116  solver=Rodas5  N=318
+  derivmatch lr=0.01 iter=170/3400 loss=0.3906
+  derivmatch lr=0.01 iter=340/3400 loss=0.1449
+  derivmatch lr=0.01 iter=510/3400 loss=0.07153
+  derivmatch lr=0.01 iter=680/3400 loss=0.04406
+  derivmatch lr=0.01 iter=850/3400 loss=0.03451
+  derivmatch lr=0.01 iter=1020/3400 loss=0.02709
+  derivmatch lr=0.01 iter=1190/3400 loss=0.02172
+  derivmatch lr=0.01 iter=1360/3400 loss=0.02138
+  derivmatch lr=0.01 iter=1530/3400 loss=0.01566
+  derivmatch lr=0.01 iter=1700/3400 loss=0.01384
+  derivmatch lr=0.01 iter=1870/3400 loss=0.009251
+  derivmatch lr=0.01 iter=2040/3400 loss=0.005145
+  derivmatch lr=0.01 iter=2210/3400 loss=0.004144
+  derivmatch lr=0.01 iter=2380/3400 loss=0.004355
+  derivmatch lr=0.01 iter=2550/3400 loss=0.003628
+  derivmatch lr=0.01 iter=2720/3400 loss=0.003026
+  derivmatch lr=0.01 iter=2890/3400 loss=0.002536
+  derivmatch lr=0.01 iter=3060/3400 loss=0.002141
+  derivmatch lr=0.01 iter=3230/3400 loss=0.001827
+  derivmatch lr=0.01 iter=3400/3400 loss=0.001325
+  derivmatch lr=0.01 iter=3400/3400 loss=0.0009679
+  derivmatch lr=0.003 iter=125/2500 loss=0.001032
+  derivmatch lr=0.003 iter=250/2500 loss=0.0008315
+  derivmatch lr=0.003 iter=375/2500 loss=0.0007319
+  derivmatch lr=0.003 iter=500/2500 loss=0.0006575
+  derivmatch lr=0.003 iter=625/2500 loss=0.000592
+  derivmatch lr=0.003 iter=750/2500 loss=0.0005325
+  derivmatch lr=0.003 iter=875/2500 loss=0.0004783
+  derivmatch lr=0.003 iter=1000/2500 loss=0.0004292
+  derivmatch lr=0.003 iter=1125/2500 loss=0.0003849
+  derivmatch lr=0.003 iter=1250/2500 loss=0.000345
+  derivmatch lr=0.003 iter=1375/2500 loss=0.0003387
+  derivmatch lr=0.003 iter=1500/2500 loss=0.0002945
+  derivmatch lr=0.003 iter=1625/2500 loss=0.0002678
+  derivmatch lr=0.003 iter=1750/2500 loss=0.0002443
+  derivmatch lr=0.003 iter=1875/2500 loss=0.0002261
+  derivmatch lr=0.003 iter=2000/2500 loss=0.0002384
+  derivmatch lr=0.003 iter=2125/2500 loss=0.0003515
+  derivmatch lr=0.003 iter=2250/2500 loss=0.0004873
+  derivmatch lr=0.003 iter=2375/2500 loss=0.0001807
+  derivmatch lr=0.003 iter=2500/2500 loss=0.0004317
+  derivmatch lr=0.003 iter=2500/2500 loss=0.0001585
+  derivmatch lr=0.001 iter=125/2500 loss=0.0001578
+  derivmatch lr=0.001 iter=250/2500 loss=0.0001526
+  derivmatch lr=0.001 iter=375/2500 loss=0.0001475
+  derivmatch lr=0.001 iter=500/2500 loss=0.0001422
+  derivmatch lr=0.001 iter=625/2500 loss=0.0001366
+  derivmatch lr=0.001 iter=750/2500 loss=0.0001308
+  derivmatch lr=0.001 iter=875/2500 loss=0.0001249
+  derivmatch lr=0.001 iter=1000/2500 loss=0.0001189
+  derivmatch lr=0.001 iter=1125/2500 loss=0.0001129
+  derivmatch lr=0.001 iter=1250/2500 loss=0.0001071
+  derivmatch lr=0.001 iter=1375/2500 loss=0.0001014
+  derivmatch lr=0.001 iter=1500/2500 loss=9.596e-5
+  derivmatch lr=0.001 iter=1625/2500 loss=9.217e-5
+  derivmatch lr=0.001 iter=1750/2500 loss=0.0001128
+  derivmatch lr=0.001 iter=1875/2500 loss=0.0001829
+  derivmatch lr=0.001 iter=2000/2500 loss=7.963e-5
+  derivmatch lr=0.001 iter=2125/2500 loss=0.0001042
+  derivmatch lr=0.001 iter=2250/2500 loss=7.149e-5
+  derivmatch lr=0.001 iter=2375/2500 loss=6.87e-5
+  derivmatch lr=0.001 iter=2500/2500 loss=6.71e-5
+  derivmatch lr=0.001 iter=2500/2500 loss=6.585e-5
+  derivmatch lr=0.0003 iter=80/1600 loss=6.62e-5
+  derivmatch lr=0.0003 iter=160/1600 loss=6.529e-5
+  derivmatch lr=0.0003 iter=240/1600 loss=6.497e-5
+  derivmatch lr=0.0003 iter=320/1600 loss=6.46e-5
+  derivmatch lr=0.0003 iter=400/1600 loss=6.418e-5
+  derivmatch lr=0.0003 iter=480/1600 loss=6.372e-5
+  derivmatch lr=0.0003 iter=560/1600 loss=6.321e-5
+  derivmatch lr=0.0003 iter=640/1600 loss=6.268e-5
+  derivmatch lr=0.0003 iter=720/1600 loss=6.211e-5
+  derivmatch lr=0.0003 iter=800/1600 loss=6.151e-5
+  derivmatch lr=0.0003 iter=880/1600 loss=6.088e-5
+  derivmatch lr=0.0003 iter=960/1600 loss=6.022e-5
+  derivmatch lr=0.0003 iter=1040/1600 loss=5.954e-5
+  derivmatch lr=0.0003 iter=1120/1600 loss=5.885e-5
+  derivmatch lr=0.0003 iter=1200/1600 loss=5.813e-5
+  derivmatch lr=0.0003 iter=1280/1600 loss=5.739e-5
+  derivmatch lr=0.0003 iter=1360/1600 loss=5.664e-5
+  derivmatch lr=0.0003 iter=1440/1600 loss=5.588e-5
+  derivmatch lr=0.0003 iter=1520/1600 loss=5.511e-5
+  derivmatch lr=0.0003 iter=1600/1600 loss=5.432e-5
+  derivmatch lr=0.0003 iter=1600/1600 loss=5.432e-5
+derivative matching [34s]  fitloss=5.43e-5
+  [derivative matching]  nrmse=0.003952  l2=0.02682
+  shooting iter=50/1000 loss=0.0008698
+  shooting iter=100/1000 loss=0.00257
+  shooting iter=150/1000 loss=0.0008162
+  shooting iter=200/1000 loss=0.002262
+  shooting iter=250/1000 loss=0.001618
+  shooting iter=300/1000 loss=0.001145
+  shooting iter=350/1000 loss=0.001244
+  shooting iter=400/1000 loss=0.00121
+  shooting iter=450/1000 loss=0.002247
+  shooting iter=500/1000 loss=0.0009564
+  shooting iter=550/1000 loss=0.001016
+  shooting iter=600/1000 loss=0.001484
+  shooting iter=650/1000 loss=0.00122
+  shooting iter=700/1000 loss=0.001464
+  shooting iter=750/1000 loss=0.001772
+  shooting iter=800/1000 loss=0.001592
+  shooting iter=850/1000 loss=0.0008989
+  shooting iter=900/1000 loss=0.001081
+  shooting iter=950/1000 loss=0.0007255
+  shooting iter=1000/1000 loss=0.001394
+  shooting iter=1000/1000 loss=0.0003879
+shooting [636s]  loss=0.000387
+  [final]  nrmse=0.0007879  l2=0.005551
+extrapolation window: T=1000.0 -> T_test=1.0e12  n_test=100
+  [train]  E_traj=1.601e-6  E_VF=0.002435  E_spec=1.487e27
+  [test ]  E_traj=0.1423  E_VF=2.088e10  E_spec=9.047e22
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BuM0FyPs/rober_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BuM0FyPs/rober_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BuM0FyPs/rober_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BuM0FyPs/rober_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#12#13"{Float64, Float64, Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_BuM0FyPs
+--------------------------------------
+Done: Wed Sep 23 05:11:50 EDT 2026

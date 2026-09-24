@@ -1,0 +1,294 @@
+Task 21/600: --problem davis-skodje --param 1e-1 --model stiff --profile fast --seed 321 --pretraining derivmatch --training collocation
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23642156_21.log
+davis-skodje  model=stiff width=12 d=2 tlen=300 profile=fast seed=321  solver=Rodas5P  N=268
+  derivmatch lr=0.01 iter=170/3400 loss=0.00936
+  derivmatch lr=0.01 iter=340/3400 loss=0.003039
+  derivmatch lr=0.01 iter=510/3400 loss=0.00158
+  derivmatch lr=0.01 iter=680/3400 loss=0.0009535
+  derivmatch lr=0.01 iter=850/3400 loss=0.0006291
+  derivmatch lr=0.01 iter=1020/3400 loss=0.0004379
+  derivmatch lr=0.01 iter=1190/3400 loss=0.000318
+  derivmatch lr=0.01 iter=1360/3400 loss=0.0002399
+  derivmatch lr=0.01 iter=1530/3400 loss=0.0001872
+  derivmatch lr=0.01 iter=1700/3400 loss=0.0001504
+  derivmatch lr=0.01 iter=1870/3400 loss=0.0001239
+  derivmatch lr=0.01 iter=2040/3400 loss=0.0001043
+  derivmatch lr=0.01 iter=2210/3400 loss=8.935e-5
+  derivmatch lr=0.01 iter=2380/3400 loss=7.762e-5
+  derivmatch lr=0.01 iter=2550/3400 loss=6.814e-5
+  derivmatch lr=0.01 iter=2720/3400 loss=6.025e-5
+  derivmatch lr=0.01 iter=2890/3400 loss=5.354e-5
+  derivmatch lr=0.01 iter=3060/3400 loss=4.772e-5
+  derivmatch lr=0.01 iter=3230/3400 loss=4.262e-5
+  derivmatch lr=0.01 iter=3400/3400 loss=3.811e-5
+  derivmatch lr=0.01 iter=3400/3400 loss=3.811e-5
+  derivmatch lr=0.003 iter=125/2500 loss=2.195e-5
+  derivmatch lr=0.003 iter=250/2500 loss=1.353e-5
+  derivmatch lr=0.003 iter=375/2500 loss=1.008e-5
+  derivmatch lr=0.003 iter=500/2500 loss=1.006e-5
+  derivmatch lr=0.003 iter=625/2500 loss=7.593e-6
+  derivmatch lr=0.003 iter=750/2500 loss=6.741e-6
+  derivmatch lr=0.003 iter=875/2500 loss=6.736e-6
+  derivmatch lr=0.003 iter=1000/2500 loss=5.478e-6
+  derivmatch lr=0.003 iter=1125/2500 loss=4.98e-6
+  derivmatch lr=0.003 iter=1250/2500 loss=4.593e-6
+  derivmatch lr=0.003 iter=1375/2500 loss=4.237e-6
+  derivmatch lr=0.003 iter=1500/2500 loss=1.144e-5
+  derivmatch lr=0.003 iter=1625/2500 loss=3.663e-6
+  derivmatch lr=0.003 iter=1750/2500 loss=3.407e-6
+  derivmatch lr=0.003 iter=1875/2500 loss=3.208e-6
+  derivmatch lr=0.003 iter=2000/2500 loss=2.996e-6
+  derivmatch lr=0.003 iter=2125/2500 loss=2.819e-6
+  derivmatch lr=0.003 iter=2250/2500 loss=1.785e-5
+  derivmatch lr=0.003 iter=2375/2500 loss=2.494e-6
+  derivmatch lr=0.003 iter=2500/2500 loss=2.344e-6
+  derivmatch lr=0.003 iter=2500/2500 loss=2.344e-6
+  derivmatch lr=0.001 iter=125/2500 loss=2.29e-6
+  derivmatch lr=0.001 iter=250/2500 loss=2.257e-6
+  derivmatch lr=0.001 iter=375/2500 loss=2.216e-6
+  derivmatch lr=0.001 iter=500/2500 loss=2.167e-6
+  derivmatch lr=0.001 iter=625/2500 loss=2.111e-6
+  derivmatch lr=0.001 iter=750/2500 loss=2.05e-6
+  derivmatch lr=0.001 iter=875/2500 loss=1.983e-6
+  derivmatch lr=0.001 iter=1000/2500 loss=1.914e-6
+  derivmatch lr=0.001 iter=1125/2500 loss=1.841e-6
+  derivmatch lr=0.001 iter=1250/2500 loss=1.766e-6
+  derivmatch lr=0.001 iter=1375/2500 loss=1.889e-6
+  derivmatch lr=0.001 iter=1500/2500 loss=1.627e-6
+  derivmatch lr=0.001 iter=1625/2500 loss=1.562e-6
+  derivmatch lr=0.001 iter=1750/2500 loss=1.498e-6
+  derivmatch lr=0.001 iter=1875/2500 loss=1.434e-6
+  derivmatch lr=0.001 iter=2000/2500 loss=1.379e-6
+  derivmatch lr=0.001 iter=2125/2500 loss=1.326e-6
+  derivmatch lr=0.001 iter=2250/2500 loss=1.352e-6
+  derivmatch lr=0.001 iter=2375/2500 loss=1.235e-6
+  derivmatch lr=0.001 iter=2500/2500 loss=1.192e-6
+  derivmatch lr=0.001 iter=2500/2500 loss=1.192e-6
+  derivmatch lr=0.0003 iter=80/1600 loss=1.176e-6
+  derivmatch lr=0.0003 iter=160/1600 loss=1.166e-6
+  derivmatch lr=0.0003 iter=240/1600 loss=1.156e-6
+  derivmatch lr=0.0003 iter=320/1600 loss=1.145e-6
+  derivmatch lr=0.0003 iter=400/1600 loss=1.132e-6
+  derivmatch lr=0.0003 iter=480/1600 loss=1.118e-6
+  derivmatch lr=0.0003 iter=560/1600 loss=1.102e-6
+  derivmatch lr=0.0003 iter=640/1600 loss=1.086e-6
+  derivmatch lr=0.0003 iter=720/1600 loss=1.07e-6
+  derivmatch lr=0.0003 iter=800/1600 loss=1.053e-6
+  derivmatch lr=0.0003 iter=880/1600 loss=1.082e-6
+  derivmatch lr=0.0003 iter=960/1600 loss=1.022e-6
+  derivmatch lr=0.0003 iter=1040/1600 loss=1.008e-6
+  derivmatch lr=0.0003 iter=1120/1600 loss=9.935e-7
+  derivmatch lr=0.0003 iter=1200/1600 loss=9.791e-7
+  derivmatch lr=0.0003 iter=1280/1600 loss=9.65e-7
+  derivmatch lr=0.0003 iter=1360/1600 loss=9.526e-7
+  derivmatch lr=0.0003 iter=1440/1600 loss=9.407e-7
+  derivmatch lr=0.0003 iter=1520/1600 loss=9.289e-7
+  derivmatch lr=0.0003 iter=1600/1600 loss=9.17e-7
+  derivmatch lr=0.0003 iter=1600/1600 loss=9.17e-7
+derivative matching [33s]  fitloss=9.17e-7
+  [derivative matching]  nrmse=0.0002232  l2=0.01071
+  collocation: M=300 residuals=2394  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	2.46673946e+01      	7.73208215e-316     
+1       	1.15360186e+01      	4.43415778e-02      
+8       	3.44205431e-03      	7.75215718e-04      
+15      	8.87010469e-04      	2.22586483e-03      
+22      	2.12941030e-03      	1.10250263e-01      
+29      	2.07526905e-01      	0.00000000e+00      
+36      	1.55918017e-01      	7.28891033e-01      
+43      	7.87465562e-02      	3.48769348e-01      
+50      	5.00135076e-01      	6.52762558e-01      
+57      	1.48202476e-02      	3.05855497e-01      
+64      	3.63108469e-03      	2.51126266e-01      
+71      	3.34100163e-02      	5.05671468e-01      
+78      	3.48991634e-01      	0.00000000e+00      
+85      	7.23641971e-03      	0.00000000e+00      
+92      	3.18313217e-02      	0.00000000e+00      
+99      	1.54375613e-02      	3.06814159e-01      
+106     	2.90861267e-04      	0.00000000e+00      
+113     	8.49257841e-02      	0.00000000e+00      
+120     	4.16901119e-04      	5.96960856e-02      
+127     	7.79814339e-05      	0.00000000e+00      
+134     	6.26000032e-02      	0.00000000e+00      
+141     	2.75619785e-05      	2.23781600e-02      
+148     	8.25490714e-03      	1.26204064e-01      
+Final   	2.75619785e-05      
+----------------------      
+  AMR 1/3: M=300  err=3.39e-11  obs=2.18e-8  nrmse=7.71e-6  best=7.71e-6  refined=16
+  collocation: M=316 residuals=2490  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	2.49903273e+01      	5.31997681e-01      
+1       	1.15277333e+01      	4.45839076e-01      
+8       	3.01386630e-03      	4.43321191e-03      
+15      	8.76137056e-04      	6.86568515e-03      
+22      	1.34403828e-06      	1.56439907e-02      
+29      	1.14031716e-04      	2.59785664e-01      
+36      	6.67030458e-04      	0.00000000e+00      
+43      	3.91074834e-05      	4.73961006e-02      
+50      	3.82805963e-04      	0.00000000e+00      
+57      	1.07415853e-03      	0.00000000e+00      
+64      	2.43142462e-05      	6.88101029e-02      
+71      	2.19951686e-05      	0.00000000e+00      
+78      	3.58751417e-03      	0.00000000e+00      
+85      	1.01987674e-03      	0.00000000e+00      
+92      	5.69893693e-04      	2.41475717e-01      
+99      	3.90913757e-02      	0.00000000e+00      
+106     	1.00935984e-02      	1.39796392e+00      
+113     	7.89877029e-01      	3.01731790e+00      
+120     	7.89877029e-01      	0.00000000e+00      
+127     	9.56141533e-03      	3.54200954e-01      
+134     	8.46968290e-02      	0.00000000e+00      
+141     	6.65879613e-04      	1.04263811e-01      
+148     	4.78743882e-02      	0.00000000e+00      
+Final   	1.34403828e-06      
+----------------------      
+  AMR 2/3: M=316  err=4.1e-14  obs=2.18e-8  nrmse=2.63e-5  best=7.71e-6  refined=29
+  collocation: M=355 residuals=2724  detecting sparsity + solving...
+
+Algorithm: LevenbergMarquardt(
+    trustregion = LevenbergMarquardtTrustRegion(
+        β_uphill = 0.0
+    ),
+    descent = GeodesicAcceleration(
+        descent = DampedNewtonDescent(
+            linsolve = KLUFactorization(
+                reuse_symbolic = true,
+                check_pattern = true
+            ),
+            initial_damping = 1.0,
+            damping_fn = LevenbergMarquardtDampingFunction(
+                increase_factor = 2.0,
+                decrease_factor = 3.0,
+                min_damping = 1.0e-8
+            ),
+            min_norm_mode = :auto
+        ),
+        finite_diff_step_geodesic = 0.1,
+        α = 0.75
+    ),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{true}()
+)
+
+----    	-------------       	-----------         
+Iter    	f(u) 2-norm         	Step 2-norm         
+----    	-------------       	-----------         
+0       	2.41117314e+01      	NaN                 
+1       	1.10185820e+01      	2.56786366e-01      
+8       	1.67414177e-02      	8.05215980e-03      
+15      	8.23640262e-04      	5.63602004e-03      
+22      	1.28815058e-06      	1.77948682e-02      
+29      	4.53329109e-04      	2.21591287e-01      
+36      	2.48136309e-02      	0.00000000e+00      
+43      	2.25501091e-04      	7.50029376e-02      
+50      	2.82811652e-03      	2.53782146e-01      
+57      	1.58457066e-04      	0.00000000e+00      
+64      	3.00343969e-03      	0.00000000e+00      
+71      	4.33572000e-02      	3.37377799e-01      
+78      	3.79379743e-02      	8.53212485e-01      
+85      	6.73471349e-03      	0.00000000e+00      
+92      	1.71479883e-01      	1.60236476e+00      
+99      	9.29868942e-02      	7.75919302e-01      
+106     	1.82434029e-02      	7.70662040e-01      
+113     	1.11730649e-02      	7.84381358e-02      
+120     	7.25009638e-02      	0.00000000e+00      
+127     	3.48752002e-02      	0.00000000e+00      
+134     	1.54342841e-01      	0.00000000e+00      
+141     	8.87108006e-05      	1.15220011e-01      
+148     	1.40799026e-02      	0.00000000e+00      
+Final   	1.28815058e-06      
+----------------------      
+  AMR 3/3: M=355  err=3.27e-14  obs=1.92e-8  nrmse=2.48e-5  best=7.71e-6  refined=0
+collocation [155s]
+  [final]  nrmse=7.707e-6  l2=0.0003702
+extrapolation window: T=15.0 -> T_test=30.0  n_test=600
+  [train]  E_traj=1.151e-10  E_VF=6.968e-10  E_spec=0.2025
+  [test ]  E_traj=3.943e11  E_VF=1.567  E_spec=0.4237
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_VIjZ1Une/davis-skodje_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_VIjZ1Une/davis-skodje_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_VIjZ1Une/davis-skodje_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_VIjZ1Une/davis-skodje_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#22#23"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_VIjZ1Une
+--------------------------------------
+Done: Thu Sep 24 07:48:44 EDT 2026
