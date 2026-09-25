@@ -1,0 +1,131 @@
+Task 9/200: --problem dahlquist --param -1 --model stiff --profile fast --seed 809 --pretraining derivmatch --training shooting
+Logging to /home/txenakis/projects/BVPsolver/logs/run_main_23927197_9.log
+Precompiling packages...
+    StiffNN Being precompiled by another machine (hostname: node3306, pid: 3004219, pidfile: /home/txenakis/.julia/compiled/v1.12/StiffNN/YZ2jX_slr9s.ji.pidfile)
+  93392.1 ms  ✓ StiffNN
+  1 dependency successfully precompiled in 121 seconds. 596 already precompiled.
+dahlquist  model=stiff width=8 d=1 tlen=50 profile=fast seed=809  solver=Rodas5  N=114
+  derivmatch lr=0.01 iter=170/3400 loss=0.003669
+  derivmatch lr=0.01 iter=340/3400 loss=0.001664
+  derivmatch lr=0.01 iter=510/3400 loss=0.0009901
+  derivmatch lr=0.01 iter=680/3400 loss=0.0007055
+  derivmatch lr=0.01 iter=850/3400 loss=0.0005645
+  derivmatch lr=0.01 iter=1020/3400 loss=0.0004834
+  derivmatch lr=0.01 iter=1190/3400 loss=0.0004292
+  derivmatch lr=0.01 iter=1360/3400 loss=0.0003885
+  derivmatch lr=0.01 iter=1530/3400 loss=0.0003557
+  derivmatch lr=0.01 iter=1700/3400 loss=0.0003282
+  derivmatch lr=0.01 iter=1870/3400 loss=0.0003047
+  derivmatch lr=0.01 iter=2040/3400 loss=0.0002844
+  derivmatch lr=0.01 iter=2210/3400 loss=0.0002668
+  derivmatch lr=0.01 iter=2380/3400 loss=0.0002513
+  derivmatch lr=0.01 iter=2550/3400 loss=0.0002377
+  derivmatch lr=0.01 iter=2720/3400 loss=0.0002257
+  derivmatch lr=0.01 iter=2890/3400 loss=0.000215
+  derivmatch lr=0.01 iter=3060/3400 loss=0.0002054
+  derivmatch lr=0.01 iter=3230/3400 loss=0.0001968
+  derivmatch lr=0.01 iter=3400/3400 loss=0.000189
+  derivmatch lr=0.01 iter=3400/3400 loss=0.000189
+  derivmatch lr=0.003 iter=125/2500 loss=0.0001076
+  derivmatch lr=0.003 iter=250/2500 loss=4.989e-5
+  derivmatch lr=0.003 iter=375/2500 loss=3.949e-5
+  derivmatch lr=0.003 iter=500/2500 loss=2.778e-5
+  derivmatch lr=0.003 iter=625/2500 loss=2.037e-5
+  derivmatch lr=0.003 iter=750/2500 loss=1.758e-5
+  derivmatch lr=0.003 iter=875/2500 loss=1.499e-5
+  derivmatch lr=0.003 iter=1000/2500 loss=1.348e-5
+  derivmatch lr=0.003 iter=1125/2500 loss=1.222e-5
+  derivmatch lr=0.003 iter=1250/2500 loss=1.121e-5
+  derivmatch lr=0.003 iter=1375/2500 loss=1.05e-5
+  derivmatch lr=0.003 iter=1500/2500 loss=9.661e-6
+  derivmatch lr=0.003 iter=1625/2500 loss=9.071e-6
+  derivmatch lr=0.003 iter=1750/2500 loss=8.49e-6
+  derivmatch lr=0.003 iter=1875/2500 loss=8.381e-6
+  derivmatch lr=0.003 iter=2000/2500 loss=7.517e-6
+  derivmatch lr=0.003 iter=2125/2500 loss=7.06e-6
+  derivmatch lr=0.003 iter=2250/2500 loss=6.653e-6
+  derivmatch lr=0.003 iter=2375/2500 loss=6.248e-6
+  derivmatch lr=0.003 iter=2500/2500 loss=5.944e-6
+  derivmatch lr=0.003 iter=2500/2500 loss=5.87e-6
+  derivmatch lr=0.001 iter=125/2500 loss=5.812e-6
+  derivmatch lr=0.001 iter=250/2500 loss=5.73e-6
+  derivmatch lr=0.001 iter=375/2500 loss=5.623e-6
+  derivmatch lr=0.001 iter=500/2500 loss=5.496e-6
+  derivmatch lr=0.001 iter=625/2500 loss=5.35e-6
+  derivmatch lr=0.001 iter=750/2500 loss=5.189e-6
+  derivmatch lr=0.001 iter=875/2500 loss=5.012e-6
+  derivmatch lr=0.001 iter=1000/2500 loss=4.822e-6
+  derivmatch lr=0.001 iter=1125/2500 loss=4.619e-6
+  derivmatch lr=0.001 iter=1250/2500 loss=4.405e-6
+  derivmatch lr=0.001 iter=1375/2500 loss=4.18e-6
+  derivmatch lr=0.001 iter=1500/2500 loss=3.946e-6
+  derivmatch lr=0.001 iter=1625/2500 loss=3.705e-6
+  derivmatch lr=0.001 iter=1750/2500 loss=3.46e-6
+  derivmatch lr=0.001 iter=1875/2500 loss=3.214e-6
+  derivmatch lr=0.001 iter=2000/2500 loss=3.176e-6
+  derivmatch lr=0.001 iter=2125/2500 loss=2.808e-6
+  derivmatch lr=0.001 iter=2250/2500 loss=2.65e-6
+  derivmatch lr=0.001 iter=2375/2500 loss=2.497e-6
+  derivmatch lr=0.001 iter=2500/2500 loss=2.35e-6
+  derivmatch lr=0.001 iter=2500/2500 loss=2.35e-6
+  derivmatch lr=0.0003 iter=80/1600 loss=2.329e-6
+  derivmatch lr=0.0003 iter=160/1600 loss=2.307e-6
+  derivmatch lr=0.0003 iter=240/1600 loss=2.279e-6
+  derivmatch lr=0.0003 iter=320/1600 loss=2.247e-6
+  derivmatch lr=0.0003 iter=400/1600 loss=2.211e-6
+  derivmatch lr=0.0003 iter=480/1600 loss=2.173e-6
+  derivmatch lr=0.0003 iter=560/1600 loss=2.133e-6
+  derivmatch lr=0.0003 iter=640/1600 loss=2.091e-6
+  derivmatch lr=0.0003 iter=720/1600 loss=2.049e-6
+  derivmatch lr=0.0003 iter=800/1600 loss=2.006e-6
+  derivmatch lr=0.0003 iter=880/1600 loss=1.963e-6
+  derivmatch lr=0.0003 iter=960/1600 loss=1.921e-6
+  derivmatch lr=0.0003 iter=1040/1600 loss=1.888e-6
+  derivmatch lr=0.0003 iter=1120/1600 loss=1.855e-6
+  derivmatch lr=0.0003 iter=1200/1600 loss=1.824e-6
+  derivmatch lr=0.0003 iter=1280/1600 loss=1.794e-6
+  derivmatch lr=0.0003 iter=1360/1600 loss=1.764e-6
+  derivmatch lr=0.0003 iter=1440/1600 loss=1.735e-6
+  derivmatch lr=0.0003 iter=1520/1600 loss=1.727e-6
+  derivmatch lr=0.0003 iter=1600/1600 loss=1.684e-6
+  derivmatch lr=0.0003 iter=1600/1600 loss=1.684e-6
+derivative matching [30s]  fitloss=1.68e-6
+  [derivative matching]  nrmse=0.0006963  l2=0.003112
+  shooting iter=50/1000 loss=0.0003227
+  shooting iter=100/1000 loss=0.0004723
+  shooting iter=150/1000 loss=0.0001347
+  shooting iter=200/1000 loss=0.001097
+  shooting iter=250/1000 loss=0.0007388
+  shooting iter=300/1000 loss=0.0006132
+  shooting iter=350/1000 loss=0.0005358
+  shooting iter=400/1000 loss=0.0001599
+  shooting iter=450/1000 loss=0.0008517
+  shooting iter=500/1000 loss=0.0003511
+  shooting iter=550/1000 loss=0.0008693
+  shooting iter=600/1000 loss=0.0005435
+  shooting iter=650/1000 loss=0.0002837
+  shooting iter=700/1000 loss=0.0002533
+  shooting iter=750/1000 loss=0.0005983
+  shooting iter=800/1000 loss=0.001126
+  shooting iter=850/1000 loss=0.001793
+  shooting iter=900/1000 loss=0.00109
+  shooting iter=950/1000 loss=0.0003784
+  shooting iter=1000/1000 loss=0.0004895
+  shooting iter=1000/1000 loss=5.934e-5
+shooting [24s]  loss=5.93e-5
+  [final]  nrmse=0.0001902  l2=0.00085
+  trajectory_parameter_sensitivity_rms = 0.3096
+extrapolation window: T=1.0 -> T_test=2.0  n_test=100
+  [train]  E_traj=1.693e-8  E_VF=5.982e-6  E_spec=0.004774
+  [test ]  E_traj=0.03813  E_VF=0.2567  E_spec=0.4098
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_q4djSLv4/dahlquist_fit.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_q4djSLv4/dahlquist_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_q4djSLv4/dahlquist_spectral_fit_extrapolated.png
+saved /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_q4djSLv4/dahlquist_vf_fit_extrapolated.png
+┌ Warning: Attempting to store StiffNN.var"#25#26"{Float64}.
+│ JLD2 only stores functions by name.
+│  This may not be useful for anonymous functions.
+└ @ JLD2 ~/.julia/packages/JLD2/ADycq/src/data/writing_datatypes.jl:447
+saved run → /orcd/home/002/txenakis/projects/BVPsolver/src/../data/runs/run_q4djSLv4
+--------------------------------------
+Done: Fri Sep 25 16:18:15 EDT 2026
