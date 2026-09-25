@@ -79,10 +79,14 @@ function plot_fit(ctx, θ; dir = ".", train_mask = nothing)
 end
 
 
-# ∂f_θ(y_i, t_i)/∂θ at each observation point i — the parameter *sensitivity* the
-# vanishing-gradient-for-stiff-NDEs barrier (arXiv:2508.01519) concerns, as opposed to
-# the gradient of an aggregate scalar loss. Mirrors eigenvalues()'s per-point
-# ForwardDiff pattern below, just differentiating θ instead of the state y.
+# ∂f_θ(y_i, t_i)/∂θ at each observation point i — a *pointwise* parameter sensitivity:
+# how much the network's raw vector-field output at that point moves per parameter
+# perturbation. Mirrors eigenvalues()'s per-point ForwardDiff pattern below, just
+# differentiating θ instead of the state y. NOTE: this never calls the ODE solver, so
+# it cannot show the vanishing-gradient-for-stiff-NDEs barrier (arXiv:2508.01519) --
+# that barrier is about sensitivity built up by chaining the integrator's per-step
+# stability-function derivatives, which only appears when you differentiate *through
+# a solve*. For that, see trajectory_sensitivity below.
 function theta_sensitivity(ctx, θ)
     n = size(ctx.Ydata, 2)
     sens = zeros(n)
@@ -94,18 +98,38 @@ function theta_sensitivity(ctx, θ)
     return sens
 end
 
+# ∂u(t_k;θ)/∂θ at each observation time t_k -- the *through-solver* trajectory
+# sensitivity the paper's barrier actually concerns, obtained by differentiating the
+# ODE rollout itself (one ForwardDiff.jacobian pass over the whole solve, the same
+# AutoForwardDiff-through-solve pattern shooting() already uses for training) rather
+# than evaluating f_θ pointwise. Later t_k has been through more solver steps, so if
+# the barrier is operating, sensitivity should decay more at later/stiffer points.
+# Returns NaNs (not an error) if the rollout at θ doesn't reach the full time span, or
+# if differentiating through it fails -- a post-hoc diagnostic on a possibly-imperfect
+# θ, not a training step, so it must degrade gracefully rather than crash the run.
+function trajectory_sensitivity(ctx, θ)
+    n, d = length(ctx.tsteps), ctx.d
+    successful_retcode(rollout(ctx, θ)) || return fill(NaN, n)
+    J = try
+        ForwardDiff.jacobian(p -> vec(Array(rollout(ctx, p))), θ)
+    catch
+        return fill(NaN, n)
+    end
+    return [norm(@view J[(k - 1) * d + 1:k * d, :]) for k in 1:n]
+end
+
 # Local-stiffness proxy |λ| (the "z" in the paper's stability function R(z)) at each
 # observation point, taken from the learned Jacobian's dominant eigenvalue — reuses
 # eigenvalues() rather than recomputing the state-Jacobian.
 stiffness_proxy(ctx, θ) = vec(maximum(eigenvalues(ctx, θ; absolute = true)[2], dims = 1))
 
-function plot_sensitivity_vs_stiffness(ctx, stiffness, sensitivity_norm, stage; dir = ".")
+function plot_sensitivity_vs_stiffness(ctx, stiffness, sensitivity_norm, stage;
+                                        dir = ".", metric = "pointwise", ylabel = "‖∂f_θ/∂θ‖  (parameter sensitivity)")
     p = scatter(stiffness, sensitivity_norm; xscale = :log10, yscale = :log10,
-                xlabel = "|λ|  (local stiffness)",
-                ylabel = "‖∂f_θ/∂θ‖  (parameter sensitivity)",
-                title = "$(ctx.spec.name) — $stage", legend = false,
+                xlabel = "|λ|  (local stiffness)", ylabel = ylabel,
+                title = "$(ctx.spec.name) — $stage ($metric)", legend = false,
                 mc = :white, msc = :black, ms = 3, msw = 1)
-    path = joinpath(dir, "$(ctx.spec.name)_sensitivity_vs_stiffness_$(stage).png")
+    path = joinpath(dir, "$(ctx.spec.name)_sensitivity_vs_stiffness_$(stage)_$(metric).png")
     savefig(p, path)
     println("saved $path")
 end
