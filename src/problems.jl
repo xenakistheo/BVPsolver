@@ -14,7 +14,7 @@ function generate_training_data(spec::ProblemSpec)
 end
 
 function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, profile::Symbol=:default,
-                      mu::Real=100.0, epsilon::Real=0.01, n::Integer=8)
+                      mu::Real=100.0, epsilon::Real=0.01, n::Integer=8, lambda::Real=-1.0)
     lname = lowercase(name)
     fast = profile == :fast
     profile ∈ (:default, :fast) || error("Unknown profile '$profile'. Valid: :default, :fast")
@@ -174,6 +174,38 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
     end
 
 
+    if lname == "dahlquist"
+        # Scalar Dahlquist test equation dy/dt = lambda*y, y(0)=y0=1, lambda<0 (stable/
+        # stiff regime; |lambda| is the stiffness control). No existing single-parameter
+        # stiff problem uses a lambda this large in magnitude (davis-skodje's epsilon
+        # sweep tops out around gamma=1/epsilon~1e6 but over a much longer tspan), so the
+        # following choices are Dahlquist-specific and documented here rather than
+        # silently reused from elsewhere:
+        #   - tspan = (0, 1), fixed across the whole lambda sweep (matches the convention
+        #     of every other single-parameter problem here -- mu, epsilon, n all vary
+        #     with a fixed tspan): long enough that lambda=-1 shows a clearly resolved
+        #     decay (y(1)=e^-1~0.37), short enough that lambda=-10 still has most of its
+        #     tsteps in the non-negligible-signal region.
+        #   - log-spaced tsteps from t=1e-4 (mirrors davis-skodje/hires/pollu's
+        #     vcat(0, 10 .^ range(...)) pattern): for large |lambda|, the whole transient
+        #     happens near t=0, so linear spacing would waste almost every observation on
+        #     the already-decayed-to-~0 tail.
+        u0 = T[1.0]
+        tspan = (T(0.0), T(1.0))
+        tlen = fast ? 50 : 100
+        λ = T(lambda)
+        λ < 0 || error("dahlquist: lambda must be negative (stable/stiff regime), got $lambda")
+        true_ode! = function (du, u, p, t)
+            du[1] = λ * u[1]
+        end
+        kwargs = (; abstol=T(1e-10), reltol=T(1e-8))
+        tgrid = vcat(T(0), min.(T(10) .^ range(log10(T(1e-4)), log10(tspan[2]); length=tlen - 1), tspan[2]))
+        tsteps = sort(unique(tgrid))
+        return ProblemSpec{T,typeof(Rodas5()),typeof(true_ode!)}(
+            "dahlquist", u0, tspan, tsteps, Rodas5(), kwargs, true_ode!
+        )
+    end
+
     if lname == "brusselator"
         Nb = n
         xyd = collect(range(T(0), stop = T(1), length = Nb))
@@ -214,5 +246,5 @@ function make_problem(name::AbstractString; T::Type{<:AbstractFloat}=Float32, pr
         )
     end
 
-    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator")
+    error("Unknown problem '$name'. Valid: spiral, rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator, dahlquist")
 end

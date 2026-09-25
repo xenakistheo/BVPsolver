@@ -118,6 +118,15 @@ function trajectory_sensitivity(ctx, θ)
     return [norm(@view J[(k - 1) * d + 1:k * d, :]) for k in 1:n]
 end
 
+# Single-scalar summary of trajectory_sensitivity: RMS of ||∂y_θ(t_i)/∂θ||_2 over all
+# observation points, per sensitivity_ablation.md's S = sqrt(mean(s(t_i)^2)). Excludes
+# the first observation point (t_1 = tspan[1]), since y_θ(t_1) = u0 is prescribed
+# independently of θ, so its sensitivity is identically (not just numerically) zero and
+# would only dilute the aggregate. Computed once, on the caller's final θ -- this
+# function does not know or care whether that came from the last training iteration,
+# so callers must not call it mid-training.
+trajectory_sensitivity_rms(ctx, θ) = sqrt(mean(abs2, @view trajectory_sensitivity(ctx, θ)[2:end]))
+
 # Local-stiffness proxy |λ| (the "z" in the paper's stability function R(z)) at each
 # observation point, taken from the learned Jacobian's dominant eigenvalue — reuses
 # eigenvalues() rather than recomputing the state-Jacobian.

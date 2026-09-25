@@ -63,7 +63,8 @@ export shapovalova, cheb_diffmatrix, interp_rows
 export rollout, metrics, report, plot_fit, eigenvalues, plot_spectral_fit, plot_vf_fit
 export is_log_spaced, extend_tsteps, extrapolation_ctx
 export relative_error, true_vector_field, error_metrics
-export theta_sensitivity, trajectory_sensitivity, stiffness_proxy, plot_sensitivity_vs_stiffness
+export theta_sensitivity, trajectory_sensitivity, trajectory_sensitivity_rms
+export stiffness_proxy, plot_sensitivity_vs_stiffness
 
 # Data
 export generate_diffusion_data

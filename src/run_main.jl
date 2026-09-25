@@ -21,6 +21,8 @@ const CONFIGS = (
                  amr_rounds = 3, lm_iters = 150),
     brusselator = (hidden = 32, depth = 3, signed_loss = false, dm_iters = 30_000,
                  amr_rounds = 1, lm_iters = 150, time_dependent = true),
+    dahlquist = (hidden = 8, depth = 2, signed_loss = false, dm_iters = 10_000,
+                 amr_rounds = 1, lm_iters = 150),
 )
 
 config_key(name) = Symbol(replace(lowercase(name), "-" => ""))
@@ -48,8 +50,9 @@ function problem_kwargs(problem, param)
     key === :vanderpol   && return (; mu = param)
     key === :davisskodje && return (; epsilon = param)
     key === :brusselator && return (; n = round(Int, param))
+    key === :dahlquist   && return (; lambda = param)
     error("$problem takes no scalar parameter " *
-          "(vanderpol=mu, davis-skodje=epsilon, brusselator=n)")
+          "(vanderpol=mu, davis-skodje=epsilon, brusselator=n, dahlquist=lambda)")
 end
 
 # ── CLI arguments ─────────────────────────────────────────────────────────
@@ -57,11 +60,12 @@ function parse_cli()
     s = ArgParseSettings()
     @add_arg_table s begin
         "--problem"
-            help = "Problem (rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator)"
+            help = "Problem (rober, vanderpol, pollu, hires, orego, davis-skodje, brusselator, dahlquist)"
             arg_type = String
             default = "vanderpol"
         "--param"
-            help = "Problem parameter: mu (vanderpol), epsilon (davis-skodje), n grid (brusselator)"
+            help = "Problem parameter: mu (vanderpol), epsilon (davis-skodje), n grid (brusselator), " *
+                   "lambda (dahlquist)"
             arg_type = Float64
             default = nothing
         "--model"
@@ -246,6 +250,20 @@ function main(args = parse_cli())
         track_sensitivity!(sensitivity_by_stage, track_sensitivity, ctx, θ, "collocation")
     end
 
+    # RMS trajectory-parameter-sensitivity S = sqrt(mean_i ||∂y_θ(t_i)/∂θ||^2), on the
+    # FINAL θ only (never inside a training loop) — see sensitivity_ablation.md.
+    # Unconditional (not gated by --track-sensitivity): every completed run should
+    # report this one scalar, unlike the optional per-stage/per-point diagnostics above.
+    trajectory_parameter_sensitivity_rms = try
+        trajectory_sensitivity_rms(ctx, θ)
+    catch e
+        println("  trajectory_parameter_sensitivity_rms computation FAILED: $e")
+        NaN
+    end
+    println("  trajectory_parameter_sensitivity_rms = " *
+            "$(round(trajectory_parameter_sensitivity_rms; sigdigits=4))")
+    flush(stdout)
+
     # ── Extrapolation / error metrics (see metrics.md) ──────────────────────
     train_err = error_metrics(ctx, θ)
     ext_ctx, train_mask = extrapolation_ctx(ctx)
@@ -305,6 +323,11 @@ function main(args = parse_cli())
     run_info["n_params"]         = n_params
     run_info["model_width"]      = model_width
     run_info["timestamp"]        = string(now())
+    # lambda, seed, architecture (model), and training method are already captured
+    # above via the raw CLI args dump (run_info["param"/"seed"/"model"/"training"]),
+    # matching the existing convention for every other single-parameter problem
+    # (mu, epsilon, n) -- no dahlquist-specific alias added.
+    run_info["trajectory_parameter_sensitivity_rms"] = trajectory_parameter_sensitivity_rms
 
     run_info["E_trajectory_species_train"] = train_err.traj_species
     run_info["E_trajectory_train"]         = train_err.traj
