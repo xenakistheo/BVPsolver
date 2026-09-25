@@ -79,6 +79,37 @@ function plot_fit(ctx, θ; dir = ".", train_mask = nothing)
 end
 
 
+# ∂f_θ(y_i, t_i)/∂θ at each observation point i — the parameter *sensitivity* the
+# vanishing-gradient-for-stiff-NDEs barrier (arXiv:2508.01519) concerns, as opposed to
+# the gradient of an aggregate scalar loss. Mirrors eigenvalues()'s per-point
+# ForwardDiff pattern below, just differentiating θ instead of the state y.
+function theta_sensitivity(ctx, θ)
+    n = size(ctx.Ydata, 2)
+    sens = zeros(n)
+    for i in 1:n
+        y, t = ctx.Ydata[:, i], ctx.tsteps[i]
+        F(p) = f_theta(ctx, y, t, p)
+        sens[i] = norm(ForwardDiff.jacobian(F, θ))
+    end
+    return sens
+end
+
+# Local-stiffness proxy |λ| (the "z" in the paper's stability function R(z)) at each
+# observation point, taken from the learned Jacobian's dominant eigenvalue — reuses
+# eigenvalues() rather than recomputing the state-Jacobian.
+stiffness_proxy(ctx, θ) = vec(maximum(eigenvalues(ctx, θ; absolute = true)[2], dims = 1))
+
+function plot_sensitivity_vs_stiffness(ctx, stiffness, sensitivity_norm, stage; dir = ".")
+    p = scatter(stiffness, sensitivity_norm; xscale = :log10, yscale = :log10,
+                xlabel = "|λ|  (local stiffness)",
+                ylabel = "‖∂f_θ/∂θ‖  (parameter sensitivity)",
+                title = "$(ctx.spec.name) — $stage", legend = false,
+                mc = :white, msc = :black, ms = 3, msw = 1)
+    path = joinpath(dir, "$(ctx.spec.name)_sensitivity_vs_stiffness_$(stage).png")
+    savefig(p, path)
+    println("saved $path")
+end
+
 function eigenvalues(ctx, θ; absolute=false)
     eigenvalues_true = zeros(ComplexF64, size(ctx.Ydata))
     eigenvalues_learned = zeros(ComplexF64, size(ctx.Ydata))
