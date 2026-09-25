@@ -124,8 +124,9 @@ function parse_cli()
             default = "exact"
             range_tester = x -> x in ("exact", "limited-memory")
         "--track-sensitivity"
-            help = "After each stage, record ‖∂f_θ(y_i,t_i)/∂θ‖ and local stiffness |λ_i| " *
-                   "at every observation point, per stage, into sensitivity_by_stage"
+            help = "After each stage, record pointwise ‖∂f_θ(y_i,t_i)/∂θ‖, through-solver " *
+                   "‖∂u(t_i)/∂θ‖, and local stiffness |λ_i| at every observation point, " *
+                   "per stage, into sensitivity_by_stage"
             action = :store_true
     end
     return parse_args(s)
@@ -143,6 +144,7 @@ function track_sensitivity!(sensitivity_by_stage, track_sensitivity, ctx, θ, st
     track_sensitivity || return nothing
     try
         sensitivity_by_stage[stage] = (; sensitivity_norm = theta_sensitivity(ctx, θ),
+                                          trajectory_sensitivity_norm = trajectory_sensitivity(ctx, θ),
                                           stiffness = stiffness_proxy(ctx, θ))
     catch e
         println("  sensitivity tracking for $stage FAILED: $e")
@@ -279,7 +281,11 @@ function main(args = parse_cli())
     end
     for (stage, data) in sensitivity_by_stage
         try
-            plot_sensitivity_vs_stiffness(ctx, data.stiffness, data.sensitivity_norm, stage; dir = run_dir)
+            plot_sensitivity_vs_stiffness(ctx, data.stiffness, data.sensitivity_norm, stage;
+                                           dir = run_dir, metric = "pointwise")
+            plot_sensitivity_vs_stiffness(ctx, data.stiffness, data.trajectory_sensitivity_norm, stage;
+                                           dir = run_dir, metric = "trajectory",
+                                           ylabel = "‖∂u(t)/∂θ‖  (trajectory sensitivity)")
         catch e
             println("  sensitivity plot for $stage FAILED: $e")
         end
